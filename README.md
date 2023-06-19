@@ -16,3 +16,31 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
    1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
    2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+
+# git commit 
+
+```
+  <type> (<scope>) : <subject>
+```
+
+types
+
+```
+feat: 新功能 feature
+fix: 修复 bug
+docs: 文档注释
+style: 代码格式(不影响代码运行的变动)
+refactor: 重构、优化(既不增加新功能，也不是修复bug)
+perf: 性能优化
+test: 增加测试
+chore: 构建过程或辅助工具的变动
+revert: 回退
+build: 打包 影响项目构建或依赖项修改
+merge: 代码合并
+sync: 同步主线或分支的Bug
+ci: 持续集成相关文件修改
+create: 创建工程
+```
+
+# 使用方法
+ 
