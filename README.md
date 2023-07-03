@@ -52,8 +52,8 @@ revert: 回退
 
 4、安装 EditorConfig for VS Code 插件
 
-5、安装 ESLint 插件
+5、安装 ESLint for VS Code 插件
 
-6、安装 Prettier 插件
+6、安装 Prettier for VS Code 插件
 
-7、安装 Stylelint 插件
+7、安装 Stylelint for VS Code 插件
