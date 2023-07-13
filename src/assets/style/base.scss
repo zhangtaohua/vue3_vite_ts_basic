@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+/* :root -> 获取根元素html */
+:root {
+  --label-color: #bbb;
+  --content-color: #000;
+  --background-color: #f0f0f0;
+  --host-background-color: #fff;
+  --guest-background-color: rgb(92 126 255 / 10%);
+  --warning-font-color: crimson;
+  --option-font-color: #3354b8;
+  --label-font-size: 14px;
+  --content-font-size: 16px;
+  --control-font-size: 18px;
+  --line-height: 1.15;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* rem vw/vh */
+  width: 100vw;
+
+  /* background: var(--background-color); */
+  color: var(--content-color);
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif;
+
+  /* 禁止用户鼠标在页面上选中文字/图片等 */
+
+  /* user-select: none; */
+  -webkit-tap-highlight-color: transparent; /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
+}
+
+a {
+  color: var(--content-color);
+  text-decoration: none;
+}
+
+input,
+textarea {
+  outline: none !important;
+  box-shadow: none;
+  appearance: none; /* 去除系统默认的样式 */
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%); /* 点击高亮的颜色 */
+}
+
+input:focus,
+input,
+textarea:focus {
+  outline: none !important;
+  box-shadow: none;
+  appearance: none; /* 去除系统默认的样式 */
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%); /* 点击高亮的颜色 */
+}
+
+button:focus {
+  outline: none;
+}
