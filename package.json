@@ -24,12 +24,19 @@
     }
   },
   "dependencies": {
+    "ant-design-vue": "^3.2.20",
+    "lil-gui": "^0.18.2",
+    "lodash": "^4.17.21",
+    "nanoid": "^4.0.2",
+    "ol": "^7.4.0",
+    "ol-mapbox-style": "^10.6.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
+    "@types/ol": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "@vitejs/plugin-vue": "^4.1.0",
@@ -59,6 +66,7 @@
     "stylelint-order": "^6.0.3",
     "stylelint-scss": "^5.0.1",
     "typescript": "^5.0.2",
+    "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
     "vue-eslint-parser": "^9.3.1",
     "vue-tsc": "^1.4.2"

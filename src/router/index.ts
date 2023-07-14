@@ -1,15 +1,40 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import staticImage from "@/views/ol/staticImage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/staticImage",
+    redirect: "/homemap",
   },
   {
-    path: "/staticImage",
-    name: "staticImage",
-    component: staticImage,
+    path: "/homemap",
+    name: "mapExample",
+    component: () => import("@/views/mapExample.vue"),
+  },
+  {
+    path: "/openlayers",
+    name: "openlayerExample",
+    children: [
+      {
+        path: "/openlayers/xyz",
+        name: "xyzExample",
+        component: () => import("@/views/ol/xyzLayerExample.vue"),
+      },
+      {
+        path: "/openlayers/mapbox",
+        name: "mapboxExample",
+        component: () => import("@/views/ol/mapboxStyleLayerExample.vue"),
+      },
+      {
+        path: "/openlayers/image",
+        name: "StaticExample",
+        component: () => import("@/views/ol/staticImageExample.vue"),
+      },
+      {
+        path: "/openlayers/comprehensive",
+        name: "CompreExample",
+        component: () => import("@/views/ol/comprehensiveExample.vue"),
+      },
+    ],
   },
   // pathMatch is the name of the param, e.g., going to /not/found yields
   // { params: { pathMatch: ['not', 'found'] }}
@@ -18,13 +43,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
-    redirect: "/home",
+    redirect: "/homemap",
   },
   // if you omit the last `*`, the `/` character in params will be encoded when resolving or pushing
   {
     path: "/:pathMatch(.*)",
     name: "bad-not-found",
-    redirect: "/home",
+    redirect: "/homemap",
   },
 ];
 
