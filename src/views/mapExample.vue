@@ -28,22 +28,22 @@
 .ol_title {
   width: 100%;
   height: 60px;
-  font-size: 32px;
-  font-weight: bold;
   margin-top: 16px;
+  font-weight: bold;
+  font-size: 32px;
 }
 
 .ol_example_box {
+  flex-wrap: wrap;
   width: 100%;
   height: auto;
-  flex-wrap: wrap;
   margin-top: 16px;
 }
 
 .ol_example_title {
   width: 25%;
   height: 48px;
-  margin: 0px 0;
+  margin: 0;
   font-size: 20px;
 }
 </style>

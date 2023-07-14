@@ -7,6 +7,8 @@ import "@/assets/style/general.scss";
 import "@/assets/style/size.scss";
 import "@/assets/style/mpgap.scss";
 import "@/assets/style/reset.scss";
+import "@/assets/style/openlayerCusStyle.scss";
+import "@/utils/map/ol/openlayerGlobalStyle.css";
 import App from "./App.vue";
 import router from "@/router";
 

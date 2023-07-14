@@ -8,10 +8,10 @@
 
 <style scoped>
 .app_container {
-  overflow: scroll;
-  scroll-behavior: smooth;
   margin: 0;
   padding: 0;
+  overflow: scroll;
+  scroll-behavior: smooth;
 }
 
 .app_container::-webkit-scrollbar {

@@ -6,4 +6,13 @@ export interface StaticImageOptions {
   zIndex?: number;
   wrapX?: boolean;
   opacity?: number;
+  isPopup?: boolean;
+  popupType?: string;
+  htmlString?: string;
+  vNode?: any;
+  vNodeData?: any;
+  position?: Array<number>;
+  eventType?: string;
+  $t?: any;
+  callback?: any;
 }

@@ -12,31 +12,13 @@ import { nanoid } from "nanoid";
 
 import OlBase from "./base";
 import { transformExtentTo3857 } from "./olTools";
-import { earthExtent, popupType } from "../geoConstant";
+import { earthExtent } from "../geoConstant";
 import { getRectangleFromExtent } from "../geoCommon";
 import type { StaticImageOptions } from "./imageLayersTypes";
-
-import OpenLayersMapEvent from "./mapEvent";
-import type { EventOptions } from "./mapEventTypes";
-
-import OpenLayerVueNodePopup from "./vueNodePopupLayers";
-import type { VueNodeOptions } from "./vueNodePopupLayersTypes";
-
-import OpenLayersPopup from "./popupLayers";
-import type { PopupOption } from "./popupLayersTypes";
 
 export default class OlStaticImageLayers {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
-
-  public vuePopupIns: OpenLayerVueNodePopup | null = null;
-  public normalPopupIns: OpenLayersPopup | null = null;
-  public mapEventIns: OpenLayersMapEvent | null = null;
-
-  private __mapEventsMap: any = null;
-  private __popupInsMap: any = null;
-  private __vuepopupInsMap: any = null;
-
   private __layers: any = null;
   private __layerIdPrefix = "IMAGE_";
 
@@ -44,27 +26,13 @@ export default class OlStaticImageLayers {
     this.olBaseHandle = mapBaseIns;
     this.handle = mapBaseIns.handle;
     this.__layers = new Map();
-    this.__mapEventsMap = new Map();
-    this.__popupInsMap = new Map();
-    this.__vuepopupInsMap = new Map();
-
-    this.mapEventIns = new OpenLayersMapEvent(mapBaseIns);
-    this.normalPopupIns = new OpenLayersPopup(mapBaseIns);
-    this.vuePopupIns = new OpenLayerVueNodePopup(mapBaseIns);
   }
 
   public destructor() {
-    this.normalPopupIns!.destructor();
-    this.vuePopupIns!.destructor();
-    this.mapEventIns!.destructor();
-
     this.clearLayer();
     this.olBaseHandle = null;
     this.handle = null;
     this.__layers = null;
-    this.__mapEventsMap = null;
-    this.__popupInsMap = null;
-    this.__vuepopupInsMap = null;
   }
 
   private __Id(id: string) {
@@ -84,7 +52,6 @@ export default class OlStaticImageLayers {
       extent: earthExtent,
       wrapX: true,
       opacity: 1,
-      htmlString: "",
     },
   ) {
     if (!options.url || !options.id) {
@@ -168,66 +135,13 @@ export default class OlStaticImageLayers {
     return layerObj;
   }
 
-  public narmalPopupCb = (options: StaticImageOptions) => {
-    return (event: any) => {
-      let pixel = event.pixel;
-      // let coordinate = event.coordinate
-      if (!pixel.length) {
-        pixel = this.handle.getEventPixel(event.originalEvent);
-      }
-      // if(this.handle.hasFeatureAtPixel(pixel)) {}
-      const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-        const isCustom = feature.get("customize");
-        const id = feature.get("customMeta").id;
-        if (isCustom && id === options.id) {
-          return feature;
-        }
-      });
-
-      if (feature) {
-        const customMeta = feature.get("customMeta");
-        if (options.callback) {
-          options.callback(customMeta, options);
-        }
-        const center = this.getCenterById(options.id);
-        console.log("center", center);
-        this.normalPopupIns?.showPopupByID(options.id, center, options.htmlString);
-      }
-    };
-  };
-
   public addLayer(options: StaticImageOptions) {
     if (this.handle) {
       const layerObj = this.createLayer(options);
       if (layerObj) {
-        this.handle.addLayer(layerObj.layerVector);
         this.handle.addLayer(layerObj.layer);
+        this.handle.addLayer(layerObj.layerVector);
         this.__layers.set(this.__Id(options.id), layerObj);
-
-        if (options.isPopup) {
-          // 采用普通的popup
-          if (options.popupType == popupType.normal) {
-            this.normalPopupIns!.addLayer(options);
-            // if (isAdded) {
-            //   this.__popupInsMap.set(options, this.normalPopupIns);
-            // }
-
-            if (options.eventType) {
-              const eventOptions: EventOptions = {
-                id: options.id,
-                type: options.eventType,
-                cb: this.narmalPopupCb(options),
-                delay: 300,
-                debounce: true,
-                debounceOption: {
-                  leading: true,
-                  trailing: false,
-                },
-              };
-              this.mapEventIns!.addEvent(eventOptions);
-            }
-          }
-        }
         return true;
       } else {
         return false;
@@ -271,11 +185,7 @@ export default class OlStaticImageLayers {
       const layerObj = this.__layers.get(this.__Id(id));
       if (layerObj) {
         this.handle.removeLayer(layerObj.layer);
-        this.handle.removeLayer(layerObj.layerVector);
         this.__layers.delete(this.__Id(id));
-
-        this.normalPopupIns!.removeLayerByID(id);
-        this.mapEventIns!.removeEventByID(id);
         return true;
       } else {
         return false;
@@ -290,7 +200,7 @@ export default class OlStaticImageLayers {
       // for (let [key, layerObj] of this.__layers.entries()) {
       // 	this.handle.removeLayer(layerObj.layer)
       // }
-      this.__layers.forEach((layerObj: any) => {
+      this.__layers.forEach((layerObj, key) => {
         this.handle.removeLayer(layerObj.layer);
       });
       this.__layers.clear();

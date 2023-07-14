@@ -23,8 +23,6 @@ import { defaultMapOptions } from "@/utils/map/geoConstant";
 
 import { gaodeMap, googleMap, bingMap, bingLightMap, popupType } from "./MapConst";
 
-import type { MapImageOptions } from "./staticImageExampleTypes";
-
 import { nanoid } from "nanoid";
 
 export default class OlMapHelper extends OlBase {
@@ -207,7 +205,7 @@ export default class OlMapHelper extends OlBase {
     this.flyToPositionAndZoom(longitude, latitude, zoom);
   }
 
-  public addImagesLayer(options: MapImageOptions) {
+  public addImagesLayer(options: StaticImageOptions) {
     if (options) {
       const isAdded = this.ImageMapIns!.addLayer(options);
       const saveOption = {
@@ -216,52 +214,6 @@ export default class OlMapHelper extends OlBase {
       };
       if (isAdded) {
         this.__funcLayers.set(saveOption, this.ImageMapIns);
-      }
-
-      if (options.isPopup) {
-        if (options.popupType == popupType.normal) {
-          // 采用普通的popup
-          let isAdded = this.AppPopupIns!.addLayer(options);
-          if (isAdded) {
-            this.__popupInsMap.set(options, this.AppPopupIns);
-          }
-
-          if (options.eventType) {
-            const extent = this.ImageMapIns?.getExtentById(options.id);
-            const center = this.ImageMapIns?.getCenterById(options.id);
-            console.log("center", extent, center);
-
-            const eventOptions: EventOptions = {
-              id: options.id,
-              type: options.eventType,
-              cb: (event: any) => {
-                let pixel = event.pixel;
-                // let event.coordinate
-                if (!pixel.length) {
-                  pixel = this.handle.getEventPixel(event.originalEvent);
-                }
-                // if(this.handle.hasFeatureAtPixel(pixel)) {
-                // }
-                const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-                  const isCustom = feature.get("customize");
-                  const id = feature.get("customMeta").id;
-                  if (isCustom && id === options.id) {
-                    return feature;
-                  }
-                });
-
-                if (feature) {
-                  this.AppPopupIns?.showPopupByID(options.id, center, options.htmlString);
-                }
-              },
-              debounce: true,
-            };
-            isAdded = this.mapEventIns!.addEvent(eventOptions);
-            if (isAdded) {
-              this.__mapEventsMap.set(options, this.mapEventIns);
-            }
-          }
-        }
       }
     }
   }

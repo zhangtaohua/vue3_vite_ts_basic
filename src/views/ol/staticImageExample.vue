@@ -6,7 +6,7 @@
 import { onMounted, onUnmounted } from "vue";
 
 import staticImageExample from "./staticImageExample";
-import type { MapImageOptions } from "./staticImageExampleTypes";
+import type { StaticImageOptions } from "@/utils/map/ol/imageLayersTypes";
 
 import { gaodeMap, googleMap, bingMap, bingLightMap, popupType } from "./MapConst";
 import GUI from "lil-gui";
@@ -19,6 +19,9 @@ onMounted(() => {
   initGUI();
   addImage(imagesSource.image1);
   addImage(imagesSource.image2);
+  addImage(imagesSource.image3);
+  addImage(imagesSource.image4);
+  addImage(imagesSource.image5);
 });
 
 onUnmounted(() => {
@@ -73,10 +76,10 @@ const imagesSource = {
     hasClose: true,
     eventType: "pointermove",
     htmlString: `
-    <div class="col_nw_fs_center">
-      <div class="row_nw_fs_fs">pointermove 测试</div>
-      <div class="row_nw_fs_fs">image_test_2</div>
-      <div class="row_nw_fs_fs">我是图片信息2</div>
+    <div class="col_nw_fs_center ol_cus_image_wraper">
+      <div class="row_nw_center_center ol_cus_image_title">pointermove 测试</div>
+      <div class="row_nw_fs_center ol_cus_image_label">image_test_2</div>
+      <div class="row_nw_fs_center ol_cus_image_label">我是图片信息2</div>
     </div>
     `,
   },
@@ -87,12 +90,12 @@ const imagesSource = {
     isPopup: true,
     popupType: popupType.normal,
     hasClose: true,
-    eventType: "singleclick",
+    eventType: "pointermove",
     htmlString: `
-    <div class="col_nw_fs_center">
-      <div class="row_nw_fs_fs">singleclick 测试</div>
-      <div class="row_nw_fs_fs">image_test_3</div>
-      <div class="row_nw_fs_fs">我是图片信息3</div>
+    <div class="col_nw_fs_center ol_cus_image_wraper">
+      <div class="row_nw_center_center ol_cus_image_title">singleclick 测试</div>
+      <div class="row_nw_fs_center ol_cus_image_label">image_test_3</div>
+      <div class="row_nw_fs_center ol_cus_image_label">我是图片信息3</div>
     </div>
     `,
   },
@@ -105,20 +108,48 @@ const imagesSource = {
     hasClose: true,
     eventType: "singleclick",
     htmlString: `
-    <div class="col_nw_fs_center">
-      <div class="row_nw_fs_fs">singleclick 测试</div>
-      <div class="row_nw_fs_fs">image_test_4</div>
-      <div class="row_nw_fs_fs">我是图片信息4</div>
+    <div class="col_nw_fs_center ol_cus_image_wraper">
+      <div class="row_nw_center_center ol_cus_image_title">singleclick 测试</div>
+      <div class="row_nw_fs_center ol_cus_image_label">image_test_4</div>
+      <div class="row_nw_fs_center ol_cus_image_label">我是图片信息4</div>
     </div>
     `,
   },
   image5: {
     id: "image_test_5",
+    url: pexels1,
+    extent: [111, 28, 113, 29],
+    isPopup: true,
+    popupType: popupType.normal,
+    hasClose: true,
+    eventType: "singleclick",
+    htmlString: `
+    <div class="col_nw_fs_center ol_cus_image_wraper">
+      <div class="row_nw_center_center ol_cus_image_title">singleclick 测试</div>
+      <div class="row_nw_fs_center ol_cus_image_label">image_test_5</div>
+      <div class="row_nw_fs_center ol_cus_image_label">我是图片信息5</div>
+    </div>
+    `,
+    callback: (metadata: any, options: any) => {
+      console.log("外", metadata, options);
+      options.htmlString = `
+    <div class="col_nw_fs_center ol_cus_image_wraper">
+      <div class="row_nw_center_center ol_cus_image_title">singleclick 测试</div>
+      <div class="row_nw_fs_center ol_cus_image_label">image_test_5</div>
+      <div class="row_nw_fs_center ol_cus_image_label">我是图片信息5</div>
+      <div class="row_nw_fs_center ol_cus_image_label">我是新数据</div>
+    </div>
+    `;
+    },
+  },
+  image6: {
+    id: "image_test_6",
     url: pexels2,
     extent: [112, 22.5, 114, 23.5],
   },
 };
-function addImage(MapImageOptions: MapImageOptions) {
+
+function addImage(MapImageOptions: StaticImageOptions) {
   if (mapIns) {
     mapIns.addImagesLayer(MapImageOptions);
   }
