@@ -7,7 +7,7 @@ import type { MapboxOptions } from "./mapboxLayersTypes";
 export default class OlMapboxStyleLayers {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
-  private __layerIdentifier = "mapbox-style-source";
+  private __layerIdentifier = ["mapbox-style-source", "mapbox-layers", "mapbox-source"];
 
   constructor(mapBaseIns: OlBase) {
     this.olBaseHandle = mapBaseIns;
@@ -43,15 +43,16 @@ export default class OlMapboxStyleLayers {
 
   public clearLayer() {
     if (this.handle) {
-      this.handle
-        .getLayers()
-        .getArray()
-        .filter((layer: any) => {
-          return layer.get(this.__layerIdentifier);
-        })
-        .forEach((layer: any) => {
-          this.handle.removeLayer(layer);
-        });
+      this.__layerIdentifier.forEach((identifier: any) => {
+        this.handle!.getLayers()
+          .getArray()
+          .filter((layer: any) => {
+            return layer.get(identifier);
+          })
+          .forEach((layer: any) => {
+            this.handle!.removeLayer(layer);
+          });
+      });
     }
   }
 }

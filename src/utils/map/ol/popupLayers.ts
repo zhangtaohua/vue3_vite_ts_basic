@@ -69,9 +69,6 @@ export default class OpenLayersPopup {
       id: this.__Id(options.id),
       element: overlayDomContainner,
       autoPan: true,
-      autoPanAnimation: {
-        duration: 250,
-      },
     });
 
     let closeFunc = () => {};
@@ -79,7 +76,7 @@ export default class OpenLayersPopup {
       closeFunc = () => {
         openLayerOverlay.setPosition(undefined);
         overlayDomCloser.blur();
-        console.log("closeFunc", this.__Id(options.id));
+        // console.log("closeFunc", this.__Id(options.id));
       };
       overlayDomCloser?.addEventListener("click", closeFunc, false);
     }

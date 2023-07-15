@@ -5,6 +5,10 @@ import type { XYZOptions } from "@/utils/map/ol/xyzLayersTypes";
 import bingmapsLayers from "@/utils/map/ol/bingmapLayers";
 import type { bingmapOptions } from "@/utils/map/ol/bingmapLayersTypes";
 
+import mapboxLayers from "@/utils/map/ol/mapboxLayers";
+import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
+import { mapboxLocalStyle } from "@/utils/map/ol/sourceUrl";
+
 import OlStaticImageLayers from "@/utils/map/ol/imageLayers";
 import type { StaticImageOptions } from "@/utils/map/ol/imageLayersTypes";
 
@@ -21,7 +25,7 @@ import type { PopupOption } from "@/utils/map/ol/popupLayersTypes";
 import { mapXYZUrl, bingmapImagerySet } from "@/utils/map/ol/sourceUrl";
 import { defaultMapOptions } from "@/utils/map/geoConstant";
 
-import { gaodeMap, googleMap, bingMap, bingLightMap, popupType } from "./MapConst";
+import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue, popupType } from "./MapConst";
 
 import { nanoid } from "nanoid";
 
@@ -31,6 +35,7 @@ export default class OlMapHelper extends OlBase {
   public XYZIns: xyzLayers | null = null;
   public BingmapIns: bingmapsLayers | null = null;
   public ImageMapIns: OlStaticImageLayers | null = null;
+  public mapboxLayerIns: mapboxLayers | null = null;
 
   public vuePopupIns: OpenLayerVueNodePopup | null = null;
   public AppPopupIns: OpenLayersPopup | null = null;
@@ -80,6 +85,19 @@ export default class OlMapHelper extends OlBase {
     },
   };
 
+  private __mapboxStyleOptions = {
+    [mapboxBasic]: {
+      id: "mapboxBasic",
+      url: mapboxLocalStyle.basic,
+      isRemoveOld: true,
+    },
+    [mapboxAllBlue]: {
+      id: "mapboxAllBlue",
+      url: mapboxLocalStyle.all_blue,
+      isRemoveOld: true,
+    },
+  };
+
   constructor(target: string, pixelRatio = 2) {
     super(target, pixelRatio);
     this.__bgLayers = new Map();
@@ -92,6 +110,7 @@ export default class OlMapHelper extends OlBase {
     this.XYZIns = new xyzLayers(this);
     this.BingmapIns = new bingmapsLayers(this);
     this.ImageMapIns = new OlStaticImageLayers(this);
+    this.mapboxLayerIns = new mapboxLayers(this);
 
     this.mapEventIns = new OpenLayersMapEvent(this);
     this.viewEventIns = new OpenLayersViewEvent(this);
@@ -105,6 +124,7 @@ export default class OlMapHelper extends OlBase {
     this.mapEventIns!.destructor();
     this.viewEventIns!.destructor();
 
+    this.mapboxLayerIns!.destructor();
     this.ImageMapIns!.destructor();
     this.BingmapIns!.destructor();
     this.XYZIns!.destructor();
@@ -158,7 +178,7 @@ export default class OlMapHelper extends OlBase {
     } else {
       const isAdded = this.BingmapIns!.addLayer(this.__bingMapOptions[bingType]);
       if (isAdded) {
-        this.__bgLayers.set(bingMap, this.__bingMapOptions);
+        this.__bgLayers.set(bingType, this.__bingMapOptions[bingType]);
       }
     }
   }
@@ -170,12 +190,21 @@ export default class OlMapHelper extends OlBase {
     }
   }
 
+  public __addMapboxStyleLayer(mapboxType: string) {
+    this.mapboxLayerIns!.addLayer(this.__mapboxStyleOptions[mapboxType]);
+  }
+
+  public __hiddenMapboxStyleLayer() {
+    this.mapboxLayerIns?.clearLayer();
+  }
+
   public addBgLayer(id: string) {
     // 先隐藏map
     this.__hiddenGaodeXYZLayer();
     this.__hiddenGaodeXYZLayer();
     this.__hiddenBingmapLayer(bingMap);
     this.__hiddenBingmapLayer(bingLightMap);
+    this.__hiddenMapboxStyleLayer();
     switch (id) {
       case gaodeMap: {
         this.__addGaodeXYZLayer();
@@ -193,6 +222,14 @@ export default class OlMapHelper extends OlBase {
         this.__addBingmapLayer(bingLightMap);
         break;
       }
+      case mapboxBasic: {
+        this.__addMapboxStyleLayer(mapboxBasic);
+        break;
+      }
+      case mapboxAllBlue: {
+        this.__addMapboxStyleLayer(mapboxAllBlue);
+        break;
+      }
       default: {
         break;
       }
@@ -208,13 +245,25 @@ export default class OlMapHelper extends OlBase {
   public addImagesLayer(options: StaticImageOptions) {
     if (options) {
       const isAdded = this.ImageMapIns!.addLayer(options);
-      const saveOption = {
-        ...options,
-        data: null,
-      };
       if (isAdded) {
-        this.__funcLayers.set(saveOption, this.ImageMapIns);
+        this.__funcLayers.set(options, this.ImageMapIns);
       }
+    }
+  }
+
+  public removeImagesLayer(options: StaticImageOptions) {
+    if (options) {
+      const funcLayersKeys = this.__funcLayers.keys();
+      console.log(funcLayersKeys);
+      for (const [key, valueHandle] of this.__funcLayers.entries()) {
+        console.log("id", options.id, key.id);
+        if (options.id == key.id) {
+          valueHandle.removeLayer(key);
+          this.__funcLayers.delete(key);
+          break;
+        }
+      }
+      console.log("removeImagesLayer", this.__funcLayers);
     }
   }
 

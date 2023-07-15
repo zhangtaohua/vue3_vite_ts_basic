@@ -170,6 +170,7 @@ export default class OlStaticImageLayers {
 
   public narmalPopupCb = (options: StaticImageOptions) => {
     return (event: any) => {
+      console.log(`${options.id}_CB`)
       let pixel = event.pixel;
       // let coordinate = event.coordinate
       if (!pixel.length) {
@@ -178,8 +179,9 @@ export default class OlStaticImageLayers {
       // if(this.handle.hasFeatureAtPixel(pixel)) {}
       const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
         const isCustom = feature.get("customize");
-        const id = feature.get("customMeta").id;
-        if (isCustom && id === options.id) {
+        const metadata = feature.get("customMeta"); 
+        const id = metadata?.id;
+        if (isCustom && (id === options.id)) {
           return feature;
         }
       });
@@ -190,8 +192,42 @@ export default class OlStaticImageLayers {
           options.callback(customMeta, options);
         }
         const center = this.getCenterById(options.id);
-        console.log("center", center);
         this.normalPopupIns?.showPopupByID(options.id, center, options.htmlString);
+      } else {
+        if(options.eventType == "pointermove") {
+          this.normalPopupIns?.hiddenPopupByID(options.id);
+        }
+      }
+    };
+  };
+
+  public vNodePopupCb = (options: StaticImageOptions) => {
+    return (event: any) => {
+      let pixel = event.pixel;
+      if (!pixel.length) {
+        pixel = this.handle.getEventPixel(event.originalEvent);
+      }
+      const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
+        const isCustom = feature.get("customize");
+        const metadata = feature.get("customMeta"); 
+        const id = metadata?.id;
+        if (isCustom && (id === options.id)) {
+          return feature;
+        }
+      });
+
+      if (feature) {
+        const customMeta = feature.get("customMeta");
+        if (options.callback) {
+          options.callback(customMeta, options);
+          this.vuePopupIns?.updateLayer(options as VueNodeOptions);
+        }
+        const center = this.getCenterById(options.id);
+        this.vuePopupIns?.showPopupByID(options.id, center);
+      } else {
+        if(options.eventType == "pointermove") {
+          this.vuePopupIns?.hiddenPopupByID(options.id);
+        }
       }
     };
   };
@@ -203,7 +239,9 @@ export default class OlStaticImageLayers {
         this.handle.addLayer(layerObj.layerVector);
         this.handle.addLayer(layerObj.layer);
         this.__layers.set(this.__Id(options.id), layerObj);
-
+        const delay = options.delay ?? 300;
+        const debounce = options.debounce ?? true;
+        const debounceOption = options.debounceOption ?? {};
         if (options.isPopup) {
           // 采用普通的popup
           if (options.popupType == popupType.normal) {
@@ -217,12 +255,23 @@ export default class OlStaticImageLayers {
                 id: options.id,
                 type: options.eventType,
                 cb: this.narmalPopupCb(options),
-                delay: 300,
-                debounce: true,
-                debounceOption: {
-                  leading: true,
-                  trailing: false,
-                },
+                delay,
+                debounce,
+                debounceOption,
+              };
+              this.mapEventIns!.addEvent(eventOptions);
+            }
+          } else if (options.popupType == popupType.vnode) {
+            this.vuePopupIns?.addLayer(options as VueNodeOptions);
+
+            if (options.eventType) {
+              const eventOptions: EventOptions = {
+                id: options.id,
+                type: options.eventType,
+                cb: this.vNodePopupCb(options),
+                delay,
+                debounce,
+                debounceOption,
               };
               this.mapEventIns!.addEvent(eventOptions);
             }
@@ -273,9 +322,15 @@ export default class OlStaticImageLayers {
         this.handle.removeLayer(layerObj.layer);
         this.handle.removeLayer(layerObj.layerVector);
         this.__layers.delete(this.__Id(id));
-
-        this.normalPopupIns!.removeLayerByID(id);
-        this.mapEventIns!.removeEventByID(id);
+        if(layerObj.options && layerObj.options.isPopup) {
+          if (layerObj.options.popupType == popupType.normal) {
+            this.normalPopupIns!.removeLayerByID(id);
+            this.mapEventIns!.removeEventByID(id);
+          } else if (layerObj.options.popupType == popupType.vnode) {
+            this.vuePopupIns!.removeLayerByID(id);
+            this.mapEventIns!.removeEventByID(id);
+          }
+        }
         return true;
       } else {
         return false;
@@ -292,6 +347,17 @@ export default class OlStaticImageLayers {
       // }
       this.__layers.forEach((layerObj: any) => {
         this.handle.removeLayer(layerObj.layer);
+        this.handle.removeLayer(layerObj.layerVector);
+        if(layerObj.options && layerObj.options.isPopup) {
+          const id = layerObj.options.id;
+          if (layerObj.options.popupType == popupType.normal) {
+            this.normalPopupIns!.removeLayerByID(id);
+            this.mapEventIns!.removeEventByID(id);
+          } else if (layerObj.options.popupType == popupType.vnode) {
+            this.vuePopupIns!.removeLayerByID(id);
+            this.mapEventIns!.removeEventByID(id);
+          }
+        }
       });
       this.__layers.clear();
       return true;

@@ -108,7 +108,7 @@ export default class OpenLayersWind {
           // width: 3 * this.__pixelRatio,
           generateParticleOption: false,
           // colorScale: () => {
-          // 	// console.log(m);
+          // console.log(m);
           // 	return '#ff473c';
           // },
           // eslint-disable-next-line no-unused-vars

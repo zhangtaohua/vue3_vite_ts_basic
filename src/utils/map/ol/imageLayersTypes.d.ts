@@ -13,6 +13,9 @@ export interface StaticImageOptions {
   vNodeData?: any;
   position?: Array<number>;
   eventType?: string;
-  $t?: any;
+  customT?: any;
   callback?: any;
+  delay?: number;
+  debounce?: boolean;
+  debounceOption?: any; // 请参考 lodash 来设置。
 }
