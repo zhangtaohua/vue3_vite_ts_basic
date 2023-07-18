@@ -25,11 +25,14 @@
   },
   "dependencies": {
     "ant-design-vue": "^3.2.20",
+    "geojson": "^0.5.0",
     "lil-gui": "^0.18.2",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "nanoid": "^4.0.2",
     "ol": "^7.4.0",
     "ol-mapbox-style": "^10.6.0",
+    "satellite.js": "^5.0.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.4"
   },

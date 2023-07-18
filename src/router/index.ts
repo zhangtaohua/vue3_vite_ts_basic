@@ -30,6 +30,21 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/ol/staticImageExample.vue"),
       },
       {
+        path: "/openlayers/geojson",
+        name: "GeojsonExample",
+        component: () => import("@/views/ol/geojsonExample.vue"),
+      },
+      {
+        path: "/openlayers/dawnline",
+        name: "DawnlineExample",
+        component: () => import("@/views/ol/dawnLineExample.vue"),
+      },
+      {
+        path: "/openlayers/orbit",
+        name: "OrbitExample",
+        component: () => import("@/views/ol/SatelliteOrbitExample.vue"),
+      },
+      {
         path: "/openlayers/comprehensive",
         name: "CompreExample",
         component: () => import("@/views/ol/comprehensiveExample.vue"),

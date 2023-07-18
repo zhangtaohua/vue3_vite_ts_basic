@@ -1,7 +1,14 @@
-export interface GeojsonOptions {
+export interface SatelliteOrbitOptions {
   id: string;
+  tle1: string;
+  tle2: string;
+  startTime: any;
+  endTime: any;
+  timeInterval: number;
+  isShowSat?: boolean;
+  satStyle?: any;
+  satStyleFunction?: any;
   data?: any;
-  url?: string;
   name?: string;
   zIndex?: number;
   extent?: Array<number>;

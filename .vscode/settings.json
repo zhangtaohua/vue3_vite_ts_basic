@@ -4,5 +4,6 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true // 保存时是否自动 stylelint 修复
   },
-  "eslint.validate": ["typescript", "javascript", "vue"]
+  "eslint.validate": ["typescript", "javascript", "vue"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

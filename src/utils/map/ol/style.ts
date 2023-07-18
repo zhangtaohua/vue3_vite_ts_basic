@@ -21,7 +21,7 @@ export function getColor(color: string | Array<number>) {
     if (color.length === 4) {
       cColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
     } else if (color.length === 3) {
-      cColor = `rgba(${color[0]}, ${color[1]}, ${color[2]})`;
+      cColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 1)`;
     }
   }
   return cColor;

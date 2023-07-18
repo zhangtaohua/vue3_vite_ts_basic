@@ -53,7 +53,7 @@ function initMap() {
 function disposeMap() {
   if (mapIns) {
     mapIns!.destructor();
-    GUIIns.destroy();
+    GUIIns!.destroy();
   }
 }
 
@@ -69,72 +69,85 @@ function initGUI() {
     });
 
   const imgFolder = GUIIns.addFolder();
-  imgFolder.add(mapContrl, "image1").name("1普通图片")
-  .onChange((value: any) => {
-    if(value) {
-      addImage(imagesSource.image1);
-    } else {
-      removeImage(imagesSource.image1);
-    }
-  });
+  imgFolder.title("图片控制");
+  imgFolder
+    .add(mapContrl, "image1")
+    .name("1 普通图片")
+    .onChange((value: any) => {
+      if (value) {
+        addImage(imagesSource.image1);
+      } else {
+        removeImage(imagesSource.image1);
+      }
+    });
 
-  imgFolder.add(mapContrl, "image2").name("2 hover popup")
-  imgFolder.title("图片控制")
-  .onChange((value: any) => {
-    if(value) {
-      addImage(imagesSource.image2);
-    } else {
-      removeImage(imagesSource.image2);
-    }
-  });
+  imgFolder
+    .add(mapContrl, "image2")
+    .name("2 hover popup")
+    .onChange((value: any) => {
+      if (value) {
+        addImage(imagesSource.image2);
+      } else {
+        removeImage(imagesSource.image2);
+      }
+    });
 
-  imgFolder.add(mapContrl, "image3").name("3 hover popup 即显")
-  .onChange((value: any) => {
-    if(value) {
-      addImage(imagesSource.image3);
-    } else {
-      removeImage(imagesSource.image3);
-    }
-  });
+  imgFolder
+    .add(mapContrl, "image3")
+    .name("3 hover popup 即显")
+    .onChange((value: any) => {
+      if (value) {
+        addImage(imagesSource.image3);
+      } else {
+        removeImage(imagesSource.image3);
+      }
+    });
 
-  imgFolder.add(mapContrl, "image4").name("4 点击 信息")
-  .onChange((value: any) => {
-    if(value) {
-      addImage(imagesSource.image4);
-    } else {
-      removeImage(imagesSource.image4);
-    }
-  });
+  imgFolder
+    .add(mapContrl, "image4")
+    .name("4 点击 信息")
+    .onChange((value: any) => {
+      if (value) {
+        addImage(imagesSource.image4);
+      } else {
+        removeImage(imagesSource.image4);
+      }
+    });
 
-  imgFolder.add(mapContrl, "image5").name("5 点击 信息 回调")
-  .onChange((value: any) => {
-    if(value) {
-      randomStr = nanoid(10);
-      addImage(imagesSource.image5);
-    } else {
-      removeImage(imagesSource.image5);
-    }
-  });
+  imgFolder
+    .add(mapContrl, "image5")
+    .name("5 点击 信息 回调")
+    .onChange((value: any) => {
+      if (value) {
+        randomStr = nanoid(10);
+        addImage(imagesSource.image5);
+      } else {
+        removeImage(imagesSource.image5);
+      }
+    });
 
-  imgFolder.add(mapContrl, "image6").name("6 点击 vnode 信息")
-  .onChange((value: any) => {
-    if(value) {
-      addImage(imagesSource.image6);
-    } else {
-      removeImage(imagesSource.image6);
-    }
-  });
+  imgFolder
+    .add(mapContrl, "image6")
+    .name("6 点击 vnode 信息")
+    .onChange((value: any) => {
+      if (value) {
+        addImage(imagesSource.image6);
+      } else {
+        removeImage(imagesSource.image6);
+      }
+    });
 
-  imgFolder.add(mapContrl, "image7").name("7 hover vnode 回调")
-  .onChange((value: any) => {
-    if(value) {
-      randomStr = nanoid(10);
-      addImage(imagesSource.image7);
-    } else {
-      removeImage(imagesSource.image7);
-    }
-  });
-
+  imgFolder
+    .add(mapContrl, "image7")
+    .name("7 hover vnode 回调")
+    .onChange((value: any) => {
+      if (value) {
+        randomStr = nanoid(10);
+        addImage(imagesSource.image7);
+      } else {
+        removeImage(imagesSource.image7);
+      }
+    });
 }
 const customT = (name: string) => {
   return `$t_${name}`;
@@ -181,8 +194,8 @@ const imagesSource = {
     debounce: true,
     debounceOption: {
       leading: true,
-      trailing:true,
-    }
+      trailing: true,
+    },
   },
   image4: {
     id: "image_test_4",
@@ -215,8 +228,8 @@ const imagesSource = {
       <div class="row_nw_fs_center ol_cus_image_label">我是图片信息5</div>
     </div>
     `,
-    callback: (metadata: any, options: any) => {
-      console.log("外", metadata, options);
+    callback: (feature: any, options: any) => {
+      console.log("外", feature, options);
       options.htmlString = `
     <div class="col_nw_fs_center ol_cus_image_wraper">
       <div class="row_nw_center_center ol_cus_image_title">singleclick 测试</div>
@@ -237,14 +250,14 @@ const imagesSource = {
     eventType: "singleclick",
     vNode: staticImagePopup,
     vNodeData: {
-          name: "我是VueNode标题",
-          longitude: "149.757575E",
-          latitude: "30.435657N",
-          satellite: "QL_*",
-          time: "2023-07-17 12:00:00",
-          x: 180,
-          y: 1620,
-        },
+      name: "我是VueNode标题",
+      longitude: "149.757575E",
+      latitude: "30.435657N",
+      satellite: "QL_*",
+      time: "2023-07-28 12:00:00",
+      x: 180,
+      y: 1620,
+    },
     customT: customT,
   },
   image7: {
@@ -257,27 +270,27 @@ const imagesSource = {
     eventType: "pointermove",
     vNode: staticImagePopup,
     vNodeData: {
-          name: "我是VueNode标题",
-          longitude: "149.757575E",
-          latitude: "30.435657N",
-          satellite: "QL_*",
-          time: "2023-07-17 12:00:00",
-          x: 180,
-          y: 1620,
-        },
+      name: "我是VueNode标题",
+      longitude: "149.757575E",
+      latitude: "30.435657N",
+      satellite: "QL_*",
+      time: "2023-07-28 12:00:00",
+      x: 180,
+      y: 1620,
+    },
     customT: customT,
-    callback: (metadata: any, options: any) => {
-      console.log("外", metadata, options);
+    callback: (feature: any, options: any) => {
+      console.log("外", feature, options);
       options.vNode = staticImagePopup2;
       options.vNodeData = {
-          name: "我是VueNode标题Image7",
-          longitude: "149.757575E",
-          latitude: "30.435657N",
-          satellite: randomStr,
-          time: "2023-07-18 12:00:00",
-          x: 180,
-          y: 1620,
-        };
+        name: "我是VueNode标题Image7",
+        longitude: "149.757575E",
+        latitude: "30.435657N",
+        satellite: randomStr,
+        time: "2023-07-31 12:00:00",
+        x: 180,
+        y: 1620,
+      };
     },
   },
 };

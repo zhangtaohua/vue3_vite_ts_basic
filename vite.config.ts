@@ -27,13 +27,17 @@ export default defineConfig({
     },
   },
   server: {
-    host: "0.0.0.0",
     proxy: {
       "/map": {
         // target: "http://192.168.3.42:58787",
         target: "http://82.157.180.248:58787",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/map/, ""),
+      },
+      "/geojson": {
+        target: "http://belt-and-road-1256849727.cos.ap-beijing.myqcloud.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/geojson/, ""),
       },
     },
   },

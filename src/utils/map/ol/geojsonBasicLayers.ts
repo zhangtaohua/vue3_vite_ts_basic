@@ -1,7 +1,6 @@
 import { Map as olMap } from "ol";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
-import { getCenter } from "ol/extent";
 import { Style } from "ol/style";
 import { GeoJSON } from "ol/format";
 
@@ -9,40 +8,17 @@ import { nanoid } from "nanoid";
 
 import OlBase from "./base";
 
-import OpenLayersMapEvent from "./mapEvent";
-import type { EventOptions } from "./mapEventTypes";
-
-import OpenLayerVueNodePopup from "./vueNodePopupLayers";
-import type { VueNodeOptions } from "./vueNodePopupLayersTypes";
-
-import OpenLayersPopup from "./popupLayers";
-
 import { transformExtentTo3857 } from "./olTools";
 
-import type { GeojsonOptions } from "./geojsonLayersTypes";
+import type { GeojsonBasicOptions } from "./geojsonBasicLayersTypes";
 
-import {
-  createFill,
-  createStroke,
-  createCircle,
-  createText,
-  getColor,
-  createGeoPoint,
-  geojsonStyleFunction,
-} from "./style";
+import { createFill, createStroke, createCircle, createText, getColor, geojsonStyleFunction } from "./style";
 
-import { earthExtent, popupType, isCustomizeFlag, customMeta } from "../geoConstant";
+import { isCustomizeFlag, customMeta } from "../geoConstant";
 
-import { mapEventType } from "./olConstant";
-
-export default class OlGeojsonLayers {
+export default class OlBasicGeoJson {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
-
-  public vuePopupIns: OpenLayerVueNodePopup | null = null;
-  public normalPopupIns: OpenLayersPopup | null = null;
-  public mapEventIns: OpenLayersMapEvent | null = null;
-
   private __layers: any = null;
   private __layerIdPrefix = "GEOJSON_BASIC_";
 
@@ -50,17 +26,9 @@ export default class OlGeojsonLayers {
     this.olBaseHandle = mapBaseIns;
     this.handle = mapBaseIns.handle;
     this.__layers = new Map();
-
-    this.mapEventIns = new OpenLayersMapEvent(mapBaseIns);
-    this.normalPopupIns = new OpenLayersPopup(mapBaseIns);
-    this.vuePopupIns = new OpenLayerVueNodePopup(mapBaseIns);
   }
 
   public destructor() {
-    this.normalPopupIns!.destructor();
-    this.vuePopupIns!.destructor();
-    this.mapEventIns!.destructor();
-
     this.clearLayer();
     this.olBaseHandle = null;
     this.handle = null;
@@ -209,7 +177,7 @@ export default class OlGeojsonLayers {
   };
 
   public createLayerByUrl(
-    options: GeojsonOptions = {
+    options: GeojsonBasicOptions = {
       url: "",
       id: "",
       name: "",
@@ -268,7 +236,7 @@ export default class OlGeojsonLayers {
     return layerObj;
   }
 
-  public createLayerByData(options: GeojsonOptions) {
+  public createLayerByData(options: GeojsonBasicOptions) {
     if (!options.data || !options.id) {
       return null;
     }
@@ -316,76 +284,7 @@ export default class OlGeojsonLayers {
     return layerObj;
   }
 
-  public narmalPopupCb = (options: GeojsonOptions) => {
-    return (event: any) => {
-      console.log(`Nor: ${options.id}_CB`);
-      let pixel = event.pixel;
-      if (!pixel.length) {
-        pixel = this.handle.getEventPixel(event.originalEvent);
-      }
-      // if(this.handle.hasFeatureAtPixel(pixel)) {}
-      const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-        const isCustom = feature.get(isCustomizeFlag);
-        const metadata = feature.get(customMeta);
-        const id = metadata?.id;
-        if (isCustom && id === options.id) {
-          return feature;
-        }
-      });
-
-      if (feature) {
-        if (options.callback) {
-          options.callback(feature, options);
-        }
-        let position = event.coordinate;
-        if (options.popupIsCenter) {
-          const featureExtent = feature.getGeometry().getExtent();
-          position = getCenter(featureExtent);
-        }
-        this.normalPopupIns?.showPopupByID(options.id, position, options.htmlString);
-      } else {
-        if (options.eventType == mapEventType.pointermove) {
-          this.normalPopupIns?.hiddenPopupByID(options.id);
-        }
-      }
-    };
-  };
-
-  public vNodePopupCb = (options: GeojsonOptions) => {
-    return (event: any) => {
-      let pixel = event.pixel;
-      if (!pixel.length) {
-        pixel = this.handle.getEventPixel(event.originalEvent);
-      }
-      const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-        const isCustom = feature.get(isCustomizeFlag);
-        const metadata = feature.get(customMeta);
-        const id = metadata?.id;
-        if (isCustom && id === options.id) {
-          return feature;
-        }
-      });
-
-      if (feature) {
-        if (options.callback) {
-          options.callback(feature, options);
-          this.vuePopupIns?.updateLayer(options as VueNodeOptions);
-        }
-        let position = event.coordinate;
-        if (options.popupIsCenter) {
-          const featureExtent = feature.getGeometry().getExtent();
-          position = getCenter(featureExtent);
-        }
-        this.vuePopupIns?.showPopupByID(options.id, position);
-      } else {
-        if (options.eventType == mapEventType.pointermove) {
-          this.vuePopupIns?.hiddenPopupByID(options.id);
-        }
-      }
-    };
-  };
-
-  public addLayer(options: GeojsonOptions) {
+  public addLayer(options: GeojsonBasicOptions) {
     if (this.handle) {
       let layerObj: any = null;
       if (options.url) {
@@ -398,42 +297,6 @@ export default class OlGeojsonLayers {
       if (layerObj) {
         this.handle.addLayer(layerObj.layer);
         this.__layers.set(this.__Id(options.id), layerObj);
-
-        const delay = options.delay ?? 300;
-        const debounce = options.debounce ?? true;
-        const debounceOption = options.debounceOption ?? {};
-        if (options.isPopup) {
-          // 采用普通的popup
-          if (options.popupType == popupType.normal) {
-            this.normalPopupIns!.addLayer(options);
-
-            if (options.eventType) {
-              const eventOptions: EventOptions = {
-                id: options.id,
-                type: options.eventType,
-                cb: this.narmalPopupCb(options),
-                delay,
-                debounce,
-                debounceOption,
-              };
-              this.mapEventIns!.addEvent(eventOptions);
-            }
-          } else if (options.popupType == popupType.vnode) {
-            this.vuePopupIns?.addLayer(options as VueNodeOptions);
-
-            if (options.eventType) {
-              const eventOptions: EventOptions = {
-                id: options.id,
-                type: options.eventType,
-                cb: this.vNodePopupCb(options),
-                delay,
-                debounce,
-                debounceOption,
-              };
-              this.mapEventIns!.addEvent(eventOptions);
-            }
-          }
-        }
         return true;
       } else {
         return false;
@@ -443,7 +306,7 @@ export default class OlGeojsonLayers {
     }
   }
 
-  public fitToView(options: GeojsonOptions) {
+  public fitToView(options: GeojsonBasicOptions) {
     if (this.olBaseHandle) {
       if (options.extent) {
         this.olBaseHandle.fitToExtent(options.extent);
@@ -457,7 +320,7 @@ export default class OlGeojsonLayers {
     }
   }
 
-  public hasLayer(options: GeojsonOptions) {
+  public hasLayer(options: GeojsonBasicOptions) {
     if (this.olBaseHandle && this.__layers.size) {
       return this.__layers.has(this.__Id(options.id));
     }
@@ -471,7 +334,7 @@ export default class OlGeojsonLayers {
     return false;
   }
 
-  public removeLayer(options: GeojsonOptions) {
+  public removeLayer(options: GeojsonBasicOptions) {
     return this.removeLayerByID(options.id);
   }
 
@@ -481,16 +344,6 @@ export default class OlGeojsonLayers {
       if (layerObj) {
         this.handle.removeLayer(layerObj.layer);
         this.__layers.delete(this.__Id(id));
-
-        if (layerObj.options && layerObj.options.isPopup) {
-          if (layerObj.options.popupType == popupType.normal) {
-            this.normalPopupIns!.removeLayerByID(id);
-            this.mapEventIns!.removeEventByID(id);
-          } else if (layerObj.options.popupType == popupType.vnode) {
-            this.vuePopupIns!.removeLayerByID(id);
-            this.mapEventIns!.removeEventByID(id);
-          }
-        }
         return true;
       } else {
         return false;
@@ -507,17 +360,6 @@ export default class OlGeojsonLayers {
       // }
       this.__layers.forEach((layerObj: any) => {
         this.handle!.removeLayer(layerObj.layer);
-
-        if (layerObj.options && layerObj.options.isPopup) {
-          const id = layerObj.options.id;
-          if (layerObj.options.popupType == popupType.normal) {
-            this.normalPopupIns!.removeLayerByID(id);
-            this.mapEventIns!.removeEventByID(id);
-          } else if (layerObj.options.popupType == popupType.vnode) {
-            this.vuePopupIns!.removeLayerByID(id);
-            this.mapEventIns!.removeEventByID(id);
-          }
-        }
       });
       this.__layers.clear();
       return true;
@@ -526,7 +368,7 @@ export default class OlGeojsonLayers {
     }
   }
 
-  public setLayerOpacity(options: GeojsonOptions, opacity: number) {
+  public setLayerOpacity(options: GeojsonBasicOptions, opacity: number) {
     return this.setLayerOpacityByID(options.id, opacity);
   }
 
@@ -544,7 +386,7 @@ export default class OlGeojsonLayers {
     }
   }
 
-  public showHiddenLayer(options: GeojsonOptions, isShow: boolean) {
+  public showHiddenLayer(options: GeojsonBasicOptions, isShow: boolean) {
     return this.showHiddenLayerByID(options.id, isShow);
   }
 

@@ -17,3 +17,6 @@ export const popupType = {
   normal: "normal",
   vnode: "vueNodes",
 };
+
+export const isCustomizeFlag = "customize";
+export const customMeta = "customMeta";

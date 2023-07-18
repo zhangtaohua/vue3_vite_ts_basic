@@ -1,4 +1,4 @@
-export interface StaticImageOptions {
+export interface StaticImageBasicOptions {
   id: string;
   url: string;
   extent: Array<number>;

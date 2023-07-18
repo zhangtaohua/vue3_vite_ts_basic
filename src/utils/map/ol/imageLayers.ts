@@ -12,7 +12,7 @@ import { nanoid } from "nanoid";
 
 import OlBase from "./base";
 import { transformExtentTo3857 } from "./olTools";
-import { earthExtent, popupType } from "../geoConstant";
+import { earthExtent, popupType, isCustomizeFlag, customMeta } from "../geoConstant";
 import { getRectangleFromExtent } from "../geoCommon";
 import type { StaticImageOptions } from "./imageLayersTypes";
 
@@ -23,7 +23,8 @@ import OpenLayerVueNodePopup from "./vueNodePopupLayers";
 import type { VueNodeOptions } from "./vueNodePopupLayersTypes";
 
 import OpenLayersPopup from "./popupLayers";
-import type { PopupOption } from "./popupLayersTypes";
+
+import { mapEventType } from "./olConstant";
 
 export default class OlStaticImageLayers {
   public olBaseHandle: OlBase | null = null;
@@ -61,6 +62,8 @@ export default class OlStaticImageLayers {
     this.clearLayer();
     this.olBaseHandle = null;
     this.handle = null;
+
+    this.__layers.clear();
     this.__layers = null;
     this.__mapEventsMap = null;
     this.__popupInsMap = null;
@@ -111,8 +114,8 @@ export default class OlStaticImageLayers {
     const feature = new Feature(PloygonOptions);
     feature.setStyle(transparentPolygonStyle);
     const meta = {
-      customize: true,
-      customMeta: options,
+      [isCustomizeFlag]: true,
+      [customMeta]: options,
     };
     feature.setProperties(meta);
 
@@ -139,10 +142,7 @@ export default class OlStaticImageLayers {
       wrapX: options.wrapX,
     };
     const source = new StaticImage(imageOptions);
-    source.setProperties({
-      customize: true,
-      customMeta: options,
-    });
+    source.setProperties(meta);
 
     const opacity = options.opacity ? options.opacity : 1;
     const layer = new ImageLayer({
@@ -151,10 +151,7 @@ export default class OlStaticImageLayers {
       zIndex: zIndex + 1,
       opacity: opacity,
     });
-    layer.setProperties({
-      customize: true,
-      customMeta: options,
-    });
+    layer.setProperties(meta);
     layer.set("id", id);
     layer.set("name", name);
 
@@ -170,7 +167,7 @@ export default class OlStaticImageLayers {
 
   public narmalPopupCb = (options: StaticImageOptions) => {
     return (event: any) => {
-      console.log(`${options.id}_CB`)
+      console.log(`${options.id}_CB`);
       let pixel = event.pixel;
       // let coordinate = event.coordinate
       if (!pixel.length) {
@@ -178,23 +175,22 @@ export default class OlStaticImageLayers {
       }
       // if(this.handle.hasFeatureAtPixel(pixel)) {}
       const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-        const isCustom = feature.get("customize");
-        const metadata = feature.get("customMeta"); 
+        const isCustom = feature.get(isCustomizeFlag);
+        const metadata = feature.get(customMeta);
         const id = metadata?.id;
-        if (isCustom && (id === options.id)) {
+        if (isCustom && id === options.id) {
           return feature;
         }
       });
 
       if (feature) {
-        const customMeta = feature.get("customMeta");
         if (options.callback) {
-          options.callback(customMeta, options);
+          options.callback(feature, options);
         }
         const center = this.getCenterById(options.id);
         this.normalPopupIns?.showPopupByID(options.id, center, options.htmlString);
       } else {
-        if(options.eventType == "pointermove") {
+        if (options.eventType == mapEventType.pointermove) {
           this.normalPopupIns?.hiddenPopupByID(options.id);
         }
       }
@@ -208,24 +204,23 @@ export default class OlStaticImageLayers {
         pixel = this.handle.getEventPixel(event.originalEvent);
       }
       const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-        const isCustom = feature.get("customize");
-        const metadata = feature.get("customMeta"); 
+        const isCustom = feature.get(isCustomizeFlag);
+        const metadata = feature.get(customMeta);
         const id = metadata?.id;
-        if (isCustom && (id === options.id)) {
+        if (isCustom && id === options.id) {
           return feature;
         }
       });
 
       if (feature) {
-        const customMeta = feature.get("customMeta");
         if (options.callback) {
-          options.callback(customMeta, options);
+          options.callback(feature, options);
           this.vuePopupIns?.updateLayer(options as VueNodeOptions);
         }
         const center = this.getCenterById(options.id);
         this.vuePopupIns?.showPopupByID(options.id, center);
       } else {
-        if(options.eventType == "pointermove") {
+        if (options.eventType == mapEventType.pointermove) {
           this.vuePopupIns?.hiddenPopupByID(options.id);
         }
       }
@@ -322,7 +317,7 @@ export default class OlStaticImageLayers {
         this.handle.removeLayer(layerObj.layer);
         this.handle.removeLayer(layerObj.layerVector);
         this.__layers.delete(this.__Id(id));
-        if(layerObj.options && layerObj.options.isPopup) {
+        if (layerObj.options && layerObj.options.isPopup) {
           if (layerObj.options.popupType == popupType.normal) {
             this.normalPopupIns!.removeLayerByID(id);
             this.mapEventIns!.removeEventByID(id);
@@ -348,7 +343,7 @@ export default class OlStaticImageLayers {
       this.__layers.forEach((layerObj: any) => {
         this.handle.removeLayer(layerObj.layer);
         this.handle.removeLayer(layerObj.layerVector);
-        if(layerObj.options && layerObj.options.isPopup) {
+        if (layerObj.options && layerObj.options.isPopup) {
           const id = layerObj.options.id;
           if (layerObj.options.popupType == popupType.normal) {
             this.normalPopupIns!.removeLayerByID(id);

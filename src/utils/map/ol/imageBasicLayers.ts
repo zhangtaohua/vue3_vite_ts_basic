@@ -12,15 +12,15 @@ import { nanoid } from "nanoid";
 
 import OlBase from "./base";
 import { transformExtentTo3857 } from "./olTools";
-import { earthExtent } from "../geoConstant";
+import { earthExtent, isCustomizeFlag, customMeta } from "../geoConstant";
 import { getRectangleFromExtent } from "../geoCommon";
-import type { StaticImageOptions } from "./imageLayersTypes";
+import type { StaticImageBasicOptions } from "./imageBasicLayersTypes";
 
-export default class OlStaticImageLayers {
+export default class OlStaticImageBasicLayers {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
   private __layers: any = null;
-  private __layerIdPrefix = "IMAGE_";
+  private __layerIdPrefix = "IMAGE_BASIC_";
 
   constructor(mapBaseIns: OlBase) {
     this.olBaseHandle = mapBaseIns;
@@ -32,6 +32,7 @@ export default class OlStaticImageLayers {
     this.clearLayer();
     this.olBaseHandle = null;
     this.handle = null;
+    this.__layers.clear();
     this.__layers = null;
   }
 
@@ -44,7 +45,7 @@ export default class OlStaticImageLayers {
   }
 
   public createLayer(
-    options: StaticImageOptions = {
+    options: StaticImageBasicOptions = {
       url: "",
       id: "",
       name: "",
@@ -68,36 +69,10 @@ export default class OlStaticImageLayers {
     const id = this.__Id(options.id);
     const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
 
-    const polygonPoints = getRectangleFromExtent(extent);
-    const PloygonOptions = {
-      geometry: new Polygon(polygonPoints),
-      name: name,
-      id: id,
-      wrapX: options.wrapX,
-    };
-    const feature = new Feature(PloygonOptions);
-    feature.setStyle(transparentPolygonStyle);
     const meta = {
-      customize: true,
-      customMeta: options,
+      [isCustomizeFlag]: true,
+      [customMeta]: options,
     };
-    feature.setProperties(meta);
-
-    const sourceVector = new VectorSource({
-      features: [feature],
-      wrapX: options.wrapX,
-    });
-    sourceVector.setProperties(meta);
-
-    const layerVector = new VectorLayer({
-      source: sourceVector,
-      zIndex: zIndex,
-      declutter: true,
-    });
-    layerVector.setProperties(meta);
-
-    layerVector.set("id", id + "_vector");
-    layerVector.set("name", name + "_vector");
 
     const imageOptions = {
       url: options.url,
@@ -106,22 +81,16 @@ export default class OlStaticImageLayers {
       wrapX: options.wrapX,
     };
     const source = new StaticImage(imageOptions);
-    source.setProperties({
-      customize: true,
-      customMeta: options,
-    });
+    source.setProperties(meta);
 
     const opacity = options.opacity ? options.opacity : 1;
     const layer = new ImageLayer({
       source: source,
       extent: extent,
-      zIndex: zIndex + 1,
+      zIndex: zIndex,
       opacity: opacity,
     });
-    layer.setProperties({
-      customize: true,
-      customMeta: options,
-    });
+    layer.setProperties(meta);
     layer.set("id", id);
     layer.set("name", name);
 
@@ -130,17 +99,15 @@ export default class OlStaticImageLayers {
       imageOptions,
       source,
       layer,
-      layerVector,
     };
     return layerObj;
   }
 
-  public addLayer(options: StaticImageOptions) {
+  public addLayer(options: StaticImageBasicOptions) {
     if (this.handle) {
       const layerObj = this.createLayer(options);
       if (layerObj) {
         this.handle.addLayer(layerObj.layer);
-        this.handle.addLayer(layerObj.layerVector);
         this.__layers.set(this.__Id(options.id), layerObj);
         return true;
       } else {
@@ -151,7 +118,7 @@ export default class OlStaticImageLayers {
     }
   }
 
-  public fitToView(options: StaticImageOptions) {
+  public fitToView(options: StaticImageBasicOptions) {
     if (this.olBaseHandle) {
       if (options.extent) {
         this.olBaseHandle.fitToExtent(options.extent);
@@ -162,7 +129,7 @@ export default class OlStaticImageLayers {
     }
   }
 
-  public hasLayer(options: StaticImageOptions) {
+  public hasLayer(options: StaticImageBasicOptions) {
     if (this.olBaseHandle && this.__layers.size) {
       return this.__layers.has(this.__Id(options.id));
     }
@@ -176,7 +143,7 @@ export default class OlStaticImageLayers {
     return false;
   }
 
-  public removeLayer(options: StaticImageOptions) {
+  public removeLayer(options: StaticImageBasicOptions) {
     return this.removeLayerByID(options.id);
   }
 
@@ -200,7 +167,7 @@ export default class OlStaticImageLayers {
       // for (let [key, layerObj] of this.__layers.entries()) {
       // 	this.handle.removeLayer(layerObj.layer)
       // }
-      this.__layers.forEach((layerObj, key) => {
+      this.__layers.forEach((layerObj: any) => {
         this.handle.removeLayer(layerObj.layer);
       });
       this.__layers.clear();
@@ -210,7 +177,7 @@ export default class OlStaticImageLayers {
     }
   }
 
-  public setLayerOpacity(options: StaticImageOptions, opacity: number) {
+  public setLayerOpacity(options: StaticImageBasicOptions, opacity: number) {
     return this.setLayerOpacityByID(options.id, opacity);
   }
 
@@ -228,7 +195,7 @@ export default class OlStaticImageLayers {
     }
   }
 
-  public showHiddenLayer(options: StaticImageOptions, isShow: boolean) {
+  public showHiddenLayer(options: StaticImageBasicOptions, isShow: boolean) {
     return this.showHiddenLayerByID(options.id, isShow);
   }
 
@@ -246,7 +213,7 @@ export default class OlStaticImageLayers {
     }
   }
 
-  public getExtent(options: StaticImageOptions) {
+  public getExtent(options: StaticImageBasicOptions) {
     return this.getExtentById(options.id);
   }
 
@@ -263,7 +230,7 @@ export default class OlStaticImageLayers {
     }
   }
 
-  public getCenter(options: StaticImageOptions) {
+  public getCenter(options: StaticImageBasicOptions) {
     return this.getCenterById(options.id);
   }
 

@@ -1,35 +1,51 @@
 import { Map as olMap } from "ol";
-import Feature from "ol/Feature";
-import { Style, Stroke, Icon, Fill, Text } from "ol/style";
-import Point from "ol/geom/Point";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
+import { Style } from "ol/style";
+import { GeoJSON } from "ol/format";
+
 import { nanoid } from "nanoid";
 
 import OlBase from "./base";
-import { transformLongitudeLatitude } from "./olTools";
-import type { MarkOptions } from "./markLayersTypes";
+
+import { transformExtentTo3857 } from "./olTools";
+
+import type { SatelliteOrbitOptions } from "./satelliteOrbitLayersTypes";
+
+import { createFill, createStroke, createCircle, createText, getColor, geojsonStyleFunction } from "./style";
 
 import { isCustomizeFlag, customMeta } from "../geoConstant";
+import OlGeojsonLayers from "./geojsonLayers";
+import SatelliteOrbit from "../satellite/orbit";
+import { GeojsonOptions } from "./geojsonLayersTypes";
 
-export default class OlMarks {
+export default class OlBasicGeoJson {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
+  public GeojsonMapIns: OlGeojsonLayers | null = null;
+
   private __layers: any = null;
-  private __layerIdPrefix = "MARK_";
+  private __GeojsonLayers: any = null;
+  private __layerIdPrefix = "SATELLITE_ORBIT_";
 
   constructor(mapBaseIns: OlBase) {
     this.olBaseHandle = mapBaseIns;
     this.handle = mapBaseIns.handle;
+
+    this.GeojsonMapIns = new OlGeojsonLayers(mapBaseIns);
     this.__layers = new Map();
+    this.__GeojsonLayers = new Map();
   }
 
   public destructor() {
+    this.GeojsonMapIns?.destructor();
     this.clearLayer();
     this.olBaseHandle = null;
     this.handle = null;
     this.__layers.clear();
     this.__layers = null;
+    this.__GeojsonLayers.clear();
+    this.__GeojsonLayers = null;
   }
 
   private __Id(id: string) {
@@ -40,97 +56,61 @@ export default class OlMarks {
     return `${this.__layerIdPrefix}${name}`;
   }
 
-  public createLayer(
-    options: MarkOptions = {
-      longitude: 0,
-      latitude: 0,
-      text: "",
-      url: "",
-      style: null,
-      id: "",
-      name: "",
-      zIndex: 0,
-      wrapX: true,
-    },
-  ) {
-    const center = transformLongitudeLatitude([options.longitude, options.latitude]);
-    const id = this.__Id(options.id);
-    const name = options.name ? options.name : nanoid(10);
-
-    const MarkOptions = {
-      geometry: new Point(center),
-      name: name,
-      id: id,
-      wrapX: options.wrapX,
-    };
-    const feature = new Feature(MarkOptions);
-
-    let markStyle = options.style;
-    if (!markStyle) {
-      options.style = markStyle = new Style({
-        image: new Icon({
-          anchor: [0.5, 1],
-          src: options.url,
-          scale: 0.5,
-        }),
-        text: new Text({
-          font: "bold 12px serif",
-          text: options.text,
-          offsetY: 10,
-          padding: [3, 5, 3, 5],
-          fill: new Fill({
-            color: [255, 255, 255, 1],
-          }),
-          // stroke : new Stroke({
-          // 	color: [255,255,0,1],
-          // 	width: 2
-          // }),
-          backgroundFill: new Fill({
-            color: [255, 12, 15, 1],
-          }),
-        }),
-      });
+  public createLayer(options: SatelliteOrbitOptions) {
+    if (!options.tle1 || !options.tle2 || !options.id) {
+      return null;
     }
-    feature.setStyle(markStyle);
-    feature.setId(id);
+    // const id = this.__Id(options.id);
+    // let name = options.name ? options.name : nanoid(10);
+    // name = this.__Name(name);
 
-    const meta = {
-      [isCustomizeFlag]: true,
-      [customMeta]: options,
+    const orbitIns = new SatelliteOrbit(options.tle1, options.tle2);
+    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, options.timeInterval);
+    const oribtOptions = {
+      ...options,
+      id: `${options.id}_orbit`,
+      data: lnglatDatas,
+      isPopup: false,
     };
-    feature.setProperties(meta);
 
-    const source = new VectorSource({
-      features: [feature],
-      wrapX: options.wrapX,
-    });
-    source.setProperties(meta);
+    let satOptions = null;
+    if (options.isShowSat) {
+      const currentData = orbitIns.getCurrenPositionGeojson(options.startTime);
+      satOptions = {
+        ...options,
+        id: `${options.id}_satellite`,
+        data: currentData,
+        isPopup: true,
+        style: options.satStyle,
+        styleFunction: options.satStyleFunction,
+      };
+    }
 
-    const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
-    const layer = new VectorLayer({
-      source: source,
-      zIndex: zIndex,
-      declutter: true,
-    });
-    layer.setProperties(meta);
-
-    layer.set("id", this.__Id(options.id));
-    layer.set("name", this.__Name(name));
     const layerObj = {
       options,
-      MarkOptions,
-      feature,
-      source,
-      layer,
+      orbitIns,
+      oribtOptions,
+      satOptions,
     };
+
+    console.log("layerObj", layerObj);
     return layerObj;
   }
 
-  public addLayer(options: MarkOptions) {
+  public addLayer(options: SatelliteOrbitOptions) {
     if (this.handle) {
       const layerObj = this.createLayer(options);
       if (layerObj) {
-        this.handle.addLayer(layerObj.layer);
+        // 增加轨道 by geojson
+        let isAdded = this.GeojsonMapIns!.addLayer(layerObj.oribtOptions);
+        // if (isAdded) {
+        //   this.__GeojsonLayers.set(options, this.GeojsonMapIns);
+        // }
+        if (options.isShowSat) {
+          isAdded = this.GeojsonMapIns!.addLayer(layerObj.satOptions as GeojsonOptions);
+        }
+
+        // 记录原始信息
         this.__layers.set(this.__Id(options.id), layerObj);
         return true;
       } else {
@@ -141,16 +121,21 @@ export default class OlMarks {
     }
   }
 
-  public fitToView(options: MarkOptions) {
+  public fitToView(options: SatelliteOrbitOptions) {
     if (this.olBaseHandle) {
-      this.olBaseHandle.flyToPosition(options.longitude, options.latitude);
-      return true;
+      if (options.extent) {
+        this.olBaseHandle.fitToExtent(options.extent);
+        return true;
+      } else {
+        this.olBaseHandle.fitToLayerSourceByID(this.__Id(options.id));
+        return true;
+      }
     } else {
       return false;
     }
   }
 
-  public hasLayer(options: MarkOptions) {
+  public hasLayer(options: SatelliteOrbitOptions) {
     if (this.olBaseHandle && this.__layers.size) {
       return this.__layers.has(this.__Id(options.id));
     }
@@ -164,7 +149,7 @@ export default class OlMarks {
     return false;
   }
 
-  public removeLayer(options: MarkOptions) {
+  public removeLayer(options: SatelliteOrbitOptions) {
     return this.removeLayerByID(options.id);
   }
 
@@ -189,7 +174,7 @@ export default class OlMarks {
       // 	this.handle.removeLayer(layerObj.layer)
       // }
       this.__layers.forEach((layerObj: any) => {
-        this.handle.removeLayer(layerObj.layer);
+        this.handle!.removeLayer(layerObj.layer);
       });
       this.__layers.clear();
       return true;
@@ -198,7 +183,7 @@ export default class OlMarks {
     }
   }
 
-  public setLayerOpacity(options: MarkOptions, opacity: number) {
+  public setLayerOpacity(options: SatelliteOrbitOptions, opacity: number) {
     return this.setLayerOpacityByID(options.id, opacity);
   }
 
@@ -216,7 +201,7 @@ export default class OlMarks {
     }
   }
 
-  public showHiddenLayer(options: MarkOptions, isShow: boolean) {
+  public showHiddenLayer(options: SatelliteOrbitOptions, isShow: boolean) {
     return this.showHiddenLayerByID(options.id, isShow);
   }
 

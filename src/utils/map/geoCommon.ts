@@ -1,3 +1,5 @@
+import Geojson from "geojson";
+
 export function getLongitudeFromText(lng: string, toFixed = 6) {
   let longitude = 0.0;
   let longitudeText = "";
@@ -183,6 +185,52 @@ export function getExtentFromDrawPolygon(coordinates: any) {
   return [minLongitude, minLatitude, maxLongitude, maxLatitude];
 }
 
+export function getExtentFromGeoPolygon(polygon: any) {
+  let extent = [-180, -90, 180, 90];
+  let minLongitude = 180;
+  let maxLongitude = -180;
+  let minLatitude = 90;
+  let maxLatitude = -90;
+  let isRefreshed = false;
+
+  switch (polygon.type) {
+    case "Polygon": {
+      if (polygon.coordinates.length) {
+        const coordinates1 = polygon.coordinates[0];
+        if (coordinates1.length) {
+          for (let i = 0; i < coordinates1.length; i++) {
+            const coordTemp = coordinates1[i];
+            if (coordTemp.length && coordTemp.length == 2) {
+              isRefreshed = true;
+              if (coordTemp[0] < minLongitude) {
+                minLongitude = coordTemp[0];
+              }
+              if (coordTemp[0] >= maxLongitude) {
+                maxLongitude = coordTemp[0];
+              }
+              if (coordTemp[1] < minLatitude) {
+                minLatitude = coordTemp[1];
+              }
+              if (coordTemp[1] >= maxLatitude) {
+                maxLatitude = coordTemp[1];
+              }
+            }
+          }
+        }
+      }
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+  if (isRefreshed) {
+    extent = [minLongitude, minLatitude, maxLongitude, maxLatitude];
+  }
+  return extent;
+}
+
 export function getRectangleFromExtent(extent: any) {
   const x1 = +extent[0];
   const y1 = +extent[1];
@@ -200,4 +248,64 @@ export function getRectangleFromExtent(extent: any) {
     ],
   ];
   return polygon;
+}
+
+export function getGeoPointFromXY(x: number, y: number) {
+  const point = {
+    longitude: x,
+    latitude: y,
+  };
+  return Geojson.parse(point, { Point: ["latitude", "longitude"] });
+}
+
+export function getGeoPointFromLongitudeLatitude(longitude: number, latitude: number) {
+  const point = {
+    longitude,
+    latitude,
+  };
+  return Geojson.parse(point, { Point: ["latitude", "longitude"] });
+}
+
+export function getGeoPolygonFromExtent(extent: any) {
+  const rectangle = getRectangleFromExtent(extent);
+  const polygon = {
+    polygon: rectangle,
+  };
+  return Geojson.parse(polygon, { Polygon: "polygon" });
+}
+
+export function getGeoPolygonFromLDRU(
+  ld_longitude: number,
+  ld_latitude: number,
+  ru_longitude: number,
+  ru_latitude: number,
+) {
+  const polygon = {
+    polygon: [
+      [ld_longitude, ld_latitude],
+      [ru_longitude, ld_latitude],
+      [ru_longitude, ru_latitude],
+      [ld_longitude, ru_latitude],
+      [ld_latitude, ld_latitude],
+    ],
+  };
+  return Geojson.parse(polygon, { Polygon: "polygon" });
+}
+
+export function getTwoDimArrayFromLngLatObj(positions: any) {
+  const twoDimArray = [];
+  if (positions.length) {
+    for (let i = 0; i < positions.length; i++) {
+      const positionTemp = positions[i];
+      twoDimArray.push([positionTemp.longitude, positionTemp.latitude]);
+    }
+  }
+  return twoDimArray;
+}
+
+export function getGeoLineFromArray(twoDimArray: any) {
+  const lindObj = {
+    line: twoDimArray,
+  };
+  return Geojson.parse(lindObj, { LineString: "line" });
 }

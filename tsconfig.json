@@ -25,9 +25,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": [
-      "ol"
-    ]
+    "types": ["ol"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*.d.ts", "types/**/*.ts"],
   "exclude": ["node_modules"],
