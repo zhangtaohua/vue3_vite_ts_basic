@@ -19,6 +19,13 @@ import OlGeojsonLayers from "./geojsonLayers";
 import SatelliteOrbit from "../satellite/orbit";
 import { GeojsonOptions } from "./geojsonLayersTypes";
 
+import {
+  getGeoPointFromLongitudeLatitude,
+  getTwoDimArrayFromLngLatObj,
+  getGeoLineFromArray,
+  calibratePosions,
+} from "../geoCommon";
+
 export default class OlBasicGeoJson {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
@@ -65,31 +72,47 @@ export default class OlBasicGeoJson {
     // name = this.__Name(name);
 
     const orbitIns = new SatelliteOrbit(options.tle1, options.tle2);
-    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, options.timeInterval);
+    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, options.timeInterval, true);
     const oribtOptions = {
       ...options,
       id: `${options.id}_orbit`,
-      data: lnglatDatas,
+      data: lnglatDatas.geojson,
       isPopup: false,
     };
 
     let satOptions = null;
+    let oribtOldOptions = null;
+
+    let OldLnglatData: any = null;
     if (options.isShowSat) {
-      const currentData = orbitIns.getCurrenPositionGeojson(options.startTime);
+      const now = new Date().toString();
+      OldLnglatData = orbitIns.getOrbitGeojson(options.startTime, now, options.timeInterval, true);
+      const currentData = orbitIns.getCurrenPositionGeojson(now);
+      console.log("currentData", currentData);
       satOptions = {
         ...options,
         id: `${options.id}_satellite`,
-        data: currentData,
+        data: currentData.geojson,
         isPopup: true,
         style: options.satStyle,
         styleFunction: options.satStyleFunction,
       };
-    }
 
+      oribtOldOptions = {
+        ...options,
+        id: `${options.id}_old_orbit`,
+        data: OldLnglatData.geojson,
+        isPopup: false,
+        style: options.oldOrbitStyle,
+        styleFunction: options.oldOribtStyleFunction,
+      };
+    }
     const layerObj = {
+      positions: OldLnglatData.positions,
       options,
       orbitIns,
       oribtOptions,
+      oribtOldOptions,
       satOptions,
     };
 
@@ -107,9 +130,9 @@ export default class OlBasicGeoJson {
         //   this.__GeojsonLayers.set(options, this.GeojsonMapIns);
         // }
         if (options.isShowSat) {
+          isAdded = this.GeojsonMapIns!.addLayer(layerObj.oribtOldOptions as GeojsonOptions);
           isAdded = this.GeojsonMapIns!.addLayer(layerObj.satOptions as GeojsonOptions);
         }
-
         // 记录原始信息
         this.__layers.set(this.__Id(options.id), layerObj);
         return true;
@@ -118,6 +141,28 @@ export default class OlBasicGeoJson {
       }
     } else {
       return false;
+    }
+  }
+
+  public tick(options: SatelliteOrbitOptions) {
+    const id = options.id;
+    const layerObj = this.__layers.get(this.__Id(id));
+    if (layerObj) {
+      //  更新卫星位置和 旧轨道数据。
+      if (layerObj.options.isShowSat) {
+        const now = new Date().toString();
+        const currentData = layerObj.orbitIns.getCurrenPositionGeojson(now);
+
+        layerObj.positions.push(currentData.position);
+        const positionNew = calibratePosions(layerObj.positions);
+        const twoDimArray = getTwoDimArrayFromLngLatObj(positionNew);
+        const geojsonData = getGeoLineFromArray(twoDimArray);
+        layerObj.oribtOldOptions.data = geojsonData;
+        this.GeojsonMapIns?.updateFeaturesData(layerObj.oribtOldOptions);
+        //
+        layerObj.satOptions.data = currentData.geojson;
+        this.GeojsonMapIns?.updateFeaturesData(layerObj.satOptions);
+      }
     }
   }
 
@@ -157,7 +202,11 @@ export default class OlBasicGeoJson {
     if (this.handle) {
       const layerObj = this.__layers.get(this.__Id(id));
       if (layerObj) {
-        this.handle.removeLayer(layerObj.layer);
+        this.GeojsonMapIns?.removeLayer(layerObj.oribtOptions);
+        if (layerObj.options.isShowSat) {
+          this.GeojsonMapIns!.removeLayer(layerObj.oribtOldOptions);
+          this.GeojsonMapIns!.removeLayer(layerObj.satOptions as GeojsonOptions);
+        }
         this.__layers.delete(this.__Id(id));
         return true;
       } else {
@@ -174,7 +223,11 @@ export default class OlBasicGeoJson {
       // 	this.handle.removeLayer(layerObj.layer)
       // }
       this.__layers.forEach((layerObj: any) => {
-        this.handle!.removeLayer(layerObj.layer);
+        this.GeojsonMapIns?.removeLayer(layerObj.oribtOptions);
+        if (layerObj.options.isShowSat) {
+          this.GeojsonMapIns!.removeLayer(layerObj.oribtOldOptions);
+          this.GeojsonMapIns!.removeLayer(layerObj.satOptions as GeojsonOptions);
+        }
       });
       this.__layers.clear();
       return true;

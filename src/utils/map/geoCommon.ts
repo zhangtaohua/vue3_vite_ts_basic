@@ -292,6 +292,43 @@ export function getGeoPolygonFromLDRU(
   return Geojson.parse(polygon, { Polygon: "polygon" });
 }
 
+export function calibratePosions(positions: any) {
+  const positionNew = [];
+  if (positions.length >= 2) {
+    let isPlus = -1;
+    let divisor = 0;
+    const negative = -180;
+    const postive = 180;
+    const gap = 50;
+
+    positionNew.push(positions[0]);
+    for (let i = 1; i < positions.length; i++) {
+      const positionOld = { ...positions[i - 1] };
+      const position = { ...positions[i] };
+
+      if (positionOld.longitude < 0 && position.longitude >= 0) {
+        // 从 -180 附近 直接到了 180
+        if (positionOld.longitude - negative < gap) {
+          divisor = divisor + 1;
+          // console.log("divisor N", positionOld.longitude, position.longitude, divisor);
+          isPlus = -1;
+        }
+      } else if (positionOld.longitude >= 0 && position.longitude < 0) {
+        if (postive - positionOld.longitude < gap) {
+          divisor = divisor + 1;
+          isPlus = 1;
+          // console.log("divisor P", positionOld.longitude, position.longitude, divisor);
+        }
+      }
+
+      position.longitude = position.longitude + isPlus * divisor * 360;
+      // 最后的计算公式
+      positionNew.push(position);
+    }
+  }
+  return positionNew;
+}
+
 export function getTwoDimArrayFromLngLatObj(positions: any) {
   const twoDimArray = [];
   if (positions.length) {

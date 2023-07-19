@@ -1,6 +1,11 @@
 import { twoline2satrec, sgp4, propagate, gstime, eciToGeodetic, degreesLong, degreesLat } from "satellite.js";
 
-import { getGeoPointFromLongitudeLatitude, getTwoDimArrayFromLngLatObj, getGeoLineFromArray } from "../geoCommon";
+import {
+  getGeoPointFromLongitudeLatitude,
+  getTwoDimArrayFromLngLatObj,
+  getGeoLineFromArray,
+  calibratePosions,
+} from "../geoCommon";
 
 export default class SatelliteOrbit {
   public satrec: any = null;
@@ -74,15 +79,27 @@ export default class SatelliteOrbit {
     }
   }
 
-  public getOrbitGeojson(startTime: any, endTime: any, intervalInMilliSeconds = 1000) {
+  public getOrbitGeojson(startTime: any, endTime: any, intervalInMilliSeconds = 1000, isCalibrate = true) {
     const positions = this.getOrbitDatas(startTime, endTime, intervalInMilliSeconds);
-    const twoDimArray = getTwoDimArrayFromLngLatObj(positions);
-    return getGeoLineFromArray(twoDimArray);
+    let positionNew = null;
+    if (isCalibrate) {
+      positionNew = calibratePosions(positions);
+    }
+    const twoDimArray = getTwoDimArrayFromLngLatObj(positionNew);
+    const geojsonData = getGeoLineFromArray(twoDimArray);
+    return {
+      geojson: geojsonData,
+      positions: positions,
+    };
   }
 
   public getCurrenPositionGeojson(startTime: any) {
     const start = new Date(startTime);
     const lngLatObj = this.getCurrentPosition(start);
-    return getGeoPointFromLongitudeLatitude(lngLatObj.longitude, lngLatObj.latitude);
+    const geojsonData = getGeoPointFromLongitudeLatitude(lngLatObj.longitude, lngLatObj.latitude);
+    return {
+      geojson: geojsonData,
+      position: lngLatObj,
+    };
   }
 }

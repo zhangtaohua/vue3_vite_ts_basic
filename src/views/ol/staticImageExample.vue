@@ -14,8 +14,8 @@ import { nanoid } from "nanoid";
 
 import pexels1 from "@/assets/images/test/pexels1.jpeg";
 import pexels2 from "@/assets/images/test/pexels2.jpeg";
-import staticImagePopup from "./staticImagePopup.vue";
-import staticImagePopup2 from "./staticImagePopup2.vue";
+import staticImagePopup from "./components/staticImagePopup.vue";
+import staticImagePopup2 from "./components/staticImagePopup2.vue";
 
 onMounted(() => {
   initMap();

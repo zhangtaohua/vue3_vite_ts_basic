@@ -18,7 +18,7 @@ export default class OlBase {
   // openlayers 实例化的容器
   public container = "";
 
-  public minLevel = 3; // 2.8657332708517589
+  public minLevel = 1; // 2.8657332708517589
   public maxLevel = 21;
   public pixelRatio = 1;
 
@@ -29,7 +29,7 @@ export default class OlBase {
   private __zIndex = 10;
 
   // 构造函数 传入参数分别为 容器ID, 屏幕的Ratio, 最小level 最大level
-  constructor(target: string, pixelRatio = 1, minLevel = 3, maxLevel = 21) {
+  constructor(target: string, pixelRatio = 1, minLevel = 1, maxLevel = 21) {
     this.container = target;
     this.minLevel = minLevel;
     this.maxLevel = maxLevel;
@@ -136,6 +136,22 @@ export default class OlBase {
       return this.viewHandle.getZoom();
     }
     return this.minLevel;
+  }
+
+  // 获取当前地图层级
+  public getResolution() {
+    if (this.viewHandle) {
+      return this.viewHandle.getResolution();
+    }
+    return 0;
+  }
+
+  public getScale() {
+    if (this.viewHandle) {
+      const currentResolution = this.viewHandle.getResolution();
+      return "1:" + (currentResolution * 3779.5275590551).toFixed(0);
+    }
+    return "1:1";
   }
 
   // 生成一个新增layer 的zindex级别

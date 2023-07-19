@@ -1,9 +1,10 @@
 <template>
   <div id="ol_container" class="wh_100p_100p"></div>
+  <OpenLayerMouseInfo :mouseInfo="mousePosition" />
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted } from "vue";
+import { reactive, onMounted, onUnmounted } from "vue";
 
 import OlSatelliteOrbitHelper from "./SatelliteOrbitExample";
 import { SatelliteOrbitOptions } from "@/utils/map/ol/satelliteOrbitLayersTypes";
@@ -14,8 +15,15 @@ import { nanoid } from "nanoid";
 
 import { createFill, createStroke, createCircle, createText } from "@/utils/map/ol/style";
 import { mapEventType } from "@/utils/map/ol/olConstant";
+import { transformTo4326 } from "@/utils/map/ol/olTools";
 
-import { Style } from "ol/style";
+import { Style, Stroke, Icon, Fill, Text } from "ol/style";
+
+import { calibrateWrapLongitudeLatitude } from "@/utils/map/geoCommon";
+
+import OpenLayerMouseInfo from "./components/OpenLayerMouseInfo.vue";
+
+import satelliteImg from "@/assets/images/satellite.jpg";
 
 onMounted(() => {
   initMap();
@@ -30,16 +38,22 @@ let mapIns: OlSatelliteOrbitHelper | null = null;
 let GUIIns: GUI | null = null;
 const mapContrl = {
   bgLayer: gaodeMap,
-  whichLine: "orbitline1",
+  orbit1: true,
+  orbit2: true,
 };
 function initMap() {
   mapIns = new OlSatelliteOrbitHelper("ol_container", window.devicePixelRatio);
   mapIns.addBgLayer(mapContrl.bgLayer);
+  addMouseEvent();
   addSatelliteOrbit(orbitsSource.orbit1);
+  addSatelliteOrbit(orbitsSource.orbit2);
+  animate();
 }
 
 function disposeMap() {
   if (mapIns) {
+    stopAnimate();
+    mapIns.clearMapEvent();
     mapIns!.destructor();
     GUIIns!.destroy();
   }
@@ -57,10 +71,28 @@ function initGUI() {
 
   const imgFolder = GUIIns.addFolder();
   imgFolder.title("轨道");
+
   imgFolder
-    .add(mapContrl, "whichLine", ["orbitline1", "orbitline2", "orbitline3"])
-    .name("选择线")
-    .onChange((value: any) => {});
+    .add(mapContrl, "orbit1")
+    .name("1 轨道1")
+    .onChange((value: any) => {
+      if (value) {
+        addSatelliteOrbit(orbitsSource.orbit1);
+      } else {
+        removeSatelliteOrbit(orbitsSource.orbit1);
+      }
+    });
+
+  imgFolder
+    .add(mapContrl, "orbit2")
+    .name("2 轨道1")
+    .onChange((value: any) => {
+      if (value) {
+        addSatelliteOrbit(orbitsSource.orbit2);
+      } else {
+        removeSatelliteOrbit(orbitsSource.orbit2);
+      }
+    });
 }
 
 const customT = (name: string) => {
@@ -93,28 +125,76 @@ const testStleFunc = (feature: any) => {
   }
 };
 
+const satStyleFunc = (feature: any) => {
+  if (feature) {
+    const text = feature.get("name") ?? "QL-4";
+    return new Style({
+      image: new Icon({
+        anchor: [0.5, 0.5],
+        src: satelliteImg,
+        scale: 0.15,
+      }),
+      text: new Text({
+        font: "bold 12px serif",
+        text: text,
+        offsetY: 32,
+        padding: [3, 5, 3, 5],
+        fill: new Fill({
+          color: [255, 255, 255, 1],
+        }),
+        // stroke : new Stroke({
+        // 	color: [255,255,0,1],
+        // 	width: 2
+        // }),
+        backgroundFill: new Fill({
+          color: [255, 12, 15, 1],
+        }),
+      }),
+    });
+  }
+};
+
+// 除了 orbit1 orbit2 参数较完整，其他轨道参数不全，使用时可能不对
+// 记得把 startTime 和 endTime 修改了包含当前时间。
 const orbitsSource = {
   orbit1: {
     id: "orbit_test_1",
     tle1: "1 48250U 21033C   23186.03111480  .00030307  00000+0  68550-3 0  9995",
     tle2: "2 48250  97.3131 260.4665 0005488 321.4670  38.6186 15.43089270121883",
     name: "QL-4",
-    startTime: "2023-07-18 17:50:00",
-    endTime: "2023-07-18 18:50:00",
+    startTime: "2023-07-19 15:00:00",
+    endTime: "2023-07-20 15:00:00",
     timeInterval: 30000,
+    style: {
+      fillColor: [255, 255, 255, 0.5],
+      color: "rgba(255 ,0, 0, 1)",
+    },
     isShowSat: true,
+    satStyleFunction: satStyleFunc,
+    oldOrbitStyle: {
+      width: 3,
+      fillColor: [255, 0, 0, 0.5],
+      color: "rgba(125 ,0, 0, 0.8)",
+    },
   },
   orbit2: {
     id: "orbit_test_2",
     tle1: "1 48248U 21033A   23186.01782116  .00015399  00000+0  46284-3 0  9994",
     tle2: "2 48248  97.3167 258.0705 0007317 337.2116  22.8802 15.34469003121729",
     name: "FS-1",
-    startTime: "2023-07-18 15:20:00",
-    endTime: "2023-07-18 16:20:00",
+    startTime: "2023-07-19 15:00:00",
+    endTime: "2023-07-20 15:00:00",
     timeInterval: 30000,
     style: {
+      fillColor: [255, 255, 255, 0.5],
+      color: "rgba(0 ,255, 0, 1)",
+    },
+    isShowSat: true,
+    satStyleFunction: satStyleFunc,
+    oldOrbitStyle: {
+      width: 3,
       fillColor: [255, 0, 0, 0.5],
-      color: "rgba(255 ,255, 0, 1)",
+      color: "rgba(0 ,125, 0, 0.8)",
     },
   },
   orbit3: {
@@ -202,6 +282,61 @@ function removeSatelliteOrbit(MapImageOptions: SatelliteOrbitOptions) {
   if (mapIns) {
     mapIns.removeSatelliteOrbitLayer(MapImageOptions);
   }
+}
+
+let renderTimer: any = null;
+const renderMax = 20;
+let renderCount = 0;
+function stopAnimate() {
+  if (renderTimer) {
+    window.cancelAnimationFrame(renderTimer);
+    renderTimer = null;
+  }
+}
+
+function animate() {
+  renderTimer = window.requestAnimationFrame(animate);
+  if (renderCount++ > renderMax) {
+    if (mapContrl.orbit1) {
+      mapIns?.updateOrbit(orbitsSource.orbit1);
+    }
+    if (mapContrl.orbit2) {
+      mapIns?.updateOrbit(orbitsSource.orbit2);
+    }
+  }
+}
+
+const mousePosition = reactive({
+  longitude: 0,
+  latitude: 0,
+  scale: "1:1",
+  zoom: 18.9999,
+  resolution: 1,
+});
+
+const mousePositionCb = (event: any) => {
+  if (event.type == mapEventType.pointermove) {
+    const lnglatOrigin = transformTo4326(event.coordinate);
+    // const { longitude, latitude } = calibrateWrapLongitudeLatitude(lnglatOrigin[0], lnglatOrigin[1]);
+    // mousePosition.longitude = longitude.toFixed(6);
+    // mousePosition.latitude = latitude.toFixed(6);
+
+    mousePosition.longitude = lnglatOrigin[0].toFixed(6);
+    mousePosition.latitude = lnglatOrigin[1].toFixed(6);
+    mousePosition.zoom = mapIns.getViewZoom().toFixed(2);
+    mousePosition.resolution = mapIns.getResolution().toFixed(6);
+    mousePosition.scale = mapIns.getScale();
+  }
+};
+
+function addMouseEvent() {
+  const eventOptions = {
+    id: "mousePositionCb",
+    type: mapEventType.pointermove,
+    cb: mousePositionCb,
+    debounce: false,
+  };
+  mapIns?.addMapEvent(eventOptions);
 }
 </script>
 

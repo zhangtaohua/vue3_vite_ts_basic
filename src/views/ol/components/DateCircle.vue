@@ -423,65 +423,65 @@ function toggleDateCanPast() {
 <style lang="scss">
 .date_container {
   position: fixed;
+  right: 60px;
+  bottom: 90px;
+  z-index: 100;
   width: 150px;
   height: 150px;
-  bottom: 90px;
-  right: 60px;
   margin: auto;
-  font-family: "Share Tech", sans-serif;
   color: #444;
-  z-index: 100;
-  background-color: rgba(255, 255, 255, 0.9);
+  font-family: "Share Tech", sans-serif;
+  background-color: rgb(255 255 255 / 90%);
   border-radius: 12px;
 }
 
 .window_mask {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
   top: 0;
   left: 0;
   z-index: 98;
-  background-color: rgba(255, 0, 0, 0);
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255 0 0 / 0%);
 }
 
 .point_mask {
   position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
   width: 20px;
   height: 20px;
-  top: 0px;
-  left: 0px;
-  background-color: rgba($color: #000000, $alpha: 0);
-  z-index: 2;
+  background-color: rgba($color: #000, $alpha: 0%);
   cursor: pointer;
 }
 
 .show_box {
   position: absolute;
+  top: 0;
+  left: 10%;
+  z-index: 1;
   width: 80%;
   height: 100%;
-  left: 10%;
-  top: 0;
-  z-index: 1;
 }
 
 .pass_box {
   width: max-content;
   height: 20px;
-  font-size: 16px;
-  color: #444;
   padding: 0 4px;
+  color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .pass_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
 .pass_box_act {
-  color: #ffffff;
+  color: #fff;
   background-color: #409eff;
   border-radius: 2px;
 }
@@ -494,29 +494,29 @@ function toggleDateCanPast() {
 .add_box {
   width: 20px;
   height: 100%;
-  font-size: 16px;
-  color: #444;
   margin-right: 8px;
+  color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .add_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
 .minu_box {
   width: 20px;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .minu_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
@@ -528,28 +528,28 @@ function toggleDateCanPast() {
 .yy_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
 }
 
 .mm_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
 }
 
 .dd_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .dd_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
@@ -561,49 +561,49 @@ function toggleDateCanPast() {
 .hh_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .hh_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
 .mi_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .mi_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
 .ss_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .ss_box:hover {
-  color: #ffffff;
-  background-color: rgba($color: #409eff, $alpha: 0.5);
+  color: #fff;
+  background-color: rgba($color: #409eff, $alpha: 50%);
   border-radius: 2px;
 }
 
 .split_box {
   width: max-content;
   height: 100%;
-  font-size: 16px;
   color: #444;
+  font-size: 16px;
 }
 </style>

@@ -9,8 +9,8 @@ import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 import { mapboxLocalStyle } from "@/utils/map/ol/sourceUrl";
 
-import OlSatelliteOrbitLayer from "@/utils/map/ol/satelliteOrbitLayers";
-import type { SatelliteOrbitOptions } from "@/utils/map/ol/satelliteOrbitLayersTypes";
+import drawBasicLayers from "@/utils/map/ol/drawBasicLayers";
+import type { DrawBasicOptions } from "@/utils/map/ol/drawBasicLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import type { EventOptions } from "@/utils/map/ol/mapEventTypes";
@@ -29,12 +29,12 @@ import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue,
 
 import { nanoid } from "nanoid";
 
-export default class OlSatelliteOrbitHelper extends OlBase {
+export default class OlDrawHelper extends OlBase {
   private __bgLayers: any = null; // 底图
   private __funcLayers: any = null; // 功能图层
   public XYZIns: xyzLayers | null = null;
   public BingmapIns: bingmapsLayers | null = null;
-  public SatelliteOrbitIns: OlSatelliteOrbitLayer | null = null;
+  public DrawIns: drawBasicLayers | null = null;
   public mapboxLayerIns: mapboxLayers | null = null;
 
   public vuePopupIns: OpenLayerVueNodePopup | null = null;
@@ -109,7 +109,7 @@ export default class OlSatelliteOrbitHelper extends OlBase {
 
     this.XYZIns = new xyzLayers(this);
     this.BingmapIns = new bingmapsLayers(this);
-    this.SatelliteOrbitIns = new OlSatelliteOrbitLayer(this);
+    this.DrawIns = new drawBasicLayers(this);
     this.mapboxLayerIns = new mapboxLayers(this);
 
     this.mapEventIns = new OpenLayersMapEvent(this);
@@ -125,7 +125,7 @@ export default class OlSatelliteOrbitHelper extends OlBase {
     this.viewEventIns!.destructor();
 
     this.mapboxLayerIns!.destructor();
-    this.SatelliteOrbitIns!.destructor();
+    this.DrawIns!.destructor();
     this.BingmapIns!.destructor();
     this.XYZIns!.destructor();
     this.__bgLayers = null;
@@ -242,16 +242,11 @@ export default class OlSatelliteOrbitHelper extends OlBase {
     this.flyToPositionAndZoom(longitude, latitude, zoom);
   }
 
-  public addSatelliteOrbitLayer(options: SatelliteOrbitOptions) {
-    if (options) {
-      const isAdded = this.SatelliteOrbitIns!.addLayer(options);
-      if (isAdded) {
-        this.__funcLayers.set(options, this.SatelliteOrbitIns);
-      }
-    }
+  public draw(shape: string) {
+    return this.DrawIns!.drawShape(shape, true, false);
   }
 
-  public removeSatelliteOrbitLayer(options: SatelliteOrbitOptions) {
+  public removeDrawLayer(options: DrawBasicOptions) {
     if (options) {
       for (const [key, valueHandle] of this.__funcLayers.entries()) {
         if (options.id == key.id) {
@@ -261,10 +256,6 @@ export default class OlSatelliteOrbitHelper extends OlBase {
         }
       }
     }
-  }
-
-  public updateOrbit(options: SatelliteOrbitOptions) {
-    this.SatelliteOrbitIns?.tick(options);
   }
 
   public clearFuncLayer() {
@@ -287,19 +278,10 @@ export default class OlSatelliteOrbitHelper extends OlBase {
     }
   }
 
-  public addMapEvent(eventOptions: EventOptions) {
-    if (eventOptions) {
-      const isAdded = this.mapEventIns!.addEvent(eventOptions);
-      if (isAdded) {
-        this.__mapEventsMap.set(eventOptions, this.mapEventIns);
-      }
-    }
-  }
-
   public clearMapEvent() {
     if (this.__mapEventsMap && this.__mapEventsMap.size) {
       for (const [key, valueHandle] of this.__mapEventsMap.entries()) {
-        this.mapEventIns!.removeEvent(key);
+        this.mapEventIns!.removeEventByID(key);
       }
       this.__mapEventsMap.clear();
       return true;

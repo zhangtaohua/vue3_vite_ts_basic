@@ -20,3 +20,19 @@ export const popupType = {
 
 export const isCustomizeFlag = "customize";
 export const customMeta = "customMeta";
+
+// 不要改下面的名字，不然可能导致画不成功图形
+
+export const MAP_DRAW_POINT = "Point";
+export const MAP_DRAW_SQUARE = "Square";
+export const MAP_DRAW_RECTANGLE = "Rectangle";
+export const MAP_DRAW_POLYGON = "Polygon";
+export const MAP_DRAW_LINE = "LineString";
+export const MAP_DRAW_CIRCLE = "Circle";
+export const MAP_DRAW_GEOMETRY_CIRCLE = "Circle";
+export const MAP_DRAW_GEODESIC_CIRCLE = "GeodesicCircle";
+
+export const MAP_DRAW_CLEAR = "Clear";
+
+export const MAP_MEASURE_DISTANCE = "Distance";
+export const MAP_MEASURE_AREA = "Area";

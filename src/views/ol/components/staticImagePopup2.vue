@@ -10,6 +10,7 @@
       <div class="row_nw_fs_center info_label"> {{ customT("latitude") }}{{ `： ${vNodeData.latitude}` }} </div>
       <div class="row_nw_fs_center info_label"> {{ customT("satellite") }}{{ `： ${vNodeData.satellite}` }} </div>
       <div class="row_nw_fs_center info_label"> {{ customT("imaging") }}{{ `： ${countdownTime}` }} </div>
+      <div class="row_nw_fs_center info_label"> {{ customT("测试") }}{{ `：数据更新成功` }} </div>
     </div>
   </div>
 </template>
@@ -131,51 +132,49 @@ export default defineComponent({
 <style scoped lang="scss">
 .row_nw_fs_center {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
+  flex-flow: row nowrap;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .col_nw_sb_fs {
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  flex-flow: column nowrap;
   align-items: flex-start;
+  justify-content: space-between;
 }
 
 .panel_container {
   position: absolute;
+  z-index: 2;
   width: auto;
   min-width: 350px;
   height: auto;
-  background: rgba(0, 13, 33, 0.75);
-  border: 1px solid #ff7700;
+  background: rgb(0 13 33 / 75%);
+  border: 1px solid #f70;
   border-radius: 0.25rem;
-  z-index: 2;
 }
 
 .tag_icon {
   position: absolute;
-  width: 0.375rem;
-  height: 0.375rem;
   top: 0.5rem;
   left: 0.5rem;
-  background: #ffffff;
-  border: 1px solid #ff7700;
+  width: 0.375rem;
+  height: 0.375rem;
+  background: #fff;
+  border: 1px solid #f70;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .close_icon {
   position: absolute;
-  width: 1rem;
-  height: 1rem;
   top: 0.5rem;
   right: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  color: rgb(255 255 255 / 30%);
   font-size: 0.375rem;
-  color: rgba(255, 255, 255, 0.3);
   cursor: pointer;
 }
 
@@ -193,9 +192,9 @@ export default defineComponent({
 .info_label {
   width: max-content;
   height: 1.25rem;
-  font-size: 0.64rem;
-  font-family: Source Han Sans CN;
+  color: rgb(255 255 255 / 100%);
   font-weight: 300;
-  color: rgba(255, 255, 255, 1);
+  font-size: 0.64rem;
+  font-family: "Source Han Sans CN";
 }
 </style>

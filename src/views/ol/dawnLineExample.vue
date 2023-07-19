@@ -18,7 +18,7 @@ import { mapEventType } from "@/utils/map/ol/olConstant";
 
 import { Style } from "ol/style";
 
-import DateCircle from "./DateCircle.vue";
+import DateCircle from "./components/DateCircle.vue";
 
 onMounted(() => {
   initMap();

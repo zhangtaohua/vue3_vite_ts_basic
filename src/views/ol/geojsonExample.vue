@@ -17,8 +17,8 @@ import { mapEventType } from "@/utils/map/ol/olConstant";
 
 import { Style } from "ol/style";
 
-import staticImagePopup from "./staticImagePopup.vue";
-import staticImagePopup2 from "./staticImagePopup2.vue";
+import staticImagePopup from "./components/staticImagePopup.vue";
+import staticImagePopup2 from "./components/staticImagePopup2.vue";
 
 import geojson11 from "@/assets/json/geometryProvince/11.json";
 import geojson12 from "@/assets/json/geometryProvince/12.json";
@@ -205,7 +205,7 @@ const customT = (name: string) => {
   return `$t_${name}`;
 };
 
-const testStleFunc = (feature: any) => {
+const testStyleFunc = (feature: any) => {
   if (feature) {
     const text = feature.get("name") ?? "";
     const tempStyle = {
@@ -251,7 +251,7 @@ const geojsonsSource = {
   geojson4: {
     id: "geojson_test_4",
     url: "/geojson/demo/71.json",
-    styleFunction: testStleFunc,
+    styleFunction: testStyleFunc,
   },
   geojson5: {
     id: "geojson_test_5",
@@ -267,7 +267,7 @@ const geojsonsSource = {
   geojson6: {
     id: "geojson_test_6",
     data: geojson13,
-    styleFunction: testStleFunc,
+    styleFunction: testStyleFunc,
   },
   geojson7: {
     id: "geojson_test_7",
@@ -298,7 +298,7 @@ const geojsonsSource = {
     hasClose: true,
     eventType: mapEventType.pointermove,
     popupIsCenter: true,
-    styleFunction: testStleFunc,
+    styleFunction: testStyleFunc,
     htmlString: `
     <div class="col_nw_fs_center ol_cus_image_wraper">
       <div class="row_nw_center_center ol_cus_image_title">singleclick 测试</div>

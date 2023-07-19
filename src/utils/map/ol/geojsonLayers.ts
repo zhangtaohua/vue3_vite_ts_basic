@@ -471,6 +471,59 @@ export default class OlGeojsonLayers {
     return false;
   }
 
+  public clearFeatures(options: GeojsonOptions) {
+    this.clearFeaturesById(options.id);
+  }
+
+  public clearFeaturesById(id: string) {
+    if (this.handle) {
+      const layerObj = this.__layers.get(this.__Id(id));
+      if (layerObj) {
+        layerObj.source.clear();
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public updateFeaturesData(options: GeojsonOptions) {
+    if (!options.data || !options.id) {
+      return null;
+    }
+    this.updateFeaturesDataById(options.id, options.data, options);
+  }
+
+  public updateFeaturesDataById(id: string, geojsonData: any, options: any) {
+    if (this.handle) {
+      const layerObj = this.__layers.get(this.__Id(id));
+      if (layerObj) {
+        layerObj.source.clear();
+        const GeoJsonReader = new GeoJSON({
+          dataProjection: "EPSG:4326",
+          featureProjection: "EPSG:3857",
+        });
+        const features = GeoJsonReader.readFeatures(geojsonData);
+        layerObj.source.addFeatures(features);
+        const meta = {
+          [isCustomizeFlag]: true,
+          [customMeta]: options,
+        };
+
+        layerObj.source.forEachFeature((featue: any) => {
+          featue.setProperties(meta);
+        });
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   public removeLayer(options: GeojsonOptions) {
     return this.removeLayerByID(options.id);
   }
