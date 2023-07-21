@@ -242,8 +242,13 @@ export default class OlDrawHelper extends OlBase {
     this.flyToPositionAndZoom(longitude, latitude, zoom);
   }
 
-  public draw(shape: string) {
-    return this.DrawIns!.drawShape(shape, true, false);
+  public draw(options: DrawBasicOptions) {
+    return this.DrawIns!.drawShape(options);
+  }
+
+  public clearDraw() {
+    this.DrawIns!.clearAllDrawShape();
+    this.DrawIns!.removeallInteraction();
   }
 
   public removeDrawLayer(options: DrawBasicOptions) {

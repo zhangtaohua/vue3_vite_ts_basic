@@ -78,6 +78,9 @@ export const mapWMTSUrl = {
 export const mapboxLocalStyle = {
   basic: "/map/styles/basic/style.json",
   all_blue: "/map/styles/allblue/style.json",
+  lowPixelSatellite: "/map/styles/satelliteofflinestyle/style.json",
+  dark: "/map/styles/dark/style.json",
+  darkLight: "/map/styles/darklight/style.json",
 };
 
 export const bingmapImagerySet = {

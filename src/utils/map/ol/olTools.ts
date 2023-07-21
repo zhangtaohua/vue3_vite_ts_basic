@@ -36,26 +36,32 @@ export function getCorrdinateLongitudeLatitude(corrdinate: any) {
 export function formatArea(polygon: any, projection = "EPSG:3857") {
   const area = getArea(polygon, { projection: projection });
   let outputHtml = "";
-  let outputMu = 0;
+  const outputMu = Math.round(area * 100) / 100;
   if (area > 10000) {
-    outputMu = Math.round((area / 1000000) * 100) / 100;
-    outputHtml = outputMu + " " + "km<sup>2</sup>";
+    const outputkm = Math.round((area / 1000000) * 100) / 100;
+    outputHtml = outputkm + " " + "km<sup>2</sup>";
   } else {
-    outputMu = Math.round(area * 100) / 100;
     outputHtml = outputMu + " " + "m<sup>2</sup>";
   }
-  return { outputHtml, outputMu };
+  return {
+    area: outputMu,
+    areaString: outputHtml,
+  };
 }
 
 export function formatLength(line: any, projection = "EPSG:3857") {
   const length = getLength(line, { projection: projection });
-  let output;
+  let output = "";
+  const lengthTemp = Math.round(length * 100) / 100;
   if (length > 100) {
     output = Math.round((length / 1000) * 100) / 100 + " " + "km";
   } else {
-    output = Math.round(length * 100) / 100 + " " + "m";
+    output = lengthTemp + " " + "m";
   }
-  return output;
+  return {
+    length: lengthTemp,
+    lengthString: output,
+  };
 }
 
 export function formatAreaFromGeojson(geojsonData: any) {
@@ -64,13 +70,23 @@ export function formatAreaFromGeojson(geojsonData: any) {
     featureProjection: "EPSG:3857",
   });
 
-  let area = 0;
+  let areaTemp = 0;
   const geoFeatures = GeoJsonReader.readFeatures(geojsonData);
   geoFeatures.forEach((feature: any) => {
     const geometry = feature.getGeometry();
-    const { outputHtml, outputMu } = formatArea(geometry);
-    area = area + outputMu;
+    const { area, areaString } = formatArea(geometry);
+    areaTemp = areaTemp + area;
   });
 
-  return area;
+  let outputHtml = "";
+  if (areaTemp > 10000) {
+    const outputMu = Math.round((areaTemp / 1000000) * 100) / 100;
+    outputHtml = outputMu + " " + "km<sup>2</sup>";
+  } else {
+    outputHtml = areaTemp + " " + "m<sup>2</sup>";
+  }
+  return {
+    area: areaTemp,
+    areaString: outputHtml,
+  };
 }

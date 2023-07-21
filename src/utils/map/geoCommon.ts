@@ -250,26 +250,46 @@ export function getRectangleFromExtent(extent: any) {
   return polygon;
 }
 
-export function getGeoPointFromXY(x: number, y: number) {
+// 点 Point 一维
+// 多点 MultiPoint  二维
+// 线 LineString 二维
+// 多线 MultiLineString 三维
+// 环 Ring 二维
+// 多边形 Polygon 三维
+// 多维多边形 MultiPolygon 四维
+
+export function getGeoPointFromXY(x: number, y: number, props: any = {}) {
   const point = {
     longitude: x,
     latitude: y,
+    ...props,
   };
   return Geojson.parse(point, { Point: ["latitude", "longitude"] });
 }
 
-export function getGeoPointFromLongitudeLatitude(longitude: number, latitude: number) {
+export function getGeoPointFromCoords(coords: any, props: any = {}) {
+  const point = {
+    longitude: coords[0],
+    latitude: coords[1],
+    ...props,
+  };
+  return Geojson.parse(point, { Point: ["latitude", "longitude"] });
+}
+
+export function getGeoPointFromLongitudeLatitude(longitude: number, latitude: number, props: any = {}) {
   const point = {
     longitude,
     latitude,
+    ...props,
   };
   return Geojson.parse(point, { Point: ["latitude", "longitude"] });
 }
 
-export function getGeoPolygonFromExtent(extent: any) {
+export function getGeoPolygonFromExtent(extent: any, props: any = {}) {
   const rectangle = getRectangleFromExtent(extent);
   const polygon = {
     polygon: rectangle,
+    ...props,
   };
   return Geojson.parse(polygon, { Polygon: "polygon" });
 }
@@ -279,17 +299,37 @@ export function getGeoPolygonFromLDRU(
   ld_latitude: number,
   ru_longitude: number,
   ru_latitude: number,
+  props: any = {},
 ) {
   const polygon = {
     polygon: [
-      [ld_longitude, ld_latitude],
-      [ru_longitude, ld_latitude],
-      [ru_longitude, ru_latitude],
-      [ld_longitude, ru_latitude],
-      [ld_latitude, ld_latitude],
+      [
+        [ld_longitude, ld_latitude],
+        [ru_longitude, ld_latitude],
+        [ru_longitude, ru_latitude],
+        [ld_longitude, ru_latitude],
+        [ld_latitude, ld_latitude],
+      ],
     ],
+    ...props,
   };
   return Geojson.parse(polygon, { Polygon: "polygon" });
+}
+
+export function getGeoPolygonFromPolygonArray(polygonArray: any, props: any = {}) {
+  const polygon = {
+    polygon: polygonArray,
+    ...props,
+  };
+  return Geojson.parse(polygon, { Polygon: "polygon" });
+}
+
+export function getGeoLineFromArray(twoDimArray: any, props: any = {}) {
+  const lindObj = {
+    line: twoDimArray,
+    ...props,
+  };
+  return Geojson.parse(lindObj, { LineString: "line" });
 }
 
 export function calibratePosions(positions: any) {
@@ -338,11 +378,4 @@ export function getTwoDimArrayFromLngLatObj(positions: any) {
     }
   }
   return twoDimArray;
-}
-
-export function getGeoLineFromArray(twoDimArray: any) {
-  const lindObj = {
-    line: twoDimArray,
-  };
-  return Geojson.parse(lindObj, { LineString: "line" });
 }

@@ -13,6 +13,8 @@ import type {
   StyleIconOptions,
 } from "./styleTypes";
 
+export const geodesicModifyGeometryFlag = "geodesic_circle_modify_geo";
+
 export function getColor(color: string | Array<number>) {
   let cColor: string | Array<number> = "rgba(255, 0, 0, 1)";
   if (lodash.isString(color)) {
@@ -175,67 +177,228 @@ export function createIconImagePoint(option: StyleIconOptions) {
   });
 }
 
-export const drawNormalStyle = new Style({
-  image: new CircleStyle({
+export const createDrawNormalStyle = () => {
+  return new Style({
+    geometry: (feature: any) => {
+      return feature.get(geodesicModifyGeometryFlag) || feature.getGeometry();
+    },
+    image: new CircleStyle({
+      fill: new Fill({
+        color: "rgba(24, 144, 255, .2)",
+      }),
+      stroke: new StrokeStyle({
+        color: "rgba(24, 144, 255, 1)",
+        width: 2,
+      }),
+      radius: 5,
+    }),
+    fill: new Fill({
+      // color: 'rgba(24, 144, 255, .2)',
+      color: "rgba(24, 144, 255, 0)",
+    }),
+    stroke: new StrokeStyle({
+      color: "rgba(24, 144, 255, 1)",
+      lineDash: [10, 10],
+      width: 2,
+    }),
+  });
+};
+
+export const createDrawNormalActiveStyle = () => {
+  return new Style({
+    image: new CircleStyle({
+      fill: new Fill({
+        color: "rgba(24, 144, 255, .2)",
+      }),
+      stroke: new StrokeStyle({
+        color: "rgba(24, 144, 255, 1)",
+        width: 2,
+      }),
+      radius: 5,
+    }),
     fill: new Fill({
       color: "rgba(24, 144, 255, .2)",
     }),
     stroke: new StrokeStyle({
       color: "rgba(24, 144, 255, 1)",
-
       width: 2,
     }),
-    radius: 5,
-  }),
-  fill: new Fill({
-    // color: 'rgba(24, 144, 255, .2)',
-    color: "rgba(24, 144, 255, 0)",
-  }),
-  stroke: new StrokeStyle({
-    color: "rgba(24, 144, 255, 1)",
-    width: 2,
-  }),
-});
+  });
+};
 
-export const drawNormalStyleActive = new Style({
-  image: new CircleStyle({
+export const createDrawHighlightStyle = () => {
+  return new Style({
+    image: new CircleStyle({
+      fill: new Fill({
+        color: "rgba(24, 144, 255, .2)",
+      }),
+      stroke: new StrokeStyle({
+        color: "rgba(24, 144, 255, 1)",
+
+        width: 2,
+      }),
+      radius: 5,
+    }),
     fill: new Fill({
-      color: "rgba(24, 144, 255, .2)",
+      color: "rgba(100, 144, 255, .2)",
     }),
     stroke: new StrokeStyle({
-      color: "rgba(24, 144, 255, 1)",
-
+      color: "rgba(100, 144, 255, 1)",
       width: 2,
     }),
-    radius: 5,
-  }),
-  fill: new Fill({
-    color: "rgba(24, 144, 255, .2)",
-  }),
-  stroke: new StrokeStyle({
-    color: "rgba(24, 144, 255, 1)",
-    width: 2,
-  }),
-});
+  });
+};
 
-export const drawHighlightStyle = new Style({
-  image: new CircleStyle({
+export const createSegmentStyle = () => {
+  return new Style({
+    text: new Text({
+      font: "12px Calibri,sans-serif",
+      fill: new Fill({
+        color: "rgba(255, 255, 255, 1)",
+      }),
+      backgroundFill: new Fill({
+        color: "rgba(0, 0, 0, 0.4)",
+      }),
+      padding: [2, 2, 2, 2],
+      textBaseline: "bottom",
+      offsetY: -12,
+    }),
+    image: new RegularShape({
+      radius: 6,
+      points: 3,
+      angle: Math.PI,
+      displacement: [0, 8],
+      fill: new Fill({
+        color: "rgba(0, 0, 0, 0.4)",
+      }),
+    }),
+  });
+};
+
+export const createLabelStyle = () => {
+  return new Style({
+    text: new Text({
+      font: "14px Calibri,sans-serif",
+      fill: new Fill({
+        color: "rgba(255, 255, 255, 1)",
+      }),
+      backgroundFill: new Fill({
+        color: "rgba(0, 0, 0, 0.7)",
+      }),
+      padding: [3, 3, 3, 3],
+      textBaseline: "bottom",
+      offsetY: -15,
+    }),
+    image: new RegularShape({
+      radius: 8,
+      points: 3,
+      angle: Math.PI,
+      displacement: [0, 10],
+      fill: new Fill({
+        color: "rgba(0, 0, 0, 0.7)",
+      }),
+    }),
+  });
+};
+
+export const createLabelLngLatStyle = () => {
+  return new Style({
+    text: new Text({
+      font: "14px Calibri,sans-serif",
+      fill: new Fill({
+        color: "rgba(255, 255, 255, 1)",
+      }),
+      backgroundFill: new Fill({
+        color: "rgba(0, 0, 0, 0.7)",
+      }),
+      padding: [3, 3, 3, 3],
+      textBaseline: "bottom",
+      offsetY: -15,
+    }),
+    image: new RegularShape({
+      radius: 8,
+      points: 3,
+      angle: Math.PI,
+      displacement: [0, 10],
+      fill: new Fill({
+        color: "rgba(0, 0, 0, 0.7)",
+      }),
+    }),
+  });
+};
+
+export const createGeodesicStyle = () => {
+  return new Style({
+    geometry: (feature: any) => {
+      return feature.get(geodesicModifyGeometryFlag) || feature.getGeometry();
+    },
     fill: new Fill({
-      color: "rgba(24, 144, 255, .2)",
+      color: "rgba(255, 255, 255, 0.2)",
     }),
     stroke: new StrokeStyle({
-      color: "rgba(24, 144, 255, 1)",
-
+      color: "#ff3333",
       width: 2,
     }),
-    radius: 5,
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({
+        color: "rgba(0, 0, 0, 0)",
+      }),
+    }),
+  });
+};
+
+export const createModifyStyle = () => {
+  return new Style({
+    image: new CircleStyle({
+      radius: 5,
+      stroke: new StrokeStyle({
+        color: "rgba(0, 0, 0, 0.7)",
+      }),
+      fill: new Fill({
+        color: "rgba(0, 0, 0, 0.4)",
+      }),
+    }),
+    text: new Text({
+      text: "Drag to modify",
+      font: "12px Calibri,sans-serif",
+      fill: new Fill({
+        color: "rgba(255, 255, 255, 1)",
+      }),
+      backgroundFill: new Fill({
+        color: "rgba(0, 0, 0, 0.7)",
+      }),
+      padding: [2, 2, 2, 2],
+      textAlign: "left",
+      offsetX: 15,
+    }),
+  });
+};
+
+export const createTipStyle = () => {
+  return new Style({
+    text: new Text({
+      font: "12px Calibri,sans-serif",
+      fill: new Fill({
+        color: "rgba(255, 255, 255, 1)",
+      }),
+      backgroundFill: new Fill({
+        color: "rgba(0, 0, 0, 0.4)",
+      }),
+      padding: [2, 2, 2, 2],
+      textAlign: "left",
+      offsetX: 15,
+    }),
+  });
+};
+
+export const transparentPolygonStyle = new Style({
+  stroke: new StrokeStyle({
+    color: "rgba(255, 255, 255, 0.0)",
+    width: 0,
   }),
   fill: new Fill({
-    color: "rgba(100, 144, 255, .2)",
-  }),
-  stroke: new StrokeStyle({
-    color: "rgba(100, 144, 255, 1)",
-    width: 2,
+    color: "rgba(255, 255, 255, 0.0)",
   }),
 });
 
@@ -309,64 +472,6 @@ export const GeoJSONStyles = {
     }),
   }),
 };
-
-export const segmentStyle = new Style({
-  text: new Text({
-    font: "12px Calibri,sans-serif",
-    fill: new Fill({
-      color: "rgba(255, 255, 255, 1)",
-    }),
-    backgroundFill: new Fill({
-      color: "rgba(0, 0, 0, 0.4)",
-    }),
-    padding: [2, 2, 2, 2],
-    textBaseline: "bottom",
-    offsetY: -12,
-  }),
-  image: new RegularShape({
-    radius: 6,
-    points: 3,
-    angle: Math.PI,
-    displacement: [0, 8],
-    fill: new Fill({
-      color: "rgba(0, 0, 0, 0.4)",
-    }),
-  }),
-});
-
-export const labelLngLatStyle = new Style({
-  text: new Text({
-    font: "14px Calibri,sans-serif",
-    fill: new Fill({
-      color: "rgba(255, 255, 255, 1)",
-    }),
-    backgroundFill: new Fill({
-      color: "rgba(0, 0, 0, 0.7)",
-    }),
-    padding: [3, 3, 3, 3],
-    textBaseline: "bottom",
-    offsetY: -15,
-  }),
-  image: new RegularShape({
-    radius: 8,
-    points: 3,
-    angle: Math.PI,
-    displacement: [0, 10],
-    fill: new Fill({
-      color: "rgba(0, 0, 0, 0.7)",
-    }),
-  }),
-});
-
-export const transparentPolygonStyle = new Style({
-  stroke: new StrokeStyle({
-    color: "rgba(255, 255, 255, 0.0)",
-    width: 0,
-  }),
-  fill: new Fill({
-    color: "rgba(255, 255, 255, 0.0)",
-  }),
-});
 
 export const geojsonStyleFunction = function (feature: any) {
   return GeoJSONStyles[feature.getGeometry().getType()];

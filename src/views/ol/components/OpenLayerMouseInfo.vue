@@ -48,14 +48,14 @@ export default defineComponent({
 <style scoped lang="scss">
 .ol_mouse_position_container {
   position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
   width: auto;
   min-width: 720px;
   height: auto;
-  bottom: 0px;
-  right: 0px;
-  z-index: 3;
   padding: 5px;
-  background: rgba(26, 32, 44, 0.9);
+  background: rgb(26 32 44 / 90%);
   border-radius: 4px;
 }
 
@@ -66,20 +66,20 @@ export default defineComponent({
 .ol_mouse_position_info {
   width: auto;
   height: 32px;
-  padding: 0px 8px;
+  padding: 0 8px;
 }
 
 .ol_mouse_position_info_title {
-  font-size: 14px;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
   color: #eee;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: "Source Han Sans CN";
 }
 
 .ol_mouse_position_info_info {
-  font-size: 14px;
-  font-family: Source Han Sans CN;
+  color: #fff;
   font-weight: 400;
-  color: #ffffff;
+  font-size: 14px;
+  font-family: "Source Han Sans CN";
 }
 </style>

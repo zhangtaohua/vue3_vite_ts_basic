@@ -29,7 +29,7 @@ export const MAP_DRAW_RECTANGLE = "Rectangle";
 export const MAP_DRAW_POLYGON = "Polygon";
 export const MAP_DRAW_LINE = "LineString";
 export const MAP_DRAW_CIRCLE = "Circle";
-export const MAP_DRAW_GEOMETRY_CIRCLE = "Circle";
+export const MAP_DRAW_GEOMETRY_CIRCLE = MAP_DRAW_CIRCLE;
 export const MAP_DRAW_GEODESIC_CIRCLE = "GeodesicCircle";
 
 export const MAP_DRAW_CLEAR = "Clear";

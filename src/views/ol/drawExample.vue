@@ -18,6 +18,20 @@ import { mapEventType } from "@/utils/map/ol/olConstant";
 
 import { Style } from "ol/style";
 
+import {
+  MAP_DRAW_POINT,
+  MAP_DRAW_SQUARE,
+  MAP_DRAW_RECTANGLE,
+  MAP_DRAW_POLYGON,
+  MAP_DRAW_LINE,
+  MAP_DRAW_CIRCLE,
+  MAP_DRAW_GEOMETRY_CIRCLE,
+  MAP_DRAW_GEODESIC_CIRCLE,
+  MAP_MEASURE_DISTANCE,
+  MAP_MEASURE_AREA,
+  MAP_DRAW_CLEAR,
+} from "@/utils/map/geoConstant";
+
 import MapDrawTools from "./components/MapDrawTools.vue";
 
 onMounted(() => {
@@ -60,13 +74,106 @@ function initGUI() {
   imgFolder.title("晨昏线");
 }
 
-const drawSource = {};
+const testCb = (name: string) => {
+  return (data: any) => {
+    console.log(`Draw__${name}:`, data);
+  };
+};
+
+const drawSource = {
+  [MAP_DRAW_POINT]: {
+    shape: MAP_DRAW_POINT,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_DRAW_POINT),
+  },
+  [MAP_DRAW_SQUARE]: {
+    shape: MAP_DRAW_SQUARE,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_DRAW_SQUARE),
+    isShowSegments: true,
+    isShowLngLat: true,
+    isShowLabel: true,
+  },
+  [MAP_DRAW_RECTANGLE]: {
+    shape: MAP_DRAW_RECTANGLE,
+    isClear: false,
+    isFreehand: false,
+    needModify: false,
+    once: false,
+    callback: testCb(MAP_DRAW_RECTANGLE),
+    isShowSegments: true,
+  },
+  [MAP_DRAW_POLYGON]: {
+    shape: MAP_DRAW_POLYGON,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: true,
+    callback: testCb(MAP_DRAW_POLYGON),
+    isShowLngLat: true,
+  },
+  [MAP_DRAW_LINE]: {
+    shape: MAP_DRAW_LINE,
+    isClear: true,
+    isFreehand: true,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_DRAW_LINE),
+    isShowLabel: true,
+  },
+  [MAP_DRAW_GEOMETRY_CIRCLE]: {
+    shape: MAP_DRAW_GEOMETRY_CIRCLE,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_DRAW_GEOMETRY_CIRCLE),
+  },
+  [MAP_DRAW_GEODESIC_CIRCLE]: {
+    shape: MAP_DRAW_GEODESIC_CIRCLE,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_DRAW_GEODESIC_CIRCLE),
+  },
+  [MAP_MEASURE_DISTANCE]: {
+    shape: MAP_MEASURE_DISTANCE,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_MEASURE_DISTANCE),
+    isShowSegments: true,
+    isShowLngLat: true,
+    isShowLabel: true,
+  },
+  [MAP_MEASURE_AREA]: {
+    shape: MAP_MEASURE_AREA,
+    isClear: true,
+    isFreehand: false,
+    needModify: true,
+    once: false,
+    callback: testCb(MAP_MEASURE_AREA),
+    isShowSegments: true,
+    isShowLngLat: true,
+    isShowLabel: true,
+  },
+};
 
 function actionChangeHandle(action: any) {
   console.log("draw action", action);
-  mapIns?.draw(action).then((res) => {
-    console.log("shapes", res);
-  });
+  if (action === MAP_DRAW_CLEAR) {
+    mapIns.clearDraw();
+  } else {
+    mapIns?.draw(drawSource[action]);
+  }
 }
 </script>
 

@@ -125,12 +125,12 @@ export default defineComponent({
 <style scoped lang="scss">
 .interaction_container {
   position: absolute;
+  right: 1rem;
+  bottom: 1.5rem;
+  z-index: 10;
   width: auto;
   height: 2rem;
-  bottom: 1.5rem;
-  right: 1rem;
-  z-index: 10;
-  background: rgba(26, 32, 44, 0.7);
+  background: rgb(26 32 44 / 70%);
   border-bottom-left-radius: 0.25rem;
 }
 
@@ -145,7 +145,7 @@ export default defineComponent({
 }
 
 .interaction_end_gap {
-  width: 0rem;
+  width: 0;
   height: 2rem;
 }
 
@@ -161,58 +161,58 @@ export default defineComponent({
 }
 
 .interaction_image_show {
+  position: relative;
   width: 1rem;
   height: 1rem;
-  position: relative;
+  transform: translate(-1000vw);
   // filter: drop-shadow(#fff 1000px 0);
   // left: -80px;
-  filter: drop-shadow(1000vw 0 0 #ffffff);
-  transform: translate(-1000vw);
+  filter: drop-shadow(1000vw 0 0 #fff);
 }
 
 .interaction_name {
   width: fit-content;
   height: 2rem;
   padding-left: 0;
-  font-size: 0.75rem;
-  font-family: Source Han Sans CN;
+  color: rgb(255 255 255 / 100%);
   font-weight: 400;
-  color: rgba(255, 255, 255, 1);
+  font-size: 0.75rem;
+  font-family: "Source Han Sans CN";
   cursor: pointer;
 }
 
 .progress_container {
   position: absolute;
-  width: 100%;
-  height: 100%;
   top: 0;
   left: 0;
   z-index: 9;
-  background: rgba(26, 0, 44, 0);
+  width: 100%;
+  height: 100%;
+  background: rgb(26 0 44 / 0%);
 }
 
 .progress_box {
   position: absolute;
-  width: 15rem;
-  height: 2rem;
   top: 3.5rem;
   right: 18rem;
+  width: 15rem;
+  height: 2rem;
 }
 
 .progress_range_label {
   width: auto;
-  font-size: 0.75rem;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
   padding-left: 0.25rem;
-  color: rgba(26, 32, 44, 0.7);
+  color: rgb(26 32 44 / 70%);
+  font-weight: 400;
+  font-size: 0.75rem;
+  font-family: "Source Han Sans CN";
 }
 
 .progress_range_input {
   // -webkit-appearance: none;
   width: 10rem;
   height: 0.5rem;
-  accent-color: rgba(26, 32, 44, 0.7);
+  accent-color: rgb(26 32 44 / 70%);
   // border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
 }
 
