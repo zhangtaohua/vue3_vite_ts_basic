@@ -75,8 +75,14 @@ function initGUI() {
 }
 
 const testCb = (name: string) => {
-  return (data: any) => {
-    console.log(`Draw__${name}:`, data);
+  return (action: string, data: any) => {
+    console.log(`Test1_Draw__${name}:`, action, data);
+  };
+};
+
+const testCb2 = (name: string) => {
+  return (action: string, data: any) => {
+    console.log(`Test2_Draw__${name}:`, action, data);
   };
 };
 
@@ -88,6 +94,7 @@ const drawSource = {
     needModify: true,
     once: false,
     callback: testCb(MAP_DRAW_POINT),
+    isShowAction: true,
   },
   [MAP_DRAW_SQUARE]: {
     shape: MAP_DRAW_SQUARE,
@@ -95,10 +102,11 @@ const drawSource = {
     isFreehand: false,
     needModify: true,
     once: false,
-    callback: testCb(MAP_DRAW_SQUARE),
+    callback: testCb2(MAP_DRAW_SQUARE),
     isShowSegments: true,
     isShowLngLat: true,
     isShowLabel: true,
+    isShowAction: true,
   },
   [MAP_DRAW_RECTANGLE]: {
     shape: MAP_DRAW_RECTANGLE,
@@ -108,6 +116,7 @@ const drawSource = {
     once: false,
     callback: testCb(MAP_DRAW_RECTANGLE),
     isShowSegments: true,
+    isShowAction: true,
   },
   [MAP_DRAW_POLYGON]: {
     shape: MAP_DRAW_POLYGON,
@@ -117,6 +126,7 @@ const drawSource = {
     once: true,
     callback: testCb(MAP_DRAW_POLYGON),
     isShowLngLat: true,
+    isShowAction: true,
   },
   [MAP_DRAW_LINE]: {
     shape: MAP_DRAW_LINE,
@@ -126,6 +136,7 @@ const drawSource = {
     once: false,
     callback: testCb(MAP_DRAW_LINE),
     isShowLabel: true,
+    isShowAction: false,
   },
   [MAP_DRAW_GEOMETRY_CIRCLE]: {
     shape: MAP_DRAW_GEOMETRY_CIRCLE,

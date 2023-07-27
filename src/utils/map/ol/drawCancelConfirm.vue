@@ -1,19 +1,19 @@
 <template>
-  <div :id="id" class="row_nw_fs_center panel_container">
-    <div class="row_nw_fs_center tag_icon"></div>
-    <div class="row_nw_fs_center close_icon" @click="colseHandle">
-      <img class="close_icon_show" src="" />
+  <div :id="id" class="col_nw_fs_center panel_container">
+    <div class="row_nw_fs_center close_icon" @click="colseHandle">X</div>
+    <div class="row_nw_fs_center title_box">请选择绘制操作</div>
+    <div class="row_nw_center_center info_box" style="color: #fff">
+      {{ vNodeData.data.id }}
     </div>
-    <div class="col_nw_sb_fs info_box">
-      <div class="row_nw_fs_center info_label"> {{ customT("测试") }}{{ `：数据更新成功` }} </div>
-      <div class="row_nw_fs_center info_label" @click="cancelHandle">取消</div>
-      <div class="row_nw_fs_center info_label" @click="confirmHandle">确定</div>
+    <div class="row_nw_center_center info_box">
+      <div class="row_nw_center_center info_del" @click="cancelHandle">删除图形</div>
+      <div class="row_nw_center_center info_confirm" @click="confirmHandle">绘制完成</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onUnmounted, onMounted } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "StaticImagePopup",
@@ -72,23 +72,19 @@ export default defineComponent({
   position: absolute;
   z-index: 2;
   width: auto;
-  min-width: 350px;
+  min-width: 250px;
   height: auto;
   background: rgb(0 13 33 / 75%);
   border: 1px solid #f70;
   border-radius: 0.25rem;
 }
 
-.tag_icon {
-  position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
-  width: 0.375rem;
-  height: 0.375rem;
-  background: #fff;
-  border: 1px solid #f70;
-  border-radius: 50%;
-  cursor: pointer;
+.title_box {
+  width: 100%;
+  height: 3rem;
+  color: rgba(255, 255, 255, 1);
+  padding-left: 1rem;
+  font-weight: bold;
 }
 
 .close_icon {
@@ -97,28 +93,48 @@ export default defineComponent({
   right: 0.5rem;
   width: 1rem;
   height: 1rem;
-  color: rgb(255 255 255 / 30%);
-  font-size: 0.375rem;
+  color: rgba(255, 255, 255, 1);
+  font-size: 1rem;
   cursor: pointer;
 }
 
-.close_icon_show {
-  width: 0.5rem;
-  height: 0.5rem;
-}
-
 .info_box {
-  width: max-content;
-  height: auto;
+  width: 100%;
+  height: 2rem;
   margin: 0.875rem 1.375rem;
 }
 
-.info_label {
-  width: max-content;
-  height: 1.25rem;
-  color: rgb(255 255 255 / 100%);
-  font-weight: 300;
-  font-size: 0.64rem;
+.info_del {
+  width: 120px;
+  height: 100%;
+  color: rgba(255, 41, 41, 0.85);
+  font-weight: 400;
+  font-size: 1rem;
   font-family: "Source Han Sans CN";
+  margin-right: 1rem;
+  border: 1px solid rgba(255, 41, 41, 0.85);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.info_del:hover {
+  background-color: rgba(255, 41, 41, 0.85);
+  color: rgba(255, 255, 255, 1);
+}
+
+.info_confirm {
+  width: 120px;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: "Source Han Sans CN";
+  border: 1px solid rgb(14, 105, 241);
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.info_confirm:hover {
+  background-color: rgb(14, 105, 241);
 }
 </style>

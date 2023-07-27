@@ -8,4 +8,5 @@ export interface DrawBasicOptions {
   isShowSegments?: boolean;
   isShowLngLat?: boolean;
   isShowLabel?: boolean;
+  isShowAction?: boolean;
 }
