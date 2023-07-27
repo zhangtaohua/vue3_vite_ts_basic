@@ -194,7 +194,7 @@ export const createDrawNormalStyle = () => {
     }),
     fill: new Fill({
       // color: 'rgba(24, 144, 255, .2)',
-      color: "rgba(24, 144, 255, 0)",
+      color: "rgba(24, 144, 255, 0.2)",
     }),
     stroke: new StrokeStyle({
       color: "rgba(24, 144, 255, 1)",

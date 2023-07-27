@@ -8,8 +8,25 @@ import { GeometryCollection, Point, Polygon, LineString, MultiPoint, Circle as C
 import { circular, fromCircle } from "ol/geom/Polygon";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
+import { getCenter } from "ol/extent";
+import { unByKey } from "ol/Observable.js";
 
 import OlBase from "./base";
+
+import OpenLayersMapEvent from "./mapEvent";
+import type { EventOptions } from "./mapEventTypes";
+
+import OpenLayerVueNodePopup from "./vueNodePopupLayers";
+import type { VueNodeOptions } from "./vueNodePopupLayersTypes";
+
+import { earthExtent, popupType, isCustomizeFlag, customMeta } from "../geoConstant";
+
+import { mapEventType } from "./olConstant";
+
+import DrawCancelConfirm from "./drawCancelConfirm.vue";
+
+import { getCorrdinateLongitudeLatitude } from "./olTools";
+
 import {
   geodesicModifyGeometryFlag,
   createDrawNormalStyle,
@@ -50,9 +67,13 @@ export default class OlDrawBasic {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
 
+  public vuePopupIns: OpenLayerVueNodePopup | null = null;
+  public mapEventIns: OpenLayersMapEvent | null = null;
+
   private __layers: any = null;
   private __layerIdPrefix = "DRAW_";
   private __drawData: any = {};
+  private __crurentSelDrawData: any = {};
 
   public drawType = "";
   public drawTag: Draw | null = null;
@@ -72,10 +93,16 @@ export default class OlDrawBasic {
   public sketchFeature: any = null;
   public listener: any = null;
 
+  public vueNodePopupOptions: any = null;
+  public eventOptions: any = null;
+
   constructor(mapBaseIns: OlBase) {
     this.olBaseHandle = mapBaseIns;
     this.handle = mapBaseIns.handle;
     this.__layers = new Map();
+
+    this.vuePopupIns = new OpenLayerVueNodePopup(mapBaseIns);
+    this.mapEventIns = new OpenLayersMapEvent(mapBaseIns);
 
     this.segmentStyles = [createSegmentStyle()];
     this.lableLngLatStyles = [createLabelLngLatStyle()];
@@ -111,9 +138,47 @@ export default class OlDrawBasic {
       this.handle.addLayer(this.InteractionLayer);
       this.__layers.set(this.__Id(id), layerObj);
     }
+
+    this.vueNodePopupOptions = {
+      id: `${this.__layerIdPrefix}vnode_popup`,
+      name: `${this.__layerIdPrefix}vnode_popup`,
+      vNode: DrawCancelConfirm,
+      vNodeData: {
+        data: { abc: 1, bbc: 2 },
+        cancelCb: () => {
+          console.log("cancelCb", this.__crurentSelDrawData);
+          console.log(this.interactionSource);
+          this.__removeSourceFeatureById(this.__crurentSelDrawData.id);
+          this.vuePopupIns?.hiddenPopupByID(this.vueNodePopupOptions.id);
+        },
+        confirmCb: () => {
+          console.log("confirmCb", this.__crurentSelDrawData);
+          this.vuePopupIns?.hiddenPopupByID(this.vueNodePopupOptions.id);
+        },
+      },
+      wrapX: true,
+    };
+    this.vuePopupIns.addLayer(this.vueNodePopupOptions);
+
+    this.eventOptions = {
+      id: `${this.__layerIdPrefix}_map_event`,
+      type: mapEventType.singleclick,
+      cb: this.vNodePopupCb({
+        callback: (feature: any, options: any) => {
+          console.log("HEHE", feature);
+          this.__crurentSelDrawData = feature.get("__drawData");
+        },
+        popupIsCenter: false,
+      }),
+      delay: 300,
+      debounce: false,
+    };
+    this.mapEventIns!.addEvent(this.eventOptions);
   }
 
   public destructor() {
+    this.mapEventIns!.destructor();
+    this.vuePopupIns!.destructor();
     this.modify = null;
     this.snapTag = null;
     this.drawTag = null;
@@ -130,6 +195,14 @@ export default class OlDrawBasic {
   private __Name(name: string) {
     return `${this.__layerIdPrefix}${name}`;
   }
+
+  public __removeSourceFeatureById = (id: string) => {
+    const removeFeature = this.interactionSource.getFeatureById(id);
+    console.log("__removeSourceFeatureById", id, this.interactionSource.getFeatures());
+    if (removeFeature) {
+      this.interactionSource.removeFeature(removeFeature);
+    }
+  };
 
   // 取消绘制功能
   public cancelDraw = (event: any) => {
@@ -187,6 +260,42 @@ export default class OlDrawBasic {
       this.handle.removeInteraction(this.modify);
     }
   }
+
+  public vNodePopupCb = (options: any) => {
+    return (event: any) => {
+      let pixel = event.pixel;
+      if (!pixel.length) {
+        pixel = this.handle.getEventPixel(event.originalEvent);
+      }
+      const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
+        const isCustom = feature.get(isCustomizeFlag);
+        const metadata = feature.get(customMeta);
+        const id = metadata?.id;
+        console.log("vNodePopupCb isCustom", feature, isCustom, metadata);
+        if (isCustom && id) {
+          return feature;
+        }
+      });
+
+      if (feature) {
+        console.log("vNodePopupCb 3", feature);
+        if (options.callback) {
+          options.callback(feature, options);
+          // this.vuePopupIns?.updateLayer(options as VueNodeOptions);
+        }
+        let position = event.coordinate;
+        if (options.popupIsCenter) {
+          const featureExtent = feature.getGeometry().getExtent();
+          position = getCenter(featureExtent);
+        }
+        this.vuePopupIns?.showPopupByID(this.vueNodePopupOptions.id, position);
+      } else {
+        if (options.eventType == mapEventType.pointermove) {
+          this.vuePopupIns?.hiddenPopupByID(this.vueNodePopupOptions.id);
+        }
+      }
+    };
+  };
 
   public drawStyleFunction(
     feature: any,
@@ -332,7 +441,7 @@ export default class OlDrawBasic {
     return this.defaultModifyStyle(feature);
   }
 
-  public getDrawData = (options: DrawBasicOptions, featureId: string) => {
+  public getDrawData = (options: DrawBasicOptions) => {
     return (event: any) => {
       const shape = options.shape;
       const callbackFunc = options.callback;
@@ -347,26 +456,42 @@ export default class OlDrawBasic {
         lengthString: "0 m",
       };
       let geoType = "";
+      let center: any = [];
 
       let poly = null;
+      let propFeature = null;
+      const featureId = `draw_${nanoid(10)}`;
       if (event.type == "drawend") {
+        propFeature = event.feature;
         poly = event.feature.getGeometry();
       } else if (event.type == "modifyend") {
         const features = event.features.getArray();
+        propFeature = features[0];
         poly = features[0].getGeometry();
       }
+      propFeature.setId(featureId);
+      propFeature.setProperties({
+        [isCustomizeFlag]: true,
+        [customMeta]: {
+          ...options,
+          id: featureId,
+        },
+      });
 
       if (shape == MAP_DRAW_POINT) {
         geoType = MAP_DRAW_POINT;
         const coord = poly.getCoordinates();
-        formatCoords = transform(coord, "EPSG:3857", "EPSG:4326");
-        formatCoords = calibrateWrapLongitudeLatitude(formatCoords[0], formatCoords[1]);
+        // formatCoords = transform(coord, "EPSG:3857", "EPSG:4326");
+        // formatCoords = calibrateWrapLongitudeLatitude(formatCoords[0], formatCoords[1]);
+        formatCoords = getCorrdinateLongitudeLatitude(coord);
         formatCoords = [formatCoords.longitude, formatCoords.latitude];
+        center = [formatCoords[0], formatCoords[1]];
         this.__drawData = {
           id: featureId,
           shape: shape,
           geoType: geoType,
           coordinates: formatCoords,
+          center: center,
           area: areaTemp,
           length: lengthTemp,
         };
@@ -383,11 +508,17 @@ export default class OlDrawBasic {
         formatCoords = [[this.getCoordinatesLngLat(coord)]];
         areaTemp = formatArea(poly);
 
+        const featureExtent = poly.getExtent();
+        const centerTemp = getCenter(featureExtent);
+        const centerTemp2 = getCorrdinateLongitudeLatitude(centerTemp);
+        center = [centerTemp2.longitude, centerTemp2.latitude];
+
         this.__drawData = {
           id: featureId,
           shape: shape,
           geoType: geoType,
           coordinates: formatCoords,
+          center: center,
           area: areaTemp,
           length: lengthTemp,
         };
@@ -399,11 +530,16 @@ export default class OlDrawBasic {
         formatCoords = [this.getCoordinatesLngLat(coord)];
         lengthTemp = formatLength(poly);
 
+        const centerLength = Math.floor(formatCoords[0].length / 2);
+        const centerTemp = formatCoords[0][centerLength];
+        center = [centerTemp[0], centerTemp[1]];
+
         this.__drawData = {
           id: featureId,
           shape: shape,
           geoType: geoType,
           coordinates: formatCoords,
+          center: center,
           area: areaTemp,
           length: lengthTemp,
         };
@@ -416,11 +552,16 @@ export default class OlDrawBasic {
         formatCoords = [[this.getCoordinatesLngLat(coordinates)]];
         areaTemp = formatArea(circle);
 
+        const centerTemp = poly.getCenter();
+        const centerTemp2 = getCorrdinateLongitudeLatitude(centerTemp);
+        center = [centerTemp2.longitude, centerTemp2.latitude];
+
         this.__drawData = {
           id: featureId,
           shape: shape,
           geoType: geoType,
           coordinates: formatCoords,
+          center: center,
           area: areaTemp,
           length: lengthTemp,
         };
@@ -430,17 +571,33 @@ export default class OlDrawBasic {
         geoType = MAP_DRAW_POLYGON;
         if (poly.getType() == "GeometryCollection") {
           const geometries = poly.getGeometries();
+          if (geometries.length == 2) {
+            if (geometries[1].getType() == "Point") {
+              const coord = geometries[1].getCoordinates();
+              const centerTemp2 = getCorrdinateLongitudeLatitude(coord);
+              center = [centerTemp2.longitude, centerTemp2.latitude];
+            }
+          }
           for (let i = 0; i < geometries.length; i++) {
             if (geometries[i].getType() == "Polygon") {
               const coord = geometries[i].getCoordinates();
               formatCoords = [[this.getCoordinatesLngLat(coord)]];
               areaTemp = formatArea(poly);
 
+              if (center && center.length !== 2) {
+                const featureExtent = poly.getExtent();
+                const centerTemp = getCenter(featureExtent);
+                const centerTemp2 = getCorrdinateLongitudeLatitude(centerTemp);
+                center = [centerTemp2.longitude, centerTemp2.latitude];
+                console.log("GeometryCollection", poly, featureExtent, geometries[i].getExtent());
+              }
+
               this.__drawData = {
                 id: featureId,
                 shape: shape,
                 geoType: geoType,
                 coordinates: formatCoords,
+                center: center,
                 area: areaTemp,
                 length: lengthTemp,
               };
@@ -457,10 +614,12 @@ export default class OlDrawBasic {
         shape: shape,
         geoType: geoType,
         coordinates: formatCoords,
+        center: center,
         geojson: formatGeoJson,
         area: areaTemp,
         length: lengthTemp,
       };
+      propFeature.set("__drawData", this.__drawData);
       if (callbackFunc) {
         callbackFunc(this.__drawData);
       }
@@ -521,7 +680,6 @@ export default class OlDrawBasic {
           circle.transform("EPSG:4326", projection);
           geometries[0].setCoordinates(circle.getCoordinates());
           geometry.setGeometries(geometries);
-          // console.log("hhee", coordinates, center, last, radius, circle);
           return geometry;
         };
       } else if (shape == MAP_MEASURE_DISTANCE) {
@@ -566,17 +724,20 @@ export default class OlDrawBasic {
         // let tooltipCoord = event.coordinate;
         // this.listener = this.sketchFeature.getGeometry().on("change", (e: any) => {
         //   // 在这里可以获取geo 信息进行处理。
+        //   console.log("listener", e);
         // });
       });
 
       this.drawTag.on("drawend", (event: any) => {
         // console.log("drawend", event, event.feature.getGeometry());
         this.removeDrawBackCB();
+        // this.sketchFeature = null;
+        // unByKey(this.listener);
         if (options.needModify) {
           this.modify.setActive(true);
         }
-        const featureId = `draw_${nanoid(10)}`;
-        this.getDrawData(options, featureId)(event);
+
+        this.getDrawData(options)(event);
 
         if (options.once) {
           if (!options.needModify) {
@@ -629,8 +790,7 @@ export default class OlDrawBasic {
               feature.unset(geodesicModifyGeometryFlag, true);
             }
           });
-          const featureId = `draw_${nanoid(10)}`;
-          this.getDrawData(options, featureId)(event);
+          this.getDrawData(options)(event);
         });
       }
 

@@ -33,7 +33,7 @@ export default class OlVueNodePopup {
     this.olBaseHandle = null;
     this.__layers = null;
     this.__DomMap = null;
-  };
+  }
 
   private __Id(id: string) {
     return `${this.__layerIdPrefix}${id}`;
@@ -57,12 +57,13 @@ export default class OlVueNodePopup {
       customT = options.customT;
     }
 
-    let closeFunc = () => {
+    const closeFunc = () => {
       this.hiddenPopupByID(options.id);
       // console.log("closeFunc", options.id);
     };
 
     const overlayInstance = createApp(vNode, {
+      ...options,
       id: `${id}_inner`,
       name,
       vNodeData,
@@ -72,30 +73,30 @@ export default class OlVueNodePopup {
     });
 
     const overlayDomContainner = document.createElement("div");
-    overlayDomContainner.id = id
+    overlayDomContainner.id = id;
     // 先删除旧的dom
     const oldDom = this.__DomMap.get(id);
-    if(oldDom) {
+    if (oldDom) {
       // 这是错的
       // this.mapDomContainner?.removeChild(oldDom);
       // 这可以
-      let oldParen = oldDom?.parentNode
+      const oldParen = oldDom?.parentNode;
       oldParen?.removeChild(oldDom);
       this.__DomMap.delete(id);
     }
 
     const overlayInstanceReal = overlayInstance.mount(overlayDomContainner); //根据模板创建一个面板
     this.mapDomContainner?.appendChild(overlayDomContainner);
-    this.__DomMap.set(id, overlayDomContainner)
-    
+    this.__DomMap.set(id, overlayDomContainner);
+
     return {
       overlayDomContainner,
       name,
-    }
-  }
+    };
+  };
 
   public createLayer(options: VueNodeOptions) {
-    const {overlayDomContainner, name} = this.createVueDom(options);
+    const { overlayDomContainner, name } = this.createVueDom(options);
 
     const layer = new Overlay({
       element: overlayDomContainner,
@@ -134,7 +135,7 @@ export default class OlVueNodePopup {
         layerObj.layer.setElement(overlayDomContainner);
       }
     }
-  }
+  };
 
   public hasLayer(options: VueNodeOptions) {
     if (this.olBaseHandle && this.__layers.size) {
@@ -186,7 +187,7 @@ export default class OlVueNodePopup {
 
   public showPopup = (options: VueNodeOptions, coordinate: Array<number>) => {
     return this.showPopupByID(options.id, coordinate);
-  }
+  };
 
   public showPopupByID = (id: string, coordinate: Array<number>) => {
     if (this.olBaseHandle) {
@@ -204,7 +205,7 @@ export default class OlVueNodePopup {
 
   public hiddenPopup = (options: VueNodeOptions) => {
     return this.hiddenPopupByID(options.id);
-  }
+  };
 
   // need arrow funcion!!!
   public hiddenPopupByID = (id: string) => {
