@@ -3,7 +3,7 @@ import xyzLayers from "@/utils/map/ol/xyzLayers";
 import windLayers from "@/utils/map/ol/windLayers";
 import xmlWmtsLayers from "@/utils/map/ol/xmlWmtsLayers";
 import geojsonLayers from "@/utils/map/ol/geojsonBasicLayers";
-import { mapXYZUrl } from "@/utils/map/ol/sourceUrl";
+import { mapXYZUrl } from "@/utils/map/sourceUrl";
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import OpenLayersViewEvent from "@/utils/map/ol/mapViewEvent";
 import OpenLayerVueNodePopup from "@/utils/map/ol/vueNodePopupLayers";

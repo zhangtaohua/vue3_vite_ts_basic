@@ -8,7 +8,7 @@ import { onMounted, onUnmounted } from "vue";
 import OlBase from "@/utils/map/ol/base";
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
-import { mapboxLocalStyle } from "@/utils/map/ol/sourceUrl";
+import { mapboxLocalStyle } from "@/utils/map/sourceUrl";
 
 onMounted(() => {
   initMap();

@@ -8,7 +8,7 @@ import { onMounted, onUnmounted } from "vue";
 import OlBase from "@/utils/map/ol/base";
 import xyzLayers from "@/utils/map/ol/xyzLayers";
 import type { XYZOptions } from "@/utils/map/ol/xyzLayersTypes";
-import { mapXYZUrl } from "@/utils/map/ol/sourceUrl";
+import { mapXYZUrl } from "@/utils/map/sourceUrl";
 
 onMounted(() => {
   initMap();

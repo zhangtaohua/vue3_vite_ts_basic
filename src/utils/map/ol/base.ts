@@ -29,11 +29,11 @@ export default class OlBase {
   private __zIndex = 10;
 
   // 构造函数 传入参数分别为 容器ID, 屏幕的Ratio, 最小level 最大level
-  constructor(target: string, pixelRatio = 1, minLevel = 1, maxLevel = 21) {
+  constructor(target: string, pixelRatio: number, minLevel = 1, maxLevel = 21) {
     this.container = target;
     this.minLevel = minLevel;
     this.maxLevel = maxLevel;
-    this.pixelRatio = pixelRatio;
+    this.pixelRatio = pixelRatio || (window ? window.devicePixelRatio : 1);
 
     const controls = olControl
       .defaults({

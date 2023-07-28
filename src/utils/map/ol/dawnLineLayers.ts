@@ -7,7 +7,7 @@ import { Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 // import moment from "moment";
-import { DawnLineOptions } from "./dawnLineLayersTypes";
+import type { DawnLineOptions } from "./dawnLineLayersTypes";
 
 import { nanoid } from "nanoid";
 

@@ -56,6 +56,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/cesium",
+    name: "cesiumExample",
+    children: [
+      {
+        path: "/cesium/load",
+        name: "cesiumLoadExample",
+        component: () => import("@/views/cesium/basicLoadExample.vue"),
+      },
+    ],
+  },
   // pathMatch is the name of the param, e.g., going to /not/found yields
   // { params: { pathMatch: ['not', 'found'] }}
   // this is thanks to the last *, meaning repeated params and it is necessary if you

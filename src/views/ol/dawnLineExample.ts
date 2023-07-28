@@ -7,7 +7,6 @@ import type { bingmapOptions } from "@/utils/map/ol/bingmapLayersTypes";
 
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
-import { mapboxLocalStyle } from "@/utils/map/ol/sourceUrl";
 
 import OlDawnLineLayers from "@/utils/map/ol/dawnLineLayers";
 import type { DawnLineOptions } from "@/utils/map/ol/dawnLineLayersTypes";
@@ -22,7 +21,7 @@ import type { VueNodeOptions } from "@/utils/map/ol/vueNodePopupLayersTypes";
 import OpenLayersPopup from "@/utils/map/ol/popupLayers";
 import type { PopupOption } from "@/utils/map/ol/popupLayersTypes";
 
-import { mapXYZUrl, bingmapImagerySet } from "@/utils/map/ol/sourceUrl";
+import { mapXYZUrl, bingmapImagerySet, mapboxLocalStyle } from "@/utils/map/sourceUrl";
 import { defaultMapOptions } from "@/utils/map/geoConstant";
 
 import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue, popupType } from "./MapConst";

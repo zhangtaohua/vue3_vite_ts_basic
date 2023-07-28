@@ -8,7 +8,7 @@ import { transformExtentTo3857 } from "./olTools";
 import { earthExtent } from "../geoConstant";
 import starwizMapConfig from "@/common/mapKeys";
 import { mapKeys } from "../geoConstant";
-import { bingmapImagerySet } from "./sourceUrl";
+import { bingmapImagerySet } from "../sourceUrl";
 import type { bingmapOptions } from "./bingmapLayersTypes";
 
 const bingmapKey = starwizMapConfig

@@ -82,8 +82,8 @@ export default defineComponent({
 .title_box {
   width: 100%;
   height: 3rem;
-  color: rgba(255, 255, 255, 1);
   padding-left: 1rem;
+  color: rgb(255 255 255 / 100%);
   font-weight: bold;
 }
 
@@ -93,7 +93,7 @@ export default defineComponent({
   right: 0.5rem;
   width: 1rem;
   height: 1rem;
-  color: rgba(255, 255, 255, 1);
+  color: rgb(255 255 255 / 100%);
   font-size: 1rem;
   cursor: pointer;
 }
@@ -107,34 +107,34 @@ export default defineComponent({
 .info_del {
   width: 120px;
   height: 100%;
-  color: rgba(255, 41, 41, 0.85);
+  margin-right: 1rem;
+  color: rgb(255 41 41 / 85%);
   font-weight: 400;
   font-size: 1rem;
   font-family: "Source Han Sans CN";
-  margin-right: 1rem;
-  border: 1px solid rgba(255, 41, 41, 0.85);
+  border: 1px solid rgb(255 41 41 / 85%);
   border-radius: 0.25rem;
   cursor: pointer;
 }
 
 .info_del:hover {
-  background-color: rgba(255, 41, 41, 0.85);
-  color: rgba(255, 255, 255, 1);
+  color: rgb(255 255 255 / 100%);
+  background-color: rgb(255 41 41 / 85%);
 }
 
 .info_confirm {
   width: 120px;
   height: 100%;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgb(255 255 255 / 85%);
   font-weight: 400;
   font-size: 1rem;
   font-family: "Source Han Sans CN";
-  border: 1px solid rgb(14, 105, 241);
+  border: 1px solid rgb(14 105 241);
   border-radius: 0.25rem;
   cursor: pointer;
 }
 
 .info_confirm:hover {
-  background-color: rgb(14, 105, 241);
+  background-color: rgb(14 105 241);
 }
 </style>

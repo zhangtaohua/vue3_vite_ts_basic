@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^3.2.20",
+    "cesium": "^1.107.2",
     "geojson": "^0.5.0",
     "lil-gui": "^0.18.2",
     "lodash": "^4.17.21",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
+    "@types/cesium": "^1.70.0",
     "@types/ol": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
@@ -71,6 +73,7 @@
     "typescript": "^5.0.2",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
+    "vite-plugin-cesium": "^1.2.22",
     "vue-eslint-parser": "^9.3.1",
     "vue-tsc": "^1.4.2"
   },
