@@ -65,6 +65,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "cesiumLoadExample",
         component: () => import("@/views/cesium/basicLoadExample.vue"),
       },
+      {
+        path: "/cesium/orbit",
+        name: "cesiumOrbitExample",
+        component: () => import("@/views/cesium/satelliteOrbitExample.vue"),
+      },
     ],
   },
   // pathMatch is the name of the param, e.g., going to /not/found yields

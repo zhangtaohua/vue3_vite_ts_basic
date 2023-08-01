@@ -15,7 +15,8 @@
 
       <div class="row_nw_center_center ol_title">cesium 实例</div>
       <div class="row_nw_fs_center ol_example_box">
-        <router-link to="/cesium/load" class="ol_example_title">基础测试地图</router-link>
+        <router-link to="/cesium/load" class="ol_example_title">基础底图切换 实例</router-link>
+        <router-link to="/cesium/orbit" class="ol_example_title">卫星轨道 实例</router-link>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@ import xyzLayers from "@/utils/map/ol/xyzLayers";
 import type { XYZOptions } from "@/utils/map/ol/xyzLayersTypes";
 
 import bingmapsLayers from "@/utils/map/ol/bingmapLayers";
-import type { bingmapOptions } from "@/utils/map/ol/bingmapLayersTypes";
+import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";

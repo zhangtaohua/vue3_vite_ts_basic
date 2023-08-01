@@ -15,7 +15,6 @@ export default class CesiumBase {
 
   public prevClockTime: Cesium.JulianDate = Cesium.JulianDate.fromDate(new Date());
 
-  private __zIndex = 0;
   public flyToDefaultMinHeight = 0;
   public flyToDefaultMaxHeight = 37000000; // 27000000
 
@@ -23,25 +22,16 @@ export default class CesiumBase {
   public minZoom = 0;
 
   public getCurrentzIndex(zIndex: any) {
-    let zIndexNew = this.__zIndex;
+    let zIndexNew = 0;
     if (this.viewer) {
       const layersLength = this.imageryLayers.length;
+      zIndexNew = layersLength;
       if (zIndex) {
         if (zIndex <= layersLength) {
           zIndexNew = zIndex;
-        } else {
-          zIndexNew = layersLength;
-        }
-      } else {
-        if (this.__zIndex <= layersLength) {
-          zIndexNew = this.__zIndex;
-        } else {
-          zIndexNew = layersLength;
         }
       }
     }
-
-    this.__zIndex++;
     return zIndexNew;
   }
 
@@ -91,9 +81,16 @@ export default class CesiumBase {
       imageryProvider: undefined,
       mapProjection: mapProjection,
       skyBox: skyBox,
+      // orderIndependentTranslucency: false,  // 为了背景透明
+      // contextOptions: {
+      //   webgl: {
+      //     alpha: true,
+      //   },
+      // },
     });
 
     this.imageryLayers = this.viewer.imageryLayers;
+
     this.removeAllMapLayers(true);
     // fly
     // this.viewer.camera.flyTo({
@@ -105,6 +102,13 @@ export default class CesiumBase {
     //   },
     //   duration: 10,
     // });
+
+    // 抗锯齿
+    this.viewer.scene.fxaa = true;
+    this.viewer.scene.postProcessStages.fxaa.enabled = false;
+
+    // 水雾特效
+    // this.viewer.scene.globe.showGroundAtmosphere = true;
 
     // 删除鼠标左键双击功能--追踪该位置
     this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
@@ -127,6 +131,9 @@ export default class CesiumBase {
     if (options.viewMode) {
       this.switchViewMode(options.viewMode);
     }
+
+    // 设置球的背景色为 透明
+    this.setSphereBgColor(new Cesium.Color(1.0, 1.0, 1.0, 1));
   }
 
   public destructor() {
@@ -141,6 +148,18 @@ export default class CesiumBase {
       this.viewerGL && this.viewerGL.getExtension("WEBGL_lose_context").loseContext();
       this.viewerGL = null;
       this.container = "";
+    }
+  }
+
+  public setSphereBgColor(color: any) {
+    if (this.viewer) {
+      this.scene.globe.baseColor = color;
+    }
+  }
+
+  public setSpaceBgColor(color: any) {
+    if (this.viewer) {
+      this.scene.backgroundColor = color;
     }
   }
 

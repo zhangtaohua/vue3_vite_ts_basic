@@ -26,7 +26,7 @@ import {
   calibratePosions,
 } from "../geoCommon";
 
-export default class OlBasicGeoJson {
+export default class OlSatelliteOrbitLayers {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
   public GeojsonMapIns: OlGeojsonLayers | null = null;
@@ -71,8 +71,10 @@ export default class OlBasicGeoJson {
     // let name = options.name ? options.name : nanoid(10);
     // name = this.__Name(name);
 
+    const timeInterval = options.timeInterval ? options.timeInterval : 1000;
+
     const orbitIns = new SatelliteOrbit(options.tle1, options.tle2);
-    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, options.timeInterval, true);
+    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, timeInterval, true);
     const oribtOptions = {
       ...options,
       id: `${options.id}_orbit`,
@@ -86,7 +88,7 @@ export default class OlBasicGeoJson {
     let OldLnglatData: any = null;
     if (options.isShowSat) {
       const now = new Date().toString();
-      OldLnglatData = orbitIns.getOrbitGeojson(options.startTime, now, options.timeInterval, true);
+      OldLnglatData = orbitIns.getOrbitGeojson(options.startTime, now, timeInterval, true);
       const currentData = orbitIns.getCurrenPositionGeojson(now);
       console.log("currentData", currentData);
       satOptions = {

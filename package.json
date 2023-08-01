@@ -26,6 +26,7 @@
   "dependencies": {
     "ant-design-vue": "^3.2.20",
     "cesium": "^1.107.2",
+    "cesium-tdt": "^1.1.0",
     "geojson": "^0.5.0",
     "lil-gui": "^0.18.2",
     "lodash": "^4.17.21",

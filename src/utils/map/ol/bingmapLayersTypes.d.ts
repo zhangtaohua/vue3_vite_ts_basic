@@ -1,4 +1,4 @@
-export interface bingmapOptions {
+export interface BingMapsOptions {
   id: string;
   imagerySet: string;
   hidpi?: boolean;

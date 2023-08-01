@@ -8,4 +8,5 @@ export interface UrlTemplateOptions extends UrlTemplateImageryProvider.Construct
   extent?: Array<number>;
   minZoom?: number;
   maxZoom?: number;
+  subdomains?: Array<string>;
 }

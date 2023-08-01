@@ -9,7 +9,7 @@ import { earthExtent } from "../geoConstant";
 import starwizMapConfig from "@/common/mapKeys";
 import { mapKeys } from "../geoConstant";
 import { bingmapImagerySet } from "../sourceUrl";
-import type { bingmapOptions } from "./bingmapLayersTypes";
+import type { BingMapsOptions } from "./bingmapLayersTypes";
 
 const bingmapKey = starwizMapConfig
   ? starwizMapConfig.bingmapKey
@@ -45,7 +45,7 @@ export default class OlXYZLayers {
   }
 
   public createLayer(
-    options: bingmapOptions = {
+    options: BingMapsOptions = {
       id: "",
       imagerySet: bingmapImagerySet.CanvasLight,
       hidpi: false,
@@ -107,7 +107,7 @@ export default class OlXYZLayers {
     return layerObj;
   }
 
-  public addLayer(options: bingmapOptions) {
+  public addLayer(options: BingMapsOptions) {
     if (this.handle) {
       const layerObj = this.createLayer(options);
       if (layerObj) {
@@ -122,7 +122,7 @@ export default class OlXYZLayers {
     }
   }
 
-  public fitToView(options: bingmapOptions) {
+  public fitToView(options: BingMapsOptions) {
     if (this.olBaseHandle) {
       if (options.extent) {
         this.olBaseHandle.fitToExtent(options.extent);
@@ -133,7 +133,7 @@ export default class OlXYZLayers {
     }
   }
 
-  public hasLayer(options: bingmapOptions) {
+  public hasLayer(options: BingMapsOptions) {
     if (this.olBaseHandle && this.__layers.size) {
       return this.__layers.has(this.__Id(options.id));
     }
@@ -147,7 +147,7 @@ export default class OlXYZLayers {
     return false;
   }
 
-  public removeLayer(options: bingmapOptions) {
+  public removeLayer(options: BingMapsOptions) {
     return this.removeLayerByID(options.id);
   }
 
@@ -181,7 +181,7 @@ export default class OlXYZLayers {
     }
   }
 
-  public setLayerOpacity(options: bingmapOptions, opacity: number) {
+  public setLayerOpacity(options: BingMapsOptions, opacity: number) {
     return this.setLayerOpacityByID(options.id, opacity);
   }
 
@@ -199,7 +199,7 @@ export default class OlXYZLayers {
     }
   }
 
-  public showHiddenLayer(options: bingmapOptions, isShow: boolean) {
+  public showHiddenLayer(options: BingMapsOptions, isShow: boolean) {
     return this.showHiddenLayerByID(options.id, isShow);
   }
 

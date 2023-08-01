@@ -3,12 +3,12 @@ import xyzLayers from "@/utils/map/ol/xyzLayers";
 import type { XYZOptions } from "@/utils/map/ol/xyzLayersTypes";
 
 import bingmapsLayers from "@/utils/map/ol/bingmapLayers";
-import type { bingmapOptions } from "@/utils/map/ol/bingmapLayersTypes";
+import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
-import OlSatelliteOrbitLayer from "@/utils/map/ol/satelliteOrbitLayers";
+import OlSatelliteOrbitLayers from "@/utils/map/ol/satelliteOrbitLayers";
 import type { SatelliteOrbitOptions } from "@/utils/map/ol/satelliteOrbitLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
@@ -33,7 +33,7 @@ export default class OlSatelliteOrbitHelper extends OlBase {
   private __funcLayers: any = null; // 功能图层
   public XYZIns: xyzLayers | null = null;
   public BingmapIns: bingmapsLayers | null = null;
-  public SatelliteOrbitIns: OlSatelliteOrbitLayer | null = null;
+  public SatelliteOrbitIns: OlSatelliteOrbitLayers | null = null;
   public mapboxLayerIns: mapboxLayers | null = null;
 
   public vuePopupIns: OpenLayerVueNodePopup | null = null;
@@ -108,7 +108,7 @@ export default class OlSatelliteOrbitHelper extends OlBase {
 
     this.XYZIns = new xyzLayers(this);
     this.BingmapIns = new bingmapsLayers(this);
-    this.SatelliteOrbitIns = new OlSatelliteOrbitLayer(this);
+    this.SatelliteOrbitIns = new OlSatelliteOrbitLayers(this);
     this.mapboxLayerIns = new mapboxLayers(this);
 
     this.mapEventIns = new OpenLayersMapEvent(this);

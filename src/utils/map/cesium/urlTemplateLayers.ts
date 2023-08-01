@@ -2,13 +2,13 @@ import * as Cesium from "cesium";
 import type { UrlTemplateOptions } from "./urlTemplateLayersTypes";
 import CesiumBase from "./base";
 import { earthExtent } from "../geoConstant";
-
+import { nanoid } from "nanoid";
 export default class CsUrlTemplateLayers {
   public csBaseHandle: CesiumBase | null = null;
   public imageryLayers: any = null;
 
   private __layers: any = null;
-  private __layerIdPrefix = "CESIUM_URL_IMAGERY_";
+  private __layerIdPrefix = "URL_IMAGERY_";
 
   constructor(mapBaseIns: CesiumBase) {
     this.csBaseHandle = mapBaseIns;
@@ -44,6 +44,9 @@ export default class CsUrlTemplateLayers {
     if (!options.url || !options.id) {
       return null;
     }
+    const id = this.__Id(options.id);
+    let name = options.name ? options.name : nanoid(10);
+    name = this.__Name(name);
 
     let extent = earthExtent;
     if (options.extent && options.extent.length && options.extent.length === 4) {
@@ -52,22 +55,27 @@ export default class CsUrlTemplateLayers {
 
     const minZoom = options.minZoom ? options.minZoom : 0;
     const maxZoom = options.maxZoom ? options.maxZoom : 21;
+    const subdomains = options.subdomains ? options.subdomains : "abc";
 
-    options.zIndex = this.csBaseHandle!.getCurrentzIndex(options.zIndex);
+    const zIndex = this.csBaseHandle!.getCurrentzIndex(options.zIndex);
 
-    const UrlTemplateOptions = {
+    const urlTemplateOptions = {
       url: options.url,
       rectangle: Cesium.Rectangle.fromDegrees(extent[0], extent[1], extent[2], extent[3]),
       minimumLevel: minZoom,
       maximumLevel: maxZoom,
+      subdomains: subdomains,
     };
-    const provider = new Cesium.UrlTemplateImageryProvider(UrlTemplateOptions);
+    const provider = new Cesium.UrlTemplateImageryProvider(urlTemplateOptions);
     const layer = new Cesium.ImageryLayer(provider);
+    layer.name = name;
+    layer.id = id;
 
     const layerObj = {
       options,
       provider,
       layer,
+      zIndex,
     };
     return layerObj;
   }
@@ -76,7 +84,7 @@ export default class CsUrlTemplateLayers {
     if (this.csBaseHandle) {
       const layerObj = this.createLayer(options);
       if (layerObj) {
-        this.imageryLayers.add(layerObj.layer, layerObj.options.zIndex);
+        this.imageryLayers.add(layerObj.layer);
         this.__layers.set(this.__Id(options.id), layerObj);
         return true;
       } else {

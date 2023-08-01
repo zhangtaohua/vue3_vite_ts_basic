@@ -3,11 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import CesiumBase from "@/utils/map/cesium/base";
-import urlTemplateLayers from "@/utils/map/cesium/urlTemplateLayers";
-import type { UrlTemplateOptions } from "@/utils/map/cesium/urlTemplateLayersTypes";
+import { onMounted, onUnmounted } from "vue";
 
-import { mapXYZUrl } from "@/utils/map/sourceUrl";
+import CsMapHelper from "./basicLoadExample";
 import { cesiumViewMode } from "@/utils/map/cesium/csConstant";
 
 import negx_left from "@/assets/images/cesium/negx_left.png";
@@ -17,10 +15,33 @@ import posy_top from "@/assets/images/cesium/posy_top.png";
 import negz_front from "@/assets/images/cesium/negz_front.png";
 import posz_back from "@/assets/images/cesium/posz_back.png";
 
-import { onMounted, onUnmounted } from "vue";
+import GUI from "lil-gui";
+
+import {
+  gaodeMap,
+  googleImgUrlMap,
+  googleVecUrlMap,
+  googleEarthMap,
+  bingMap,
+  bingLightMap,
+  mapboxBasic,
+  mapboxAllBlue,
+  osm,
+  osmStamen,
+  tiandituZh,
+  tiandituZhUrl,
+  tiandituEn,
+} from "./MapConst";
+
+let GUIIns: GUI | null = null;
+
+const mapContrl = {
+  bgLayer: gaodeMap,
+};
 
 onMounted(() => {
   initMap();
+  initGUI();
 });
 
 onUnmounted(() => {
@@ -73,33 +94,42 @@ const fullSphereOptions = {
   mapProjection: null,
 };
 
-let cesiumIns: CesiumBase | null = null;
-let urlLayerIns: urlTemplateLayers | null = null;
+let cesiumIns: CsMapHelper | null = null;
 
 function initMap() {
-  cesiumIns = new CesiumBase("cesium_container", onlySphereOptions);
-  urlLayerIns = new urlTemplateLayers(cesiumIns);
-
-  let urlLayerOptions: UrlTemplateOptions = {
-    id: "urlTest",
-    url: mapXYZUrl.aMap_img_single,
-  };
-  urlLayerIns.addLayer(urlLayerOptions);
-  setTimeout(() => {
-    // urlLayerIns.removeLayer(urlLayerOptions);
-    // urlLayerIns.clearLayer(urlLayerOptions);
-    urlLayerIns.showHiddenLayer(urlLayerOptions, false);
-    setTimeout(() => {
-      urlLayerIns.showHiddenLayer(urlLayerOptions, true);
-    }, 2000);
-  }, 10000);
+  cesiumIns = new CsMapHelper("cesium_container", onlySphereOptions);
+  cesiumIns.addBgLayer(gaodeMap);
 }
 
 function disposeMap() {
   if (cesiumIns) {
-    urlLayerIns!.destructor();
     cesiumIns!.destructor();
+    GUIIns!.destroy();
   }
+}
+
+function initGUI() {
+  GUIIns = new GUI();
+  GUIIns.title("全局控制");
+
+  GUIIns.add(mapContrl, "bgLayer", [
+    gaodeMap,
+    googleImgUrlMap,
+    googleVecUrlMap,
+    bingMap,
+    bingLightMap,
+    mapboxBasic,
+    mapboxAllBlue,
+    osm,
+    osmStamen,
+    tiandituZh,
+    tiandituZhUrl,
+    tiandituEn,
+  ])
+    .name("底图图层")
+    .onChange((value: any) => {
+      cesiumIns!.addBgLayer(value);
+    });
 }
 </script>
 
