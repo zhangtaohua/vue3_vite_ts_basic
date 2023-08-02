@@ -124,6 +124,18 @@ const orbitsSource = {
     model: {
       url: "/static/satellite.gltf",
     },
+    receiver: {
+      id: "receiver_1",
+      name: "香港",
+      position: [114, 22, 0],
+      hasModel: true,
+      model: {
+        url: "/static/receiver.glb",
+        minimumPixelSize: 64,
+        maximumScale: 20000,
+        scale: 0.25,
+      },
+    },
   },
   orbit2: {
     id: "orbit_test_2",
@@ -222,7 +234,7 @@ const orbitsSource = {
 
 function initMap() {
   cesiumIns = new CsMapHelper("cesium_container", onlySphereOptions);
-  // cesiumIns.addBgLayer(gaodeMap);
+  cesiumIns.addBgLayer(gaodeMap);
   cesiumIns.addSatelliteOrbit(orbitsSource.orbit1);
 }
 
