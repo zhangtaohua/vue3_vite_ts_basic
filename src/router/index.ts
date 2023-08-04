@@ -85,6 +85,11 @@ const routes: Array<RouteRecordRaw> = [
         name: "cesiumModelExample",
         component: () => import("@/views/cesium/modelExample.vue"),
       },
+      {
+        path: "/cesium/singleimg",
+        name: "cesiumSingleImageExample",
+        component: () => import("@/views/cesium/singleImageExample.vue"),
+      },
     ],
   },
   // pathMatch is the name of the param, e.g., going to /not/found yields

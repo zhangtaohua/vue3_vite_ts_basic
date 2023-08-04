@@ -1,3 +1,4 @@
+import { CsPopupOptions, CsScreenEventOptions, CsEntityLabelOptions } from "./baseTypes";
 // import { SingleTileImageryProvider } from "cesium";
 // export interface UrlTemplateOptions extends SingleTileImageryProvider.ConstructorOptions {
 
@@ -11,4 +12,8 @@ export interface SingleImageOptions {
   tileHeight?: number;
   credit?: any;
   ellipsoid?: any;
+  label?: CsEntityLabelOptions;
+  popup?: CsPopupOptions;
+  event?: CsScreenEventOptions;
+  position?: Array<number>;
 }
