@@ -16,6 +16,9 @@ import type { OsmOptions } from "@/utils/map/cesium/osmLayersTypes";
 import CsWmtsLayers from "@/utils/map/cesium/wmtsLayers";
 import type { WMTSOptions } from "@/utils/map/cesium/wmtsLayersTypes";
 
+import CsModelsLayers from "@/utils/map/cesium/modelsLayers";
+import type { ModelsOptions } from "@/utils/map/cesium/modelsLayersTypes";
+
 import {
   mapXYZUrl,
   bingmapImagerySet,
@@ -55,6 +58,7 @@ export default class CsMapHelper extends CsBase {
   public csGoogleEarthIns: CsGoogleEarthLayers | null = null;
   public csOsmIns: CsOsmMapsLayers | null = null;
   public csWmtsIns: CsWmtsLayers | null = null;
+  public csModelIns: CsModelsLayers | null = null;
 
   private __gaodeUrlOptions: UrlTemplateOptions = {
     id: gaodeMap,
@@ -166,6 +170,8 @@ export default class CsMapHelper extends CsBase {
     this.csGoogleEarthIns = new CsGoogleEarthLayers(this);
     this.csOsmIns = new CsOsmMapsLayers(this);
     this.csWmtsIns = new CsWmtsLayers(this);
+
+    this.csModelIns = new CsModelsLayers(this);
   }
 
   public destructor() {
@@ -174,6 +180,8 @@ export default class CsMapHelper extends CsBase {
     this.csGoogleEarthIns!.destructor();
     this.csOsmIns!.destructor();
     this.csWmtsIns!.destructor();
+
+    this.csModelIns!.destructor();
 
     this.__bgLayers = null;
     this.__funcLayers = null;
@@ -274,6 +282,24 @@ export default class CsMapHelper extends CsBase {
       default: {
         break;
       }
+    }
+  }
+
+  public addTargetModel(modelOpt: ModelsOptions) {
+    if (this.csModelIns) {
+      this.csModelIns.addLayer(modelOpt);
+    }
+  }
+
+  public removeTargetModel(modelOpt: ModelsOptions) {
+    if (this.csModelIns) {
+      this.csModelIns.removeLayer(modelOpt);
+    }
+  }
+
+  public clearTargetModel() {
+    if (this.csModelIns) {
+      this.csModelIns.clearEntities();
     }
   }
 }

@@ -31,8 +31,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/map": {
-        // target: "http://192.168.3.42:58787",
-        target: "http://82.157.180.248:58787",
+        target: "http://192.168.3.42:58787",
+        // target: "http://82.157.180.248:58787",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/map/, ""),
       },

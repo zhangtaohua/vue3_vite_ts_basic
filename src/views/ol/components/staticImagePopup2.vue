@@ -1,9 +1,7 @@
 <template>
   <div :id="id" class="row_nw_fs_center panel_container">
     <div class="row_nw_fs_center tag_icon"></div>
-    <div class="row_nw_fs_center close_icon" @click="colseHandle">
-      <img class="close_icon_show" src="" />
-    </div>
+    <div class="row_nw_fs_center close_icon" @click="colseHandle"> X </div>
     <div class="col_nw_sb_fs info_box">
       <div class="row_nw_fs_center info_label"> {{ customT("name") }}{{ `： ${vNodeData.name}` }} </div>
       <div class="row_nw_fs_center info_label"> {{ customT("longitude") }}{{ `： ${vNodeData.longitude}` }} </div>

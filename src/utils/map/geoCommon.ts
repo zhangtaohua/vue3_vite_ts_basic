@@ -185,6 +185,16 @@ export function getExtentFromDrawPolygon(coordinates: any) {
   return [minLongitude, minLatitude, maxLongitude, maxLatitude];
 }
 
+export function getCenterFromExtent(extent: any) {
+  if (extent.length === 4) {
+    const lng = (extent[0] + extent[2]) / 2;
+    const lat = (extent[1] + extent[3]) / 2;
+    return [lng, lat];
+  }
+
+  return null;
+}
+
 export function getExtentFromGeoPolygon(polygon: any) {
   let extent = [-180, -90, 180, 90];
   let minLongitude = 180;

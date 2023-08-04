@@ -1,5 +1,5 @@
 import CsBase from "@/utils/map/cesium/base";
-import type { cesiumBasicOptions } from "@/utils/map/cesium/baseTypes";
+import type { CesiumBasicOptions } from "@/utils/map/cesium/baseTypes";
 
 import CsUrlTemplateLayers from "@/utils/map/cesium/urlTemplateLayers";
 import type { UrlTemplateOptions } from "@/utils/map/cesium/urlTemplateLayersTypes";
@@ -160,7 +160,7 @@ export default class CsMapHelper extends CsBase {
     url: mapWMTSUrl.tiandi_sp_img_en_label_full,
   };
 
-  constructor(target: string, csBasicOptions: cesiumBasicOptions) {
+  constructor(target: string, csBasicOptions: CesiumBasicOptions) {
     super(target, csBasicOptions);
     this.__bgLayers = new Map();
     this.__funcLayers = new Map();

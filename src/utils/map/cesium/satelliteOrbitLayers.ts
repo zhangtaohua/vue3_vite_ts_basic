@@ -315,6 +315,11 @@ export default class CsSatelliteOrbitLayers {
     const position = Cesium.Cartesian3.fromDegrees(options.position[0], options.position[1], options.position[2]);
     const hpRoll = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(90), 0, 0);
     const orientation: any = Cesium.Transforms.headingPitchRollQuaternion(position, hpRoll);
+
+    const scale = options.model.scale ? options.model.scale : 1;
+    const minimumPixelSize = options.model.minimumPixelSize ? options.model.minimumPixelSize : 64;
+    const maximumScale = options.model.maximumScale ? options.model.maximumScale : 20000;
+
     const czml = [
       {
         id: `${options.id}${this.__receiverSuffix}`,
@@ -328,9 +333,9 @@ export default class CsSatelliteOrbitLayers {
         },
         model: {
           gltf: options.model.url,
-          scale: options.model.scale,
-          minimumPixelSize: options.model.minimumPixelSize,
-          maximumScale: options.model.maximumScale,
+          scale: scale,
+          minimumPixelSize: minimumPixelSize,
+          maximumScale: maximumScale,
           runAnimations: false,
           // articulations: {},
           show: true,
@@ -587,7 +592,6 @@ export default class CsSatelliteOrbitLayers {
         this.csBaseHandle.fitToExtent(options.extent);
         return true;
       } else {
-        this.csBaseHandle.fitToLayerSourceByID(this.__Id(options.id));
         return true;
       }
     } else {

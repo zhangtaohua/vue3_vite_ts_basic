@@ -16,6 +16,9 @@ import type { OsmOptions } from "@/utils/map/cesium/osmLayersTypes";
 import CsWmtsLayers from "@/utils/map/cesium/wmtsLayers";
 import type { WMTSOptions } from "@/utils/map/cesium/wmtsLayersTypes";
 
+import CsPointLayers from "@/utils/map/cesium/pointLayers";
+import type { PointOptions } from "@/utils/map/cesium/pointLayersTypes";
+
 import {
   mapXYZUrl,
   bingmapImagerySet,
@@ -55,6 +58,7 @@ export default class CsMapHelper extends CsBase {
   public csGoogleEarthIns: CsGoogleEarthLayers | null = null;
   public csOsmIns: CsOsmMapsLayers | null = null;
   public csWmtsIns: CsWmtsLayers | null = null;
+  public csPointIns: CsPointLayers | null = null;
 
   private __gaodeUrlOptions: UrlTemplateOptions = {
     id: gaodeMap,
@@ -166,6 +170,8 @@ export default class CsMapHelper extends CsBase {
     this.csGoogleEarthIns = new CsGoogleEarthLayers(this);
     this.csOsmIns = new CsOsmMapsLayers(this);
     this.csWmtsIns = new CsWmtsLayers(this);
+
+    this.csPointIns = new CsPointLayers(this);
   }
 
   public destructor() {
@@ -174,6 +180,8 @@ export default class CsMapHelper extends CsBase {
     this.csGoogleEarthIns!.destructor();
     this.csOsmIns!.destructor();
     this.csWmtsIns!.destructor();
+
+    this.csPointIns!.destructor();
 
     this.__bgLayers = null;
     this.__funcLayers = null;
@@ -274,6 +282,24 @@ export default class CsMapHelper extends CsBase {
       default: {
         break;
       }
+    }
+  }
+
+  public addTargetPoint(pointOptions: PointOptions) {
+    if (this.csPointIns) {
+      this.csPointIns.addLayer(pointOptions);
+    }
+  }
+
+  public removeTargetPoint(pointOptions: PointOptions) {
+    if (this.csPointIns) {
+      this.csPointIns.removeLayer(pointOptions);
+    }
+  }
+
+  public clearTargetPoint() {
+    if (this.csPointIns) {
+      this.csPointIns.clearEntities();
     }
   }
 }

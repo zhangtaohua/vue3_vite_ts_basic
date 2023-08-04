@@ -18,6 +18,9 @@ export const popupType = {
   vnode: "vueNodes",
 };
 
+export const MAP_INTER_ZOOMIN = "zoomin";
+export const MAP_INTER_ZOOMOUT = "zoomout";
+
 export const isCustomizeFlag = "customize";
 export const customMeta = "customMeta";
 

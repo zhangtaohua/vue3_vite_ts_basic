@@ -17,6 +17,9 @@
       <div class="row_nw_fs_center ol_example_box">
         <router-link to="/cesium/load" class="ol_example_title">基础底图切换 实例</router-link>
         <router-link to="/cesium/orbit" class="ol_example_title">卫星轨道 实例</router-link>
+        <router-link to="/cesium/point" class="ol_example_title">Entity 点(point) 实例</router-link>
+        <router-link to="/cesium/billboard" class="ol_example_title">Entity 广告牌(billboard) 实例</router-link>
+        <router-link to="/cesium/model" class="ol_example_title">Entity 模型(model) 实例</router-link>
       </div>
     </div>
   </div>
