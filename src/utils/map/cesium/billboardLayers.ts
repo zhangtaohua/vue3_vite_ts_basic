@@ -18,6 +18,7 @@ export default class CsBillboardLayers {
   public csBaseHandle: CesiumBase | null = null;
   public viewer: any = null;
   public entities: any = null;
+  public pinBuilder: any = null;
 
   private __layers: any = null;
   private __layerIdPrefix = "BILLBOARD_ENTITY_";
@@ -32,6 +33,7 @@ export default class CsBillboardLayers {
 
     this.vuePopupIns = new CsVueNodePopup(mapBaseIns);
     this.mapEventIns = new CsScreenEvent(mapBaseIns);
+    this.pinBuilder = new Cesium.PinBuilder();
   }
 
   public destructor() {
@@ -43,6 +45,7 @@ export default class CsBillboardLayers {
     this.viewer = null;
     this.entities = null;
     this.__layers = null;
+    this.pinBuilder = null;
   }
 
   private __Id(id: string) {
@@ -73,7 +76,7 @@ export default class CsBillboardLayers {
         if (entityId == options.id) {
           // 如果用户传入了回调，那么 调用 ，可能会更新popup
           if (options.event?.callback) {
-            options.event?.callback(event, options);
+            options.event?.callback(event, entity, options);
             if (options.popup && options.popup.isUpdate) {
               const popupOpt = {
                 ...options.popup,
@@ -101,7 +104,17 @@ export default class CsBillboardLayers {
     };
   };
 
-  public createLayer(
+  public async makePinFromImage(image: any, color: any, size: number) {
+    try {
+      const url = Cesium.buildModuleUrl(image);
+      const pinCanvas = await this.pinBuilder.fromUrl(url, color, size);
+      return pinCanvas.toDataURL();
+    } catch (error: any) {
+      return this.pinBuilder.fromColor(color, 48).toDataURL();
+    }
+  }
+
+  public async createLayer(
     options: BillboardsOptions = {
       id: "",
       name: "",
@@ -131,13 +144,30 @@ export default class CsBillboardLayers {
     const pixelOffset = getCsCartesian2(billboardOpt.pixelOffset);
     const eyeOffset = getCsCartesian2(billboardOpt.eyeOffset);
 
+    let imageUrl: any = billboardOpt.image;
+    const pinOpt = options.pin;
+    if (pinOpt) {
+      const pinColortemp = pinOpt.color || billboardOpt.color;
+      const pinColor = getCsColor(pinColortemp, Cesium.Color.WHITE);
+      const size = pinOpt.size || 48;
+      if (pinOpt.image) {
+        imageUrl = await this.makePinFromImage(pinOpt.image, pinColor, size);
+      } else if (billboardOpt.image) {
+        imageUrl = await this.makePinFromImage(billboardOpt.image, pinColor, size);
+      } else if (pinOpt.text) {
+        imageUrl = this.pinBuilder.fromText(pinOpt.text, pinColor, size).toDataURL();
+      } else {
+        imageUrl = this.pinBuilder.fromColor(pinColor, 48).toDataURL();
+      }
+    }
+
     const billboard: any = {
       id: id,
       name: name,
       position: position,
       billboard: {
         id: options.id,
-        image: billboardOpt.image,
+        image: imageUrl,
         imageSubRegion: billboardOpt.imageSubRegion,
         show: billboardOpt.show,
         // 该属性指定标签在屏幕空间中距此标签原点的像素偏移量
@@ -236,9 +266,9 @@ export default class CsBillboardLayers {
     }
   };
 
-  public addLayer(options: BillboardsOptions) {
+  public async addLayer(options: BillboardsOptions) {
     if (this.csBaseHandle) {
-      const layerObj = this.createLayer(options);
+      const layerObj = await this.createLayer(options);
       // console.log("layerObj", layerObj);
       if (layerObj) {
         const entity = this.entities.add(layerObj.billboard);

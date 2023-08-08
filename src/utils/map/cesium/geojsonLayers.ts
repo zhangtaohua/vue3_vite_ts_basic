@@ -294,7 +294,7 @@ export default class CsGeojsonLayers {
   public async addLayer(options: GeojsonTopoJSONOptions) {
     if (this.csBaseHandle) {
       const layerObj = await this.createLayer(options);
-      console.log("layerObj", layerObj);
+      // console.log("layerObj", layerObj);
       if (layerObj) {
         layerObj.geojsonPromsie
           .then((dataSource: any) => {

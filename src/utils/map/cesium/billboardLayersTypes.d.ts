@@ -22,10 +22,18 @@ export interface BillboardOneOptions {
   distanceDisplayCondition?: any;
 }
 
+export interface PinOneOptions {
+  image?: string;
+  text?: string;
+  size?: number;
+  color?: any;
+}
+
 export interface BillboardsOptions {
   id: string;
   position: Array<number>; // [0, 0, 0]
   billboard: BillboardOneOptions;
+  pin?: PinOneOptions;
   name?: string;
   show?: boolean;
   label?: CsEntityLabelOptions;

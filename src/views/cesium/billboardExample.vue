@@ -20,6 +20,7 @@ import GUI from "lil-gui";
 import pexels1 from "@/assets/images/test/pexels1.jpeg";
 import pexels2 from "@/assets/images/test/pexels2.jpeg";
 import catImg from "@/assets/images/test/cat.jpg";
+import grocery from "@/assets/images/test/grocery.png";
 
 import staticImagePopup from "../ol/components/staticImagePopup.vue";
 import staticImagePopup2 from "../ol/components/staticImagePopup2.vue";
@@ -57,6 +58,10 @@ const mapContrl = {
   point5: true,
   point6: true,
   point7: true,
+  point8: true,
+  point9: true,
+  point10: true,
+  point11: true,
 };
 
 onMounted(() => {
@@ -263,7 +268,7 @@ const pointSource = {
       horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // default
       verticalOrigin: Cesium.VerticalOrigin.BOTTOM, // default: CENTER
       scale: 2.0, // default: 1.0
-      color: Cesium.Color.LIME, // default: WHITE
+      // color: Cesium.Color.LIME, // default: WHITE
       rotation: Cesium.Math.PI_OVER_FOUR, // default: 0.0
       alignedAxis: Cesium.Cartesian3.ZERO, // default
       width: 25, // default: undefined
@@ -292,12 +297,12 @@ const pointSource = {
     },
     event: {
       eventType: screenEventType.LEFT_CLICK,
-      callback: (event: any, options: any) => {
+      callback: (event: any, entity: any, options: any) => {
         console.log("pointExample_callback", event, options);
         options.popup.isUpdate = true;
         options.popup.vNode = staticImagePopup2;
         options.popup.vNodeData = {
-          name: "我是VueNode标题Image7",
+          name: entity.name,
           longitude: "149.757575E",
           latitude: "30.435657N",
           satellite: nanoid(10),
@@ -306,6 +311,110 @@ const pointSource = {
           y: 1620,
         };
       },
+    },
+  },
+  point5: {
+    id: "target_test_5",
+    name: "target_5",
+    position: [122, 22, 0],
+    billboard: {
+      // image: catImg, // default: undefined
+      show: true, // default
+      pixelOffset: [0, 50], // default: (0, 0)
+      eyeOffset: new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+      horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // default
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+      scale: 2.0, // default: 1.0
+      color: Cesium.Color.LIME, // default: WHITE
+      rotation: Cesium.Math.PI_OVER_FOUR, // default: 0.0
+      alignedAxis: Cesium.Cartesian3.ZERO, // default
+      width: 50, // default: undefined
+      height: 50, // default: undefined
+    },
+    pin: {
+      size: 128,
+      color: [255, 0, 0],
+      text: "@",
+    },
+    label: {
+      show: true,
+      text: "目标点5",
+      pixelOffset: [0, 60],
+    },
+    popup: {
+      isPopup: true,
+      popupType: popupType.vnode,
+      hasClose: true,
+      vNode: staticImagePopup,
+      vNodeData: {
+        name: "我是target_test_1",
+        longitude: "149.757575E",
+        latitude: "30.435657N",
+        satellite: "QL_*",
+        time: "2023-07-28 12:00:00",
+        x: 180,
+        y: 1620,
+      },
+      customT: customT,
+    },
+    event: {
+      eventType: screenEventType.LEFT_CLICK,
+    },
+  },
+  point6: {
+    id: "target_test_6",
+    name: "target_6",
+    position: [124, 22, 0],
+    billboard: {
+      // image: catImg, // default: undefined
+      show: true, // default
+      pixelOffset: [0, 50], // default: (0, 0)
+      eyeOffset: new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+      horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // default
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+      scale: 2.0, // default: 1.0
+      // color: Cesium.Color.LIME, // default: WHITE
+      rotation: Cesium.Math.PI_OVER_FOUR, // default: 0.0
+      alignedAxis: Cesium.Cartesian3.ZERO, // default
+      width: 50, // default: undefined
+      height: 50, // default: undefined
+    },
+    pin: {
+      size: 64,
+      color: [255, 0, 0],
+    },
+    label: {
+      show: true,
+      text: "目标点6",
+      pixelOffset: [0, 60],
+    },
+  },
+  point7: {
+    id: "target_test_7",
+    name: "target_7",
+    position: [126, 22, 0],
+    billboard: {
+      // image: catImg, // default: undefined
+      show: true, // default
+      pixelOffset: [0, 50], // default: (0, 0)
+      eyeOffset: new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+      horizontalOrigin: Cesium.HorizontalOrigin.CENTER, // default
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+      scale: 2.0, // default: 1.0
+      // color: Cesium.Color.LIME, // default: WHITE
+      rotation: Cesium.Math.PI_OVER_FOUR, // default: 0.0
+      alignedAxis: Cesium.Cartesian3.ZERO, // default
+    },
+    pin: {
+      image: grocery,
+      // image: "/static/grocery.png",
+      size: 64,
+      color: [255, 0, 0],
+    },
+    label: {
+      show: true,
+      text: "目标点7",
+      pixelOffset: [0, 60],
     },
   },
 };
@@ -317,6 +426,9 @@ function initMap() {
   cesiumIns.addTargetPoint(pointSource.point2);
   cesiumIns.addTargetPoint(pointSource.point3);
   cesiumIns.addTargetPoint(pointSource.point4);
+  cesiumIns.addTargetPoint(pointSource.point5);
+  cesiumIns.addTargetPoint(pointSource.point6);
+  cesiumIns.addTargetPoint(pointSource.point7);
 }
 
 function disposeMap() {
@@ -330,6 +442,9 @@ let pointControl1: any = null;
 let pointControl2: any = null;
 let pointControl3: any = null;
 let pointControl4: any = null;
+let pointControl5: any = null;
+let pointControl6: any = null;
+let pointControl7: any = null;
 function initGUI() {
   GUIIns = new GUI();
   GUIIns.title("全局控制");
@@ -366,10 +481,15 @@ function initGUI() {
         mapContrl.point3 = true;
         mapContrl.point4 = true;
         mapContrl.point5 = true;
+        mapContrl.point6 = true;
+        mapContrl.point7 = true;
         cesiumIns!.addTargetPoint(pointSource.point1);
         cesiumIns!.addTargetPoint(pointSource.point2);
         cesiumIns!.addTargetPoint(pointSource.point3);
         cesiumIns!.addTargetPoint(pointSource.point4);
+        cesiumIns!.addTargetPoint(pointSource.point5);
+        cesiumIns!.addTargetPoint(pointSource.point6);
+        cesiumIns!.addTargetPoint(pointSource.point7);
       } else {
         cesiumIns?.clearTargetPoint();
         mapContrl.point1 = false;
@@ -377,11 +497,16 @@ function initGUI() {
         mapContrl.point3 = false;
         mapContrl.point4 = false;
         mapContrl.point5 = false;
+        mapContrl.point6 = false;
+        mapContrl.point7 = false;
       }
       pointControl1.updateDisplay();
       pointControl2.updateDisplay();
       pointControl3.updateDisplay();
       pointControl4.updateDisplay();
+      pointControl5.updateDisplay();
+      pointControl6.updateDisplay();
+      pointControl7.updateDisplay();
     });
 
   pointControl1 = imgFolder
@@ -425,6 +550,39 @@ function initGUI() {
         cesiumIns?.addTargetPoint(pointSource.point4);
       } else {
         cesiumIns?.removeTargetPoint(pointSource.point4);
+      }
+    });
+
+  pointControl5 = imgFolder
+    .add(mapContrl, "point5")
+    .name("5 点 pin显示 单击 回调")
+    .onChange((value: any) => {
+      if (value) {
+        cesiumIns?.addTargetPoint(pointSource.point5);
+      } else {
+        cesiumIns?.removeTargetPoint(pointSource.point5);
+      }
+    });
+
+  pointControl6 = imgFolder
+    .add(mapContrl, "point6")
+    .name("6 点 pin显示 单击 回调")
+    .onChange((value: any) => {
+      if (value) {
+        cesiumIns?.addTargetPoint(pointSource.point6);
+      } else {
+        cesiumIns?.removeTargetPoint(pointSource.point6);
+      }
+    });
+
+  pointControl7 = imgFolder
+    .add(mapContrl, "point7")
+    .name("7 点 pin显示 单击 回调")
+    .onChange((value: any) => {
+      if (value) {
+        cesiumIns?.addTargetPoint(pointSource.point7);
+      } else {
+        cesiumIns?.removeTargetPoint(pointSource.point7);
       }
     });
 }

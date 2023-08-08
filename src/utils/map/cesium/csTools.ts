@@ -47,13 +47,15 @@ export function getCsColor(color: any, defaultCsColor = Cesium.Color.RED) {
       } else {
         return new Cesium.Color(color[0] / 255.0, color[1] / 255.0, color[2] / 255.0, color[3]);
       }
-    } else {
+    } else if (typeof color === "string") {
       const colorNew = new Cesium.Color.fromCssColorString(color);
       if (colorNew) {
         return colorNew;
       } else {
         return defaultCsColor;
       }
+    } else if (typeof color === "object" && color instanceof Cesium.Color) {
+      return color;
     }
   } else {
     return defaultCsColor;
