@@ -18,7 +18,7 @@ import { getCsColor, getCsCartesian2, getCsCartesian3 } from "./csTools";
 import { cesiumViewMode } from "./csConstant";
 import { makePointStyle, makeLabelStyle } from "./style";
 
-export default class CsGeojsonLayers {
+export default class CsDrawLayers {
   public csBaseHandle: CesiumBase | null = null;
   public viewer: any = null;
   public entities: any = null;

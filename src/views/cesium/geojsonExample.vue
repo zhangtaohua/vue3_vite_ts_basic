@@ -8,7 +8,7 @@ import { onMounted, onUnmounted } from "vue";
 import CsMapHelper from "./geojsonExample";
 import { cesiumViewMode } from "@/utils/map/cesium/csConstant";
 
-import { makePoint, makeLabel } from "@/utils/map/cesium/style";
+import { makePointStyle, makeLabelStyle } from "@/utils/map/cesium/style";
 import { getCsColor } from "@/utils/map/cesium/csTools";
 
 import negx_left from "@/assets/images/cesium/negx_left.png";
@@ -160,7 +160,7 @@ const testStyleFunc = (dataSource: any, options: any) => {
       } else {
         // 如果不用 billboard 显示点的话。
         entity.billboard = undefined;
-        entity.point = makePoint(radius, fillColor, outlineColor, outlineWidth);
+        entity.point = makePointStyle(radius, fillColor, outlineColor, outlineWidth);
       }
     } else if (entity.polygon) {
       // 多边形
@@ -186,7 +186,7 @@ const testStyleFunc = (dataSource: any, options: any) => {
     };
 
     if (labelOpt) {
-      entity.label = makeLabel(labelOpt);
+      entity.label = makeLabelStyle(labelOpt);
     }
   }
 };
@@ -434,7 +434,9 @@ let geojsonControl13: any = null;
 let geojsonControl14: any = null;
 
 function initGUI() {
-  GUIIns = new GUI();
+  GUIIns = new GUI({
+    width: 300,
+  });
   GUIIns.title("全局控制");
 
   GUIIns.add(mapContrl, "bgLayer", [

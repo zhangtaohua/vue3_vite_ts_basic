@@ -4,11 +4,11 @@ import type { PointOneOptions } from "./pointLayersTypes";
 import type { CsEntityLabelOptions } from "./baseTypes";
 import { getCsColor, getCsCartesian2, getCsCartesian3 } from "./csTools";
 
-export function makePolyline() {}
+export function makePolylineStyle() {}
 
-export function makePolygon() {}
+export function makePolygonStyle() {}
 
-export function makePoint(pixelSize: number, color: any, outlineColor: any, outlineWidth: number) {
+export function makePointStyle(pixelSize: number, color: any, outlineColor: any, outlineWidth: number) {
   return new Cesium.PointGraphics({
     show: true,
     pixelSize: pixelSize,
@@ -18,9 +18,9 @@ export function makePoint(pixelSize: number, color: any, outlineColor: any, outl
   });
 }
 
-export function makeBillboard() {}
+export function makeBillboardStyle() {}
 
-export function makeLabel(labelOpt: CsEntityLabelOptions, name: string | undefined = "") {
+export function makeLabelStyle(labelOpt: CsEntityLabelOptions, name: string | undefined = "") {
   const text = labelOpt.text || name || "";
   const labelScale = labelOpt.scale ?? 1;
   const font = labelOpt.font || "14px MicroSoft YaHei";
