@@ -357,7 +357,7 @@ function initGUI() {
     });
 
   pointControl2 = imgFolder
-    .add(mapContrl, "point1")
+    .add(mapContrl, "point2")
     .name("2 点 move显示")
     .onChange((value: any) => {
       if (value) {
@@ -368,7 +368,7 @@ function initGUI() {
     });
 
   pointControl3 = imgFolder
-    .add(mapContrl, "point1")
+    .add(mapContrl, "point3")
     .name("3 点 无触发事件 直接显示")
     .onChange((value: any) => {
       if (value) {
@@ -379,7 +379,7 @@ function initGUI() {
     });
 
   pointControl4 = imgFolder
-    .add(mapContrl, "point1")
+    .add(mapContrl, "point4")
     .name("4 点 单击 回调")
     .onChange((value: any) => {
       if (value) {

@@ -38,11 +38,22 @@ export const awaitCesiumIsLoaded = () => {
 };
 
 export function getCsColor(color: any, defaultCsColor = Cesium.Color.RED) {
-  if (color && color.length) {
-    if ((color.length = 3)) {
+  if (color) {
+    if (color.length && color.length == 3) {
       return new Cesium.Color(color[0] / 255.0, color[1] / 255.0, color[2] / 255.0, 1.0);
-    } else if ((color.length = 4)) {
-      return new Cesium.Color(color[0] / 255.0, color[1] / 255.0, color[2] / 255.0, color[3] / 255.0);
+    } else if (color.length && color.length === 4) {
+      if (color[3] > 1.0) {
+        return new Cesium.Color(color[0] / 255.0, color[1] / 255.0, color[2] / 255.0, color[3] / 255);
+      } else {
+        return new Cesium.Color(color[0] / 255.0, color[1] / 255.0, color[2] / 255.0, color[3]);
+      }
+    } else {
+      const colorNew = new Cesium.Color.fromCssColorString(color);
+      if (colorNew) {
+        return colorNew;
+      } else {
+        return defaultCsColor;
+      }
     }
   } else {
     return defaultCsColor;

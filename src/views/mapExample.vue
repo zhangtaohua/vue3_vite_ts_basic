@@ -21,6 +21,7 @@
         <router-link to="/cesium/billboard" class="ol_example_title">Entity 广告牌(billboard) 实例</router-link>
         <router-link to="/cesium/model" class="ol_example_title">Entity 模型(model) 实例</router-link>
         <router-link to="/cesium/singleimg" class="ol_example_title">图层 单张图片 实例</router-link>
+        <router-link to="/cesium/geojson" class="ol_example_title">图层 geojson 实例</router-link>
       </div>
     </div>
   </div>

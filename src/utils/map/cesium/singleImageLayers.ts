@@ -291,7 +291,6 @@ export default class CsSingleImageLayers {
       if (layerObj) {
         this.imageryLayers.remove(layerObj.layer, destroy);
         this.entities.remove(layerObj.entity);
-        this.__layers.delete(this.__Id(id));
 
         if (layerObj.options && layerObj.options.popup.isPopup) {
           const id = layerObj.options.id;
@@ -301,6 +300,8 @@ export default class CsSingleImageLayers {
             this.mapEventIns!.removeEventByID(id);
           }
         }
+
+        this.__layers.delete(this.__Id(id));
         return true;
       } else {
         return false;

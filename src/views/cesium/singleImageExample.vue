@@ -324,7 +324,7 @@ function initGUI() {
     });
 
   modelControl2 = imgFolder
-    .add(mapContrl, "model1")
+    .add(mapContrl, "model2")
     .name("2 图片 move显示")
     .onChange((value: any) => {
       if (value) {
@@ -335,7 +335,7 @@ function initGUI() {
     });
 
   modelControl3 = imgFolder
-    .add(mapContrl, "model1")
+    .add(mapContrl, "model3")
     .name("3 图片 无触发事件 直接显示")
     .onChange((value: any) => {
       if (value) {
@@ -346,7 +346,7 @@ function initGUI() {
     });
 
   modelControl4 = imgFolder
-    .add(mapContrl, "model1")
+    .add(mapContrl, "model4")
     .name("4 图片 单击 回调")
     .onChange((value: any) => {
       if (value) {

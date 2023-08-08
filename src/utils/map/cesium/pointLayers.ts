@@ -272,7 +272,6 @@ export default class CsPointLayers {
       if (layerObj) {
         // this.entities.removeById(this.__Id(id));
         this.entities.remove(layerObj.entity);
-        this.__layers.delete(this.__Id(id));
 
         if (layerObj.options && layerObj.options.popup.isPopup) {
           const id = layerObj.options.id;
@@ -283,6 +282,7 @@ export default class CsPointLayers {
           }
         }
 
+        this.__layers.delete(this.__Id(id));
         return true;
       } else {
         return false;

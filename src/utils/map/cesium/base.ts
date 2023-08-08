@@ -338,6 +338,31 @@ export default class CesiumBase {
     };
   }
 
+  cartesian3ToWgs84(cartesian: Cesium.Cartesian3) {
+    if (!this.viewer) {
+      return null;
+    }
+    const ellipsoid = this.viewer!.scene.globe.ellipsoid;
+    //将笛卡尔三维坐标转为地图坐标（弧度）
+    const cartographic = ellipsoid.cartesianToCartographic(cartesian);
+    //将地图坐标（弧度）转为十进制的度数
+    const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+    const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+    // console.log('经度:', log_String)
+    // console.log('纬度:',lat_String)
+    // console.log('视角高度', alti_String)
+
+    // const height = cartographic.height;
+    const height = Math.ceil(this.viewer.camera.positionCartographic.height);
+    const zoom = this.heightToZoom(height);
+    return {
+      longitude,
+      latitude,
+      height,
+      zoom,
+    };
+  }
+
   wgs84ToCartesian3(longitude: number, latitude: number, height: number) {
     if (!this.viewer) {
       return null;

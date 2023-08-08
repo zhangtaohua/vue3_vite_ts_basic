@@ -41,7 +41,7 @@ export interface CsPopupOptions {
 
 export interface CsScreenEventOptions {
   eventType: string;
-  callback: any;
+  callback?: any;
   modify?: string;
   delay?: number;
   debounce?: boolean;

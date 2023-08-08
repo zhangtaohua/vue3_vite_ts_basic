@@ -191,7 +191,7 @@ function initGUI() {
 
   imgFolder
     .add(mapContrl, "geojson10")
-    .name("9 上海 Data vnode click 回调")
+    .name("10 昆明 样式自定义数据")
     .onChange((value: any) => {
       if (value) {
         addGeojson(geojsonsSource.geojson10);
