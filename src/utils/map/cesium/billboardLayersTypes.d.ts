@@ -1,7 +1,7 @@
 import { CsPopupOptions, CsScreenEventOptions, CsEntityLabelOptions } from "./baseTypes";
 
 export interface BillboardOneOptions {
-  image: string;
+  image?: string;
   imageSubRegion?: any;
   show?: boolean;
   pixelOffset?: Array<number>; // [0, 0]
@@ -20,6 +20,7 @@ export interface BillboardOneOptions {
   pixelOffsetScaleByDistance?: any;
   sizeInMeters?: any;
   distanceDisplayCondition?: any;
+  disableDepthTestDistance?: any;
 }
 
 export interface PinOneOptions {

@@ -535,7 +535,7 @@ export default class OlDrawBasic {
       ) {
         geoType = MAP_DRAW_POLYGON;
         const coord = poly.getCoordinates();
-        formatCoords = [[this.getCoordinatesLngLat(coord)]];
+        formatCoords = [this.getCoordinatesLngLat(coord)];
         areaTemp = formatArea(poly);
 
         const featureExtent = poly.getExtent();
@@ -557,11 +557,11 @@ export default class OlDrawBasic {
       } else if (shape == MAP_DRAW_LINE || shape == MAP_MEASURE_DISTANCE) {
         geoType = MAP_DRAW_LINE;
         const coord = [poly.getCoordinates()];
-        formatCoords = [this.getCoordinatesLngLat(coord)];
+        formatCoords = this.getCoordinatesLngLat(coord);
         lengthTemp = formatLength(poly);
 
-        const centerLength = Math.floor(formatCoords[0].length / 2);
-        const centerTemp = formatCoords[0][centerLength];
+        const centerLength = Math.floor(formatCoords.length / 2);
+        const centerTemp = formatCoords[centerLength];
         center = [centerTemp[0], centerTemp[1]];
 
         this.__drawData = {
@@ -579,7 +579,7 @@ export default class OlDrawBasic {
         geoType = MAP_DRAW_POLYGON;
         const circle = fromCircle(poly, 128);
         const coordinates = circle.getCoordinates();
-        formatCoords = [[this.getCoordinatesLngLat(coordinates)]];
+        formatCoords = [this.getCoordinatesLngLat(coordinates)];
         areaTemp = formatArea(circle);
 
         const centerTemp = poly.getCenter();
@@ -611,7 +611,7 @@ export default class OlDrawBasic {
           for (let i = 0; i < geometries.length; i++) {
             if (geometries[i].getType() == MAP_DRAW_POLYGON) {
               const coord = geometries[i].getCoordinates();
-              formatCoords = [[this.getCoordinatesLngLat(coord)]];
+              formatCoords = [this.getCoordinatesLngLat(coord)];
               areaTemp = formatArea(poly);
 
               if (center && center.length !== 2) {
@@ -667,13 +667,13 @@ export default class OlDrawBasic {
 
   public drawShape(options: DrawBasicOptions) {
     const shape = options.shape;
-    const isClear = options.isClear || false;
-    const isFreehand = options.isFreehand || false;
+    const isClear = options.isClear ?? false;
+    const isFreehand = options.isFreehand ?? false;
 
-    const isShowSegments = options.isShowSegments || false;
-    const isShowLngLat = options.isShowLngLat || false;
-    const isShowLabel = options.isShowLabel || false;
-    this.isShowDcActionPopup = options.isShowAction || false;
+    const isShowSegments = options.isShowSegments ?? false;
+    const isShowLngLat = options.isShowLngLat ?? false;
+    const isShowLabel = options.isShowLabel ?? false;
+    this.isShowDcActionPopup = options.isShowAction ?? false;
 
     if (this.handle && this.olBaseHandle) {
       if (isClear) {

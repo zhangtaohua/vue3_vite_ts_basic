@@ -119,11 +119,13 @@ export default class CsPointLayers {
     let name = options.name ? options.name : nanoid(10);
     name = this.__Name(name);
 
-    let position = [0, 0, 0];
+    let position: any = [0, 0, 0];
     if (options.position && options.position.length && options.position.length === 3) {
       position = options.position;
+      position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
+    } else if (options.position instanceof Cesium.Cartesian3) {
+      position = options.position;
     }
-    position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
 
     const pointOpt = options.point;
 
@@ -321,8 +323,16 @@ export default class CsPointLayers {
     if (this.csBaseHandle) {
       const layerObj = this.__layers.get(this.__Id(id));
       if (layerObj) {
-        layerObj.entity.point.color = layerObj.entity.point.color.getValue().withAlpha(opacity);
-        layerObj.entity.point.outlineColor = layerObj.entity.point.outlineColor.getValue().withAlpha(opacity);
+        const entity = layerObj.entity;
+        if (entity.point) {
+          entity.point!.color = entity.point!.color.getValue().withAlpha(opacity);
+          entity.point!.outlineColor = entity.point!.outlineColor.getValue().withAlpha(opacity);
+        }
+
+        if (entity.label) {
+          entity.label!.fillColor = entity.label!.fillColor.getValue().withAlpha(opacity);
+          entity.label!.backgroundColor = entity.label!.backgroundColor.getValue().withAlpha(opacity);
+        }
         return true;
       } else {
         return false;

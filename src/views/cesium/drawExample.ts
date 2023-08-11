@@ -287,19 +287,19 @@ export default class CsMapHelper extends CsBase {
 
   public draw(drawOpt: Drawptions) {
     if (this.csDrawIns) {
-      // this.csDrawIns.addLayer(drawOpt);
+      this.csDrawIns.drawShape(drawOpt);
     }
   }
 
   public removeDraw(drawOpt: Drawptions) {
     if (this.csDrawIns) {
-      this.csDrawIns.removeLayer(drawOpt);
+      // this.csDrawIns.removeLayer(drawOpt);
     }
   }
 
   public clearDraw() {
     if (this.csDrawIns) {
-      // this.csDrawIns.clearEntities();
+      this.csDrawIns.clearAllDraw();
     }
   }
 }

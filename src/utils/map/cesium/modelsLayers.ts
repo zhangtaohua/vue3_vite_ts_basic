@@ -122,12 +122,13 @@ export default class CsModelsLayers {
     let name = options.name ? options.name : nanoid(10);
     name = this.__Name(name);
 
-    let position = [0, 0, 0];
+    let position: any = [0, 0, 0];
     if (options.position && options.position.length && options.position.length === 3) {
       position = options.position;
+      position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
+    } else if (options.position instanceof Cesium.Cartesian3) {
+      position = options.position;
     }
-
-    position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
 
     let heading = options.heading ? options.heading : 0;
     const pitch = options.pitch ? options.pitch : 0;

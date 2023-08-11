@@ -402,13 +402,36 @@ export default class CsGeojsonLayers {
     if (this.csBaseHandle) {
       const layerObj = this.__layers.get(this.__Id(id));
       if (layerObj) {
-        // layerObj.entity.billboard.color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
-        layerObj.entity.billboard.color = layerObj.entity.billboard.color.getValue().withAlpha(opacity);
         const dataSource = layerObj.dataSource;
         const entities = dataSource.entities.values;
         for (let i = 0; i < entities.length; i++) {
           const entity = entities[i];
-          entity.polygon.material = entity.polygon.material.getValue().withAlpha(opacity);
+          if (entity.polygon) {
+            const fillColor = entity.polygon!.material.getValue().color;
+            const outlineColor = entity.polygon!.outlineColor.getValue();
+            entity.polygon!.material = fillColor.withAlpha(opacity);
+            entity.polygon!.outlineColor = outlineColor.withAlpha(opacity);
+          }
+
+          // handle Point
+          if (entity.point) {
+            entity.point!.color = entity.point!.color.getValue().withAlpha(opacity);
+            entity.point!.outlineColor = entity.point!.outlineColor.getValue().withAlpha(opacity);
+          }
+
+          if (entity.billboard) {
+            entity.billboard!.color = entity.billboard!.color.getValue().withAlpha(opacity);
+          }
+
+          if (entity.polyline) {
+            const fillColor = entity.polygon!.material.getValue().color;
+            entity.polyline!.material = fillColor.withAlpha(opacity);
+          }
+
+          if (entity.label) {
+            entity.label!.fillColor = entity.label!.fillColor.getValue().withAlpha(opacity);
+            entity.label!.backgroundColor = entity.label!.backgroundColor.getValue().withAlpha(opacity);
+          }
         }
         return true;
       } else {

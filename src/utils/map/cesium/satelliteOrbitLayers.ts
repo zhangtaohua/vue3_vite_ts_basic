@@ -381,10 +381,10 @@ export default class CsSatelliteOrbitLayers {
       receiverPosition[2],
     );
     const showArray = [];
-    let showLeadtime = 0;
-    let showTailtime = 0;
-    let notShowLeadtime = 0;
-    let notShowTailtime = 0;
+    let showLeadtime: any = 0;
+    let showTailtime: any = 0;
+    let notShowLeadtime: any = 0;
+    let notShowTailtime: any = 0;
 
     for (let i = 0; i < satellitePositions.length - 3; i = i + 4) {
       const timeTemp = satellitePositions[i];
@@ -394,7 +394,7 @@ export default class CsSatelliteOrbitLayers {
         satellitePositions[i + 3],
       );
       const distance = Cesium.Cartesian3.distance(sateTempCartesian, receiverCartesian);
-      // const distance = this.getSpaceDistancedistance(sateTempCartesian, receiverCartesian);
+      // const distance = getSpaceDistance(sateTempCartesian, receiverCartesian);
       if (distance < 1000000) {
         if (!showLeadtime) {
           showLeadtime = startStamp + timeTemp * 1000;

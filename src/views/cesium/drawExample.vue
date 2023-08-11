@@ -147,10 +147,11 @@ const drawSource = {
     shape: MAP_DRAW_POINT,
     isClear: true,
     isFreehand: false,
-    needModify: true,
+    needModify: false,
     once: false,
     callback: testCb(MAP_DRAW_POINT),
-    isShowAction: true,
+    isShowAction: false,
+    isShowLngLat: true,
   },
   [MAP_DRAW_SQUARE]: {
     shape: MAP_DRAW_SQUARE,
@@ -179,9 +180,11 @@ const drawSource = {
     isClear: true,
     isFreehand: false,
     needModify: true,
-    once: true,
+    once: false,
     callback: testCb(MAP_DRAW_POLYGON),
+    isShowSegments: true,
     isShowLngLat: true,
+    isShowLabel: true,
     isShowAction: true,
   },
   [MAP_DRAW_LINE]: {
@@ -191,8 +194,10 @@ const drawSource = {
     needModify: true,
     once: false,
     callback: testCb(MAP_DRAW_LINE),
+    isShowSegments: true,
+    isShowLngLat: true,
     isShowLabel: true,
-    isShowAction: false,
+    isShowAction: true,
   },
   [MAP_DRAW_GEOMETRY_CIRCLE]: {
     shape: MAP_DRAW_GEOMETRY_CIRCLE,
@@ -245,7 +250,7 @@ function actionChangeHandle(action: any) {
 
 function initMap() {
   cesiumIns = new CsMapHelper("cesium_container", onlySphereOptions);
-  cesiumIns.addBgLayer(gaodeMap);
+  cesiumIns.addBgLayer(mapboxBasic);
 }
 
 function disposeMap() {

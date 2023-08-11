@@ -73,3 +73,100 @@ export interface CsEntityLabelOptions {
   distanceDisplayCondition?: any;
   disableDepthTestDistance?: any;
 }
+
+export interface CsEntityEllipseOptions {
+  show?: boolean;
+  semiMajorAxis: number;
+  semiMinorAxis: number;
+  height?: number;
+
+  heightReference?: any;
+  extrudedHeight?: number;
+  extrudedHeightReference?: any;
+
+  rotation?: number;
+  stRotation?: number;
+  granularity?: any;
+
+  fill?: any;
+  color?: any;
+  material?: any;
+  outline?: any;
+  outlineColor?: any;
+  outlineWidth?: any;
+  numberOfVerticalLines?: any;
+  shadows?: any;
+  distanceDisplayCondition?: any;
+  classificationType?: any;
+  zIndex?: any;
+}
+
+export interface CsEntityPolygonOptions {
+  show?: boolean;
+  hierarchy: any;
+  height?: number;
+  heightReference?: any;
+  extrudedHeight?: number;
+  extrudedHeightReference?: any;
+
+  stRotation?: number;
+  granularity?: any;
+
+  fill?: any;
+  color?: any;
+  material?: any;
+  outline?: any;
+  outlineColor?: any;
+  outlineWidth?: any;
+  perPositionHeight?: any;
+  closeTop?: any;
+  closeBottom?: any;
+  arcType?: any;
+  shadows?: any;
+  distanceDisplayCondition?: any;
+  classificationType?: any;
+  zIndex?: any;
+  textureCoordinates?: any;
+}
+
+export interface CsEntityPolylineptions {
+  show?: boolean;
+  positions: any;
+  width?: number;
+  granularity?: any;
+
+  color?: any;
+  material?: any;
+  depthFailMaterial?: any;
+  arcType?: any;
+
+  clampToGround?: any;
+  shadows?: any;
+  distanceDisplayCondition?: any;
+  classificationType?: any;
+  zIndex?: any;
+}
+
+export interface CsEntityRectangleOptions {
+  show?: boolean;
+  coordinates: any;
+  height?: number;
+  heightReference?: any;
+  extrudedHeight?: number;
+  extrudedHeightReference?: any;
+
+  rotation?: number;
+  stRotation?: number;
+  granularity?: any;
+
+  fill?: any;
+  color?: any;
+  material?: any;
+  outline?: any;
+  outlineColor?: any;
+  outlineWidth?: any;
+  shadows?: any;
+  distanceDisplayCondition?: any;
+  classificationType?: any;
+  zIndex?: any;
+}

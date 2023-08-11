@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
+    "@turf/turf": "^6.5.0",
     "ant-design-vue": "^3.2.20",
     "cesium": "^1.107.2",
     "cesium-tdt": "^1.1.0",

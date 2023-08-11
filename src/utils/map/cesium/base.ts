@@ -15,6 +15,7 @@ export default class CesiumBase {
   public imageryLayers: any = null;
   public scene: any = null;
   public canvas: any = null;
+  public originDoubleClickEvent: any = null;
 
   public prevClockTime: Cesium.JulianDate = Cesium.JulianDate.fromDate(new Date());
 
@@ -107,9 +108,6 @@ export default class CesiumBase {
     // 水雾特效
     // this.viewer.scene.globe.showGroundAtmosphere = true;
 
-    // 删除鼠标左键双击功能--追踪该位置
-    this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-
     this.camera = this.viewer.camera;
 
     this.scene = this.viewer.scene;
@@ -153,6 +151,29 @@ export default class CesiumBase {
       this.viewerGL = null;
       this.container = "";
     }
+  }
+
+  public disableDoubleClick() {
+    // 删除鼠标左键双击功能--追踪该位置
+    this.originDoubleClickEvent = this.viewer.cesiumWidget.screenSpaceEventHandler.getInputAction(
+      Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+    );
+    this.viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  }
+
+  public enableDoubleClick() {
+    this.viewer.cesiumWidget.screenSpaceEventHandler.setInputAction(
+      this.originDoubleClickEvent,
+      Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK,
+    );
+  }
+
+  public disableDepthTest() {
+    this.viewer.scene.globe.depthTestAgainstTerrain = false;
+  }
+
+  public enableDepthTest() {
+    this.viewer.scene.globe.depthTestAgainstTerrain = true;
   }
 
   public setSphereBgColor(color: any) {
@@ -317,7 +338,7 @@ export default class CesiumBase {
   }
 
   // 屏幕中心点位置
-  getScreenCenter() {
+  public getScreenCenter() {
     if (!this.viewer) {
       return null;
     }
@@ -338,7 +359,23 @@ export default class CesiumBase {
     };
   }
 
-  cartesian3ToWgs84(cartesian: Cesium.Cartesian3) {
+  public cartesian3ToLngLat(cartesian: Cesium.Cartesian3) {
+    if (!this.viewer) {
+      return null;
+    }
+    const ellipsoid = this.viewer!.scene.globe.ellipsoid;
+    const cartographic = ellipsoid.cartesianToCartographic(cartesian);
+
+    const longitude = Cesium.Math.toDegrees(cartographic.longitude);
+    const latitude = Cesium.Math.toDegrees(cartographic.latitude);
+
+    return {
+      longitude,
+      latitude,
+    };
+  }
+
+  public cartesian3ToWgs84(cartesian: Cesium.Cartesian3) {
     if (!this.viewer) {
       return null;
     }
@@ -363,7 +400,7 @@ export default class CesiumBase {
     };
   }
 
-  wgs84ToCartesian3(longitude: number, latitude: number, height: number) {
+  public wgs84ToCartesian3(longitude: number, latitude: number, height: number) {
     if (!this.viewer) {
       return null;
     }
@@ -377,7 +414,7 @@ export default class CesiumBase {
   }
 
   // Cartesian2 {x: 1000, y: 1000}
-  cartesian2ToCartesian3(cartesian2: Cesium.Cartesian2) {
+  public cartesian2ToCartesian3(cartesian2: Cesium.Cartesian2) {
     if (!this.viewer) {
       return null;
     }
@@ -388,7 +425,7 @@ export default class CesiumBase {
   }
 
   // Cartesian2 {x: 1000, y: 1000}
-  cartesian2ToCartesian3ToWgs84(cartesian2: Cesium.Cartesian2) {
+  public cartesian2ToCartesian3ToWgs84(cartesian2: Cesium.Cartesian2) {
     if (!this.viewer) {
       return null;
     }

@@ -132,11 +132,13 @@ export default class CsBillboardLayers {
     let name = options.name ? options.name : nanoid(10);
     name = this.__Name(name);
 
-    let position = [0, 0, 0];
+    let position: any = [0, 0, 0];
     if (options.position && options.position.length && options.position.length === 3) {
       position = options.position;
+      position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
+    } else if (options.position instanceof Cesium.Cartesian3) {
+      position = options.position;
     }
-    position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
 
     const billboardOpt = options.billboard;
     const scale = billboardOpt.scale ? billboardOpt.scale : 1;
@@ -370,7 +372,15 @@ export default class CsBillboardLayers {
       const layerObj = this.__layers.get(this.__Id(id));
       if (layerObj) {
         // layerObj.entity.billboard.color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
-        layerObj.entity.billboard.color = layerObj.entity.billboard.color.getValue().withAlpha(opacity);
+        const entity = layerObj.entity;
+        if (entity.billboard) {
+          entity.billboard!.color = entity.billboard!.color.getValue().withAlpha(opacity);
+        }
+
+        if (entity.label) {
+          entity.label!.fillColor = entity.label!.fillColor.getValue().withAlpha(opacity);
+          entity.label!.backgroundColor = entity.label!.backgroundColor.getValue().withAlpha(opacity);
+        }
         return true;
       } else {
         return false;
