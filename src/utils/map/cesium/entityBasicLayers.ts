@@ -747,6 +747,23 @@ export default class CsBasicEntityLayers {
     this.__layers.set(id, layerObj);
   }
 
+  public setPolylineLayerPositionsByID(id: string, positions: any) {
+    if (this.csBaseHandle) {
+      const layerObj = this.__layers.get(this.__Id(id));
+      if (layerObj) {
+        const entity = layerObj.entity;
+        if (entity.polyline) {
+          entity.polyline!.positions = positions;
+        }
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   public setPolylineLayerOpacity(options: PolylineOptions, opacity: number) {
     return this.setPolylineLayerOpacityByID(options.id, opacity);
   }

@@ -1154,7 +1154,7 @@ export default class CsDrawLayers {
       } else if (shape == MAP_DRAW_LINE || shape == MAP_MEASURE_DISTANCE) {
         this.drawType = MAP_DRAW_LINE;
         // 开启深度检测
-        this.csBaseHandle.enableDepthTest();
+        // this.csBaseHandle.enableDepthTest();
         this.csBaseHandle.disableDoubleClick();
 
         // 初始化
@@ -1237,17 +1237,22 @@ export default class CsDrawLayers {
               cartesian = this.viewer.camera.pickEllipsoid(moveEvent.endPosition, this.viewer.scene.globe.ellipsoid);
             }
             if (Cesium.defined(cartesian)) {
+              const currentDrawLength = this.currentDrawPositions.length;
               // 画虚拟线段
               if (this.lastLineAreaId) {
-                this.removeDrawById(this.lastLineAreaId);
-                this.lastLineAreaId = null;
+                // this.removeDrawById(this.lastLineAreaId);
+                // this.lastLineAreaId = null;
+                this.csEntityIns?.setPolylineLayerPositionsByID(this.lastLineAreaId, [
+                  this.currentDrawPositions[currentDrawLength - 1],
+                  cartesian,
+                ]);
+              } else {
+                this.lastLineAreaId = this.createId(shape, "dashline", true);
+                this.drawPolyline(this.currentLayerId, this.lastLineAreaId, [
+                  this.currentDrawPositions[currentDrawLength - 1],
+                  cartesian,
+                ]);
               }
-              const currentDrawLength = this.currentDrawPositions.length;
-              this.lastLineAreaId = this.createId(shape, "dashline", true);
-              this.drawPolyline(this.currentLayerId, this.lastLineAreaId, [
-                this.currentDrawPositions[currentDrawLength - 1],
-                cartesian,
-              ]);
             }
           }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
