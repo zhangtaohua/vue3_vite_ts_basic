@@ -290,4 +290,10 @@ export default class CsMapHelper extends CsBase {
       this.csOrbitIns.addLayer(orbitOptions);
     }
   }
+
+  public removeSatelliteOrbit(orbitOptions: SatelliteOrbitOptions, destroy = true) {
+    if (this.csOrbitIns) {
+      this.csOrbitIns.removeLayer(orbitOptions, destroy);
+    }
+  }
 }

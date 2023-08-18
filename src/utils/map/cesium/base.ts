@@ -121,6 +121,7 @@ export default class CesiumBase {
     // this.hideCopyRight()
 
     this.prevClockTime = this.viewer.clock.currentTime;
+
     if (window) {
       window.addEventListener("resize", this.onWindowResize);
     }
@@ -798,11 +799,67 @@ export default class CesiumBase {
     };
   };
 
-  addSyncView(targetView: Cesium.Viewer) {
+  public addSyncView(targetView: Cesium.Viewer) {
     // Apply our sync function every time the 3D camera view changes
     this.viewer!.camera.changed.addEventListener(this.syncALLViewFromALL(targetView));
     // By default, the `camera.changed` event will trigger when the camera has changed by 50%
     // To make it more sensitive, we can bring down this sensitivity
     this.viewer!.camera.percentageChanged = 0.01;
+  }
+
+  // 以下代码未测试
+  // 存储上一帧需要移动的距离
+  // 2D 自转模拟效果
+  public earthRotation2D = () => {
+    const { camera, clock, scene } = this.viewer;
+    if (this.scene.mode !== Cesium.SceneMode.SCENE2D || !clock.shouldAnimate) {
+      this.prevClockTime = clock.currentTime;
+      return;
+    }
+
+    // 获取相机高度
+    const { height } = scene.globe.ellipsoid.cartesianToCartographic(camera.position);
+    // 根据高度、地球半径等参数，计算出每秒钟相机需要平移的值
+    const a = (465.2 / (6371 * 1000)) * (height + 6371 * 1000);
+    const { currentTime } = clock;
+    // 算出前后两次的时间间隔
+    const interval = Cesium.JulianDate.toDate(currentTime) - Cesium.JulianDate.toDate(this.prevClockTime);
+    this.prevClockTime = currentTime;
+    // 调用api平移镜头
+    camera.moveLeft((interval * a) / 1000);
+  };
+
+  // 3D 自转模拟效果
+  public earthRotation3D = () => {
+    const { camera, clock, scene } = this.viewer;
+    if (this.scene.mode !== Cesium.SceneMode.SCENE3D || !clock.shouldAnimate) {
+      this.prevClockTime = clock.currentTime;
+      return;
+    }
+
+    const { height } = scene.globe.ellipsoid.cartesianToCartographic(camera.position);
+    const a = (465.2 / (6371 * 1000)) * (height + 6371 * 1000);
+    const { currentTime } = this.viewer.clock;
+    const interval = Cesium.JulianDate.toDate(currentTime) - Cesium.JulianDate.toDate(this.prevClockTime);
+    this.prevClockTime = currentTime;
+
+    camera.rotate(Cesium.Cartesian3.UNIT_Z, (Math.PI / (24 * 60 * 60)) * (interval / 1000));
+  };
+
+  public startEarthRotation() {
+    this.prevClockTime = this.viewer.clock.currentTime;
+    if (this.scene.mode == Cesium.SceneMode.SCENE2D) {
+      this.viewer.clock.onTick.addEventListener(this.earthRotation2D);
+    } else if (this.scene.mode == Cesium.SceneMode.SCENE3D) {
+      this.viewer.clock.onTick.addEventListener(this.earthRotation3D);
+    }
+  }
+
+  public stopEarthRotation() {
+    if (this.scene.mode == Cesium.SceneMode.SCENE2D) {
+      this.viewer.clock.onTick.removeEventListener(this.earthRotation2D);
+    } else if (this.scene.mode == Cesium.SceneMode.SCENE3D) {
+      this.viewer.clock.onTick.removeEventListener(this.earthRotation3D);
+    }
   }
 }

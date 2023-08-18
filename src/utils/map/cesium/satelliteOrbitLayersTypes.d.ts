@@ -1,3 +1,4 @@
+import { CsPopupOptions, CsScreenEventOptions, CsEntityLabelOptions } from "./baseTypes";
 export interface SatelliteOrbitOptions {
   id: string;
   tle1: string;
@@ -16,20 +17,9 @@ export interface SatelliteOrbitOptions {
   satStyleFunction?: any;
   oldOrbitStyle?: any;
   oldOribtStyleFunction?: any;
-  isPopup?: boolean;
-  popupType?: string;
-  htmlString?: string;
-  popupIsCenter?: boolean;
-  hasClose?: boolean;
-  duration?: number;
-  vNode?: any;
-  vNodeData?: any;
-  position?: Array<number>;
-  customT?: any;
-  eventType?: string;
-  callback?: any;
-  delay?: number;
-  debounce?: boolean;
-  debounceOption?: any; // 请参考 lodash 来设置。
+  multiplier?: number;
   model?: any;
+  scan?: any;
+  popup?: CsPopupOptions;
+  event?: CsScreenEventOptions;
 }
