@@ -17,7 +17,7 @@
 import { defineComponent, ref, onUnmounted, onMounted } from "vue";
 
 export default defineComponent({
-  name: "StaticImagePopup",
+  name: "StaticImagePopup2",
   props: {
     id: {
       type: String,

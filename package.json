@@ -37,7 +37,8 @@
     "ol-mapbox-style": "^10.6.0",
     "satellite.js": "^5.0.0",
     "vue": "^3.2.47",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue3-colorpicker": "^2.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",

@@ -39,11 +39,24 @@ export const MAP_DRAW_CLEAR = "Clear";
 
 export const MAP_MEASURE_DISTANCE = "Distance";
 export const MAP_MEASURE_AREA = "Area";
+export const MAP_SELECT_DRAW_MODE = "SetDrawMode";
+
+export const MAP_SHOW_PROPS = "ShowProps";
+export const MAP_HIDDEN_PROPS = "HiddenProps";
+
+export const drawModeType = {
+  idle: "idle", //
+  draw: "draw", // 绘制模式
+  modify: "modify", // 修改模式
+  edit: "edit", // 编辑模式
+  delete: "delete", // 删除模式
+};
 
 export const drawActionType = {
   draw: "drawEnd",
   modify: "modifyEnd",
-  delete: "delete",
+  edit: "editEnd",
+  delete: "deleteEnd",
   complete: "complete",
 };
 

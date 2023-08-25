@@ -177,87 +177,104 @@ export function createIconImagePoint(option: StyleIconOptions) {
   });
 }
 
-export const createDrawNormalStyle = () => {
+export const drawNormalStyleOptions: any = {
+  width: 2,
+  color: "rgba(24, 144, 255, 1)",
+  fillColor: "rgba(24, 144, 255, .2)",
+  radius: 5,
+  lineDash: [0, 0],
+};
+
+export const createDrawNormalStyle = (styleOptions: any = drawNormalStyleOptions) => {
+  // let lineDash = null;
+  // if (styleOptions.lineDash[0] || styleOptions.lineDash[1]) {
+  //   lineDash = styleOptions.lineDash;
+  // }
   return new Style({
     geometry: (feature: any) => {
       return feature.get(geodesicModifyGeometryFlag) || feature.getGeometry();
     },
     image: new CircleStyle({
       fill: new Fill({
-        color: "rgba(24, 144, 255, .2)",
+        color: styleOptions.fillColor,
       }),
       stroke: new StrokeStyle({
-        color: "rgba(24, 144, 255, 1)",
-        width: 2,
+        color: styleOptions.color,
+        width: styleOptions.width,
       }),
-      radius: 5,
+      radius: styleOptions.radius,
     }),
     fill: new Fill({
       // color: 'rgba(24, 144, 255, .2)',
-      color: "rgba(24, 144, 255, 0.2)",
+      color: styleOptions.fillColor,
     }),
     stroke: new StrokeStyle({
-      color: "rgba(24, 144, 255, 1)",
-      lineDash: [10, 10],
-      width: 2,
+      color: styleOptions.color,
+      lineDash: styleOptions.lineDash,
+      width: styleOptions.width,
     }),
   });
 };
 
-export const createDrawNormalActiveStyle = () => {
+export const createDrawNormalActiveStyle = (styleOptions: any = drawNormalStyleOptions) => {
   return new Style({
     image: new CircleStyle({
       fill: new Fill({
-        color: "rgba(24, 144, 255, .2)",
+        color: styleOptions.fillColor,
       }),
       stroke: new StrokeStyle({
-        color: "rgba(24, 144, 255, 1)",
-        width: 2,
+        color: styleOptions.color,
+        width: styleOptions.width,
       }),
-      radius: 5,
+      radius: styleOptions.radius,
     }),
     fill: new Fill({
-      color: "rgba(24, 144, 255, .2)",
+      color: styleOptions.fillColor,
     }),
     stroke: new StrokeStyle({
-      color: "rgba(24, 144, 255, 1)",
-      width: 2,
+      color: styleOptions.color,
+      width: styleOptions.width,
     }),
   });
 };
 
-export const createDrawHighlightStyle = () => {
+export const createDrawHighlightStyle = (styleOptions: any = drawNormalStyleOptions) => {
   return new Style({
     image: new CircleStyle({
       fill: new Fill({
-        color: "rgba(24, 144, 255, .2)",
+        color: styleOptions.fillColor,
       }),
       stroke: new StrokeStyle({
-        color: "rgba(24, 144, 255, 1)",
-
-        width: 2,
+        color: styleOptions.color,
+        width: styleOptions.width,
       }),
-      radius: 5,
+      radius: styleOptions.radius,
     }),
     fill: new Fill({
-      color: "rgba(100, 144, 255, .2)",
+      color: styleOptions.fillColor,
     }),
     stroke: new StrokeStyle({
-      color: "rgba(100, 144, 255, 1)",
-      width: 2,
+      color: styleOptions.color,
+      width: styleOptions.width,
     }),
   });
 };
 
-export const createSegmentStyle = () => {
+export const segmentStyleOptions = {
+  fontSize: 12,
+  color: "rgba(255, 255, 255, 1)",
+  fillColor: "rgba(0, 0, 0, 0.4)",
+};
+
+export const createSegmentStyle = (styleOptions: any = segmentStyleOptions) => {
   return new Style({
     text: new Text({
-      font: "12px Calibri,sans-serif",
+      font: `${styleOptions.fontSize}px Calibri,sans-serif`,
       fill: new Fill({
-        color: "rgba(255, 255, 255, 1)",
+        color: styleOptions.color,
       }),
       backgroundFill: new Fill({
-        color: "rgba(0, 0, 0, 0.4)",
+        color: styleOptions.fillColor,
       }),
       padding: [2, 2, 2, 2],
       textBaseline: "bottom",
@@ -269,21 +286,27 @@ export const createSegmentStyle = () => {
       angle: Math.PI,
       displacement: [0, 8],
       fill: new Fill({
-        color: "rgba(0, 0, 0, 0.4)",
+        color: styleOptions.fillColor,
       }),
     }),
   });
 };
 
-export const createLabelStyle = () => {
+export const labelStyleOptions = {
+  fontSize: 14,
+  color: "rgba(255, 255, 255, 1)",
+  fillColor: "rgba(0, 0, 0, 0.7)",
+};
+
+export const createLabelStyle = (styleOptions: any = labelStyleOptions) => {
   return new Style({
     text: new Text({
-      font: "14px Calibri,sans-serif",
+      font: `${styleOptions.fontSize}px Calibri,sans-serif`,
       fill: new Fill({
-        color: "rgba(255, 255, 255, 1)",
+        color: styleOptions.color,
       }),
       backgroundFill: new Fill({
-        color: "rgba(0, 0, 0, 0.7)",
+        color: styleOptions.fillColor,
       }),
       padding: [3, 3, 3, 3],
       textBaseline: "bottom",
@@ -295,21 +318,27 @@ export const createLabelStyle = () => {
       angle: Math.PI,
       displacement: [0, 10],
       fill: new Fill({
-        color: "rgba(0, 0, 0, 0.7)",
+        color: styleOptions.fillColor,
       }),
     }),
   });
 };
 
-export const createLabelLngLatStyle = () => {
+export const lnglatStyleOptions = {
+  fontSize: 12,
+  color: "rgba(255, 255, 255, 1)",
+  fillColor: "rgba(0, 0, 0, 0.4)",
+};
+
+export const createLabelLngLatStyle = (styleOptions: any = lnglatStyleOptions) => {
   return new Style({
     text: new Text({
-      font: "14px Calibri,sans-serif",
+      font: `${styleOptions.fontSize}px Calibri,sans-serif`,
       fill: new Fill({
-        color: "rgba(255, 255, 255, 1)",
+        color: styleOptions.color,
       }),
       backgroundFill: new Fill({
-        color: "rgba(0, 0, 0, 0.7)",
+        color: styleOptions.fillColor,
       }),
       padding: [3, 3, 3, 3],
       textBaseline: "bottom",
@@ -321,7 +350,7 @@ export const createLabelLngLatStyle = () => {
       angle: Math.PI,
       displacement: [0, 10],
       fill: new Fill({
-        color: "rgba(0, 0, 0, 0.7)",
+        color: styleOptions.fillColor,
       }),
     }),
   });

@@ -7,6 +7,8 @@
     </div>
     <div class="row_nw_center_center info_box">
       <div class="row_nw_center_center info_del" @click="cancelHandle">删除图形</div>
+      <div class="row_nw_center_center info_del" @click="modifyHandle">修改顶点</div>
+      <div class="row_nw_center_center info_del" @click="editHandle">编辑属性</div>
       <div class="row_nw_center_center info_confirm" @click="confirmHandle">绘制完成</div>
     </div>
   </div>
@@ -16,11 +18,11 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "StaticImagePopup",
+  name: "DrawCancelConfirm",
   props: {
     id: {
       type: String,
-      default: "001",
+      default: "dc001",
     },
     customT: {
       type: Function,
@@ -54,6 +56,14 @@ export default defineComponent({
       props && props!.vNodeData.cancelCb();
     };
 
+    const modifyHandle = () => {
+      props && props!.vNodeData.modifyCb();
+    };
+
+    const editHandle = () => {
+      props && props!.vNodeData.editCb();
+    };
+
     const confirmHandle = () => {
       props && props!.vNodeData.confirmCb();
     };
@@ -61,13 +71,15 @@ export default defineComponent({
     return {
       colseHandle,
       cancelHandle,
+      modifyHandle,
+      editHandle,
       confirmHandle,
     };
   },
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .panel_container {
   position: absolute;
   z-index: 2;

@@ -948,7 +948,7 @@ export default class CsSatelliteOrbitLayers {
     for (let i = 0; i < timeOld.length; i++) {
       const quaternion = orientationOld.getValue(timeOld[i]);
       const hpr = Cesium.HeadingPitchRoll.fromQuaternion(quaternion);
-      hpr.pitch = hpr.pitch + Cesium.Math.toRadians(90);
+      hpr.pitch = hpr.pitch + Cesium.Math.toRadians(-90);
       const quaternion2 = Cesium.Quaternion.fromHeadingPitchRoll(hpr);
       oq.addSample(timeOld[i], quaternion2);
     }
@@ -964,6 +964,7 @@ export default class CsSatelliteOrbitLayers {
         promise.then((dataSource: any) => {
           this.dataSources && this.dataSources.add(dataSource);
           layerObj.dataSource = dataSource;
+          // this.resetOrientation(dataSource);
 
           // 10s后时间轴跳转至指定时间并自动运行
           setTimeout(() => {

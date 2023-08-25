@@ -30,9 +30,14 @@ import {
   MAP_MEASURE_DISTANCE,
   MAP_MEASURE_AREA,
   MAP_DRAW_CLEAR,
+  MAP_SELECT_DRAW_MODE,
+  MAP_SHOW_PROPS,
+  MAP_HIDDEN_PROPS,
+  drawModeType,
 } from "@/utils/map/geoConstant";
 
-import MapDrawTools from "./components/MapDrawTools.vue";
+// import MapDrawTools from "./components/MapDrawTools.vue";
+import MapDrawTools from "@/utils/map/dom/MapDrawTools.vue";
 
 onMounted(() => {
   initMap();
@@ -106,7 +111,7 @@ const drawSource = {
     isShowSegments: true,
     isShowLngLat: true,
     isShowLabel: true,
-    isShowAction: true,
+    isShowAction: false,
   },
   [MAP_DRAW_RECTANGLE]: {
     shape: MAP_DRAW_RECTANGLE,
@@ -116,6 +121,8 @@ const drawSource = {
     once: false,
     callback: testCb(MAP_DRAW_RECTANGLE),
     isShowSegments: true,
+    isShowLngLat: true,
+    isShowLabel: true,
     isShowAction: true,
   },
   [MAP_DRAW_POLYGON]: {
@@ -178,9 +185,34 @@ const drawSource = {
   },
 };
 
-function actionChangeHandle(action: any) {
-  console.log("draw action", action);
-  if (action === MAP_DRAW_CLEAR) {
+function actionChangeHandle(action: any, value: any) {
+  console.log("draw action", action, value);
+
+  if (action === MAP_SELECT_DRAW_MODE) {
+    switch (value) {
+      case drawModeType.idle: {
+        break;
+      }
+      case drawModeType.draw: {
+        mapIns?.draw(drawSource[MAP_DRAW_POLYGON]);
+        break;
+      }
+      case drawModeType.modify: {
+        break;
+      }
+      case drawModeType.edit: {
+        break;
+      }
+      case drawModeType.delete: {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  } else if (action === MAP_SHOW_PROPS) {
+  } else if (action === MAP_HIDDEN_PROPS) {
+  } else if (action === MAP_DRAW_CLEAR) {
     mapIns.clearDraw();
   } else {
     mapIns?.draw(drawSource[action]);

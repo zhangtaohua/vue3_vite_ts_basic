@@ -8,8 +8,8 @@ import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
-import drawBasicLayers from "@/utils/map/ol/drawBasicLayers";
-import type { DrawBasicOptions } from "@/utils/map/ol/drawBasicLayersTypes";
+import drawLayers from "@/utils/map/ol/drawLayers";
+import type { DrawBasicOptions } from "@/utils/map/ol/drawLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import type { EventOptions } from "@/utils/map/ol/mapEventTypes";
@@ -33,7 +33,7 @@ export default class OlDrawHelper extends OlBase {
   private __funcLayers: any = null; // 功能图层
   public XYZIns: xyzLayers | null = null;
   public BingmapIns: bingmapsLayers | null = null;
-  public DrawIns: drawBasicLayers | null = null;
+  public DrawIns: drawLayers | null = null;
   public mapboxLayerIns: mapboxLayers | null = null;
 
   public vuePopupIns: OpenLayerVueNodePopup | null = null;
@@ -108,7 +108,7 @@ export default class OlDrawHelper extends OlBase {
 
     this.XYZIns = new xyzLayers(this);
     this.BingmapIns = new bingmapsLayers(this);
-    this.DrawIns = new drawBasicLayers(this);
+    this.DrawIns = new drawLayers(this);
     this.mapboxLayerIns = new mapboxLayers(this);
 
     this.mapEventIns = new OpenLayersMapEvent(this);
@@ -200,7 +200,7 @@ export default class OlDrawHelper extends OlBase {
   public addBgLayer(id: string) {
     // 先隐藏map
     this.__hiddenGaodeXYZLayer();
-    this.__hiddenGaodeXYZLayer();
+    this.__hiddenGoogleXYZLayer();
     this.__hiddenBingmapLayer(bingMap);
     this.__hiddenBingmapLayer(bingLightMap);
     this.__hiddenMapboxStyleLayer();
