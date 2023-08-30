@@ -9,8 +9,101 @@
     {
       "type": "Feature",
       "properties": {
-        "style": { "color": [255, 255, 0, 1], "fillColor": [255, 255, 0, 0.5], "width": 3 },
-        "name": "线段"
+        "id": "draw_Z10Zicu3LQ",
+        "shape": "Distance",
+        "geoType": "LineString",
+        "coordinates": [
+          [78.86107290233839, 68.0890999377618],
+          [91.24071526822557, 69.69336716831899],
+          [126.64649243466299, 37.38274246993373],
+          [138.53094910591471, 0.24759207674128447],
+          [145.7111416781293, 56.517887703791274],
+          [24.390646492434666, 77.98331123361822],
+          [-2.8445667125171994, 70.61775041517731]
+        ],
+        "center": [138.53094910591471, 0.24759207674128447],
+        "area": {
+          "area": 0,
+          "areaString": "0 m<sup>2</sup>"
+        },
+        "length": {
+          "length": 20966666.9,
+          "lengthString": "20966.67 km"
+        },
+        "editProps": {
+          "name": "线段",
+          "attributes": {
+            "properties": [
+              {
+                "name": "111",
+                "values": 111,
+                "units": "个",
+                "describe": "测试111"
+              },
+              {
+                "name": "222",
+                "values": 222,
+                "units": "天",
+                "describe": "测试二二二天"
+              }
+            ],
+            "keyValues": [
+              {
+                "name": "键",
+                "values": "值"
+              },
+              {
+                "name": "key",
+                "values": "value"
+              },
+              {
+                "name": "key2",
+                "values": "value2"
+              }
+            ],
+            "json": {
+              "abc": "abc",
+              "bbc": "bbc",
+              "hanzi": "汉字"
+            }
+          }
+        },
+        "style": {
+          "color": [255, 255, 0, 1],
+          "fillColor": [255, 255, 0, 0.5],
+          "width": 3,
+          "geo": {
+            "width": 2,
+            "color": "rgb(81, 45, 167)",
+            "fillColor": "rgb(158, 168, 219)",
+            "radius": 5,
+            "radius2": 5,
+            "lineDash": [0, 0],
+            "iconWidth": 28,
+            "iconHeight": 28,
+            "iconPattern": "arrow",
+            "iconUrl": "/src/utils/map/assets/icons/arrow/arrow1_5.svg",
+            "iconAnchor": [0.5, 0.5],
+            "iconOffset": [0, 0],
+            "arrowPattern": "every"
+          },
+          "vertex": {
+            "fontSize": 12,
+            "color": "rgb(5, 160, 69)",
+            "fillColor": "rgb(200, 230, 202)"
+          },
+          "line": {
+            "fontSize": 12,
+            "color": "rgb(216, 27, 67)",
+            "fillColor": "rgba(251, 135, 158, 0.6)"
+          },
+          "label": {
+            "fontSize": 14,
+            "color": "rgb(246, 124, 1)",
+            "fillColor": "rgba(255, 204, 128, 0.7)"
+          },
+          "text": null
+        }
       },
       "geometry": {
         "coordinates": [
@@ -172,8 +265,101 @@
     {
       "type": "Feature",
       "properties": {
-        "style": { "color": [120, 120, 255, 1], "fillColor": [120, 120, 255, 0.5], "width": 3 },
-        "name": "多条线"
+        "id": "draw_Z10Zicu3LQ",
+        "shape": "Distance",
+        "geoType": "LineString",
+        "coordinates": [
+          [78.86107290233839, 68.0890999377618],
+          [91.24071526822557, 69.69336716831899],
+          [126.64649243466299, 37.38274246993373],
+          [138.53094910591471, 0.24759207674128447],
+          [145.7111416781293, 56.517887703791274],
+          [24.390646492434666, 77.98331123361822],
+          [-2.8445667125171994, 70.61775041517731]
+        ],
+        "center": [138.53094910591471, 0.24759207674128447],
+        "area": {
+          "area": 0,
+          "areaString": "0 m<sup>2</sup>"
+        },
+        "length": {
+          "length": 20966666.9,
+          "lengthString": "20966.67 km"
+        },
+        "editProps": {
+          "name": "多条线",
+          "attributes": {
+            "properties": [
+              {
+                "name": "111",
+                "values": 111,
+                "units": "个",
+                "describe": "测试111"
+              },
+              {
+                "name": "222",
+                "values": 222,
+                "units": "天",
+                "describe": "测试二二二天"
+              }
+            ],
+            "keyValues": [
+              {
+                "name": "键",
+                "values": "值"
+              },
+              {
+                "name": "key",
+                "values": "value"
+              },
+              {
+                "name": "key2",
+                "values": "value2"
+              }
+            ],
+            "json": {
+              "abc": "abc",
+              "bbc": "bbc",
+              "hanzi": "汉字"
+            }
+          }
+        },
+        "style": {
+          "color": [255, 255, 0, 1],
+          "fillColor": [255, 255, 0, 0.5],
+          "width": 3,
+          "geo": {
+            "width": 2,
+            "color": "rgb(81, 45, 167)",
+            "fillColor": "rgb(158, 168, 219)",
+            "radius": 5,
+            "radius2": 5,
+            "lineDash": [0, 0],
+            "iconWidth": 28,
+            "iconHeight": 28,
+            "iconPattern": "arrow",
+            "iconUrl": "/src/utils/map/assets/icons/arrow/arrow1_5.svg",
+            "iconAnchor": [0.5, 0.5],
+            "iconOffset": [0, 0],
+            "arrowPattern": "every"
+          },
+          "vertex": {
+            "fontSize": 12,
+            "color": "rgb(5, 160, 69)",
+            "fillColor": "rgb(200, 230, 202)"
+          },
+          "line": {
+            "fontSize": 12,
+            "color": "rgb(216, 27, 67)",
+            "fillColor": "rgba(251, 135, 158, 0.6)"
+          },
+          "label": {
+            "fontSize": 14,
+            "color": "rgb(246, 124, 1)",
+            "fillColor": "rgba(255, 204, 128, 0.7)"
+          },
+          "text": null
+        }
       },
       "geometry": {
         "coordinates": [

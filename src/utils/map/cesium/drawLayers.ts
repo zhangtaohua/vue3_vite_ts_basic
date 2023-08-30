@@ -42,6 +42,7 @@ import { makePointStyle, makeLabelStyle } from "./style";
 import * as turf from "@turf/turf";
 
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,

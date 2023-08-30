@@ -29,6 +29,7 @@
 <script lang="ts">
 import { defineComponent, reactive, watch, computed } from "vue";
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,
@@ -145,6 +146,12 @@ export default defineComponent({
     const state = reactive({
       isShowMode: false,
       interactions: [
+        {
+          id: "interaction_0",
+          image: imageDual,
+          name: "文本",
+          action: MAP_DRAW_TEXT,
+        },
         {
           id: "interaction_1",
           image: imageDual,
@@ -335,7 +342,7 @@ export default defineComponent({
 
 .mode_bottom_container {
   position: absolute;
-  right: 0rem;
+  right: 0;
   bottom: 2.5rem;
   width: auto;
   height: auto;
@@ -345,8 +352,8 @@ export default defineComponent({
 
 .mode_top_container {
   position: absolute;
-  right: 0rem;
   top: 2.5rem;
+  right: 0;
   width: auto;
   height: auto;
   background: rgb(26 32 44 / 70%);

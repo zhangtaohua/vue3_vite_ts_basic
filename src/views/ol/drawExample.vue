@@ -19,6 +19,7 @@ import { mapEventType } from "@/utils/map/ol/olConstant";
 import { Style } from "ol/style";
 
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,
@@ -36,8 +37,8 @@ import {
   drawModeType,
 } from "@/utils/map/geoConstant";
 
-// import MapDrawTools from "./components/MapDrawTools.vue";
-import MapDrawTools from "@/utils/map/dom/MapDrawTools.vue";
+import MapDrawTools from "./components/MapDrawTools.vue";
+// import MapDrawTools from "@/utils/map/dom/MapDrawTools.vue";
 
 onMounted(() => {
   initMap();
@@ -92,6 +93,14 @@ const testCb2 = (name: string) => {
 };
 
 const drawSource = {
+  [MAP_DRAW_TEXT]: {
+    shape: MAP_DRAW_TEXT,
+    isClear: false,
+    isFreehand: false,
+    needModify: false,
+    once: false,
+    callback: testCb(MAP_DRAW_TEXT),
+  },
   [MAP_DRAW_POINT]: {
     shape: MAP_DRAW_POINT,
     isClear: true,
@@ -99,7 +108,9 @@ const drawSource = {
     needModify: true,
     once: false,
     callback: testCb(MAP_DRAW_POINT),
-    isShowAction: true,
+    isShowSegments: true,
+    isShowLngLat: true,
+    isShowLabel: true,
   },
   [MAP_DRAW_SQUARE]: {
     shape: MAP_DRAW_SQUARE,
@@ -111,7 +122,6 @@ const drawSource = {
     isShowSegments: true,
     isShowLngLat: true,
     isShowLabel: true,
-    isShowAction: false,
   },
   [MAP_DRAW_RECTANGLE]: {
     shape: MAP_DRAW_RECTANGLE,
@@ -123,7 +133,6 @@ const drawSource = {
     isShowSegments: true,
     isShowLngLat: true,
     isShowLabel: true,
-    isShowAction: true,
   },
   [MAP_DRAW_POLYGON]: {
     shape: MAP_DRAW_POLYGON,
@@ -133,7 +142,6 @@ const drawSource = {
     once: true,
     callback: testCb(MAP_DRAW_POLYGON),
     isShowLngLat: true,
-    isShowAction: true,
   },
   [MAP_DRAW_LINE]: {
     shape: MAP_DRAW_LINE,
@@ -143,7 +151,6 @@ const drawSource = {
     once: false,
     callback: testCb(MAP_DRAW_LINE),
     isShowLabel: true,
-    isShowAction: false,
   },
   [MAP_DRAW_GEOMETRY_CIRCLE]: {
     shape: MAP_DRAW_GEOMETRY_CIRCLE,

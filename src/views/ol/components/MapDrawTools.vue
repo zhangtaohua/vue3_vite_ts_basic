@@ -19,6 +19,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,
@@ -47,6 +48,12 @@ export default defineComponent({
   setup(_, { emit }) {
     const state = reactive({
       interactions: [
+        {
+          id: "interaction_0",
+          image: imageDual,
+          name: "文本",
+          action: MAP_DRAW_TEXT,
+        },
         {
           id: "interaction_1",
           image: imageDual,

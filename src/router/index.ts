@@ -50,6 +50,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/ol/drawExample.vue"),
       },
       {
+        path: "/openlayers/drawlabel",
+        name: "DrawLabelExample",
+        component: () => import("@/views/ol/drawLabelExample.vue"),
+      },
+      {
         path: "/openlayers/comprehensive",
         name: "CompreExample",
         component: () => import("@/views/ol/comprehensiveExample.vue"),

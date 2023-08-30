@@ -25,6 +25,7 @@ export const isCustomizeFlag = "customize";
 export const customMeta = "customMeta";
 
 // 不要改下面的名字，不然可能导致画不成功图形
+export const MAP_DRAW_TEXT = "Text";
 export const MAP_DRAW_POINT = "Point";
 export const MAP_DRAW_SQUARE = "Square";
 export const MAP_DRAW_RECTANGLE = "Rectangle";

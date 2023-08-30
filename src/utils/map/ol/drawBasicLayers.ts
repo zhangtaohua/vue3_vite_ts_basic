@@ -13,17 +13,7 @@ import { unByKey } from "ol/Observable.js";
 
 import OlBase from "./base";
 
-import OpenLayersMapEvent from "./mapEvent";
-import type { EventOptions } from "./mapEventTypes";
-
-import OpenLayerVueNodePopup from "./vueNodePopupLayers";
-import type { VueNodeOptions } from "./vueNodePopupLayersTypes";
-
 import { earthExtent, popupType, isCustomizeFlag, customMeta } from "../geoConstant";
-
-import { mapEventType } from "./olConstant";
-
-import DrawCancelConfirm from "../dom/DrawCancelConfirm.vue";
 
 import { getCorrdinateLongitudeLatitude } from "./olTools";
 
@@ -52,6 +42,7 @@ import { nanoid } from "nanoid";
 import type { DrawBasicOptions } from "./drawBasicLayersTypes";
 
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,
@@ -68,9 +59,6 @@ import {
 export default class OlDrawBasic {
   public olBaseHandle: OlBase | null = null;
   public handle: olMap | null = null;
-
-  public vuePopupIns: OpenLayerVueNodePopup | null = null;
-  public mapEventIns: OpenLayersMapEvent | null = null;
 
   private __layers: any = null;
   private __layerIdPrefix = "DRAW_";
@@ -95,20 +83,12 @@ export default class OlDrawBasic {
   public sketchFeature: any = null;
   public listener: any = null;
 
-  public dcPopupOptions: any = null;
-  public dcEventOptions: any = null;
-
-  public isShowDcActionPopup: boolean | undefined = false;
-
   private customCallbackFunc: any = null;
 
   constructor(mapBaseIns: OlBase) {
     this.olBaseHandle = mapBaseIns;
     this.handle = mapBaseIns.handle;
     this.__layers = new Map();
-
-    this.vuePopupIns = new OpenLayerVueNodePopup(mapBaseIns);
-    this.mapEventIns = new OpenLayersMapEvent(mapBaseIns);
 
     this.segmentStyles = [createSegmentStyle()];
     this.lableLngLatStyles = [createLabelLngLatStyle()];
@@ -144,71 +124,9 @@ export default class OlDrawBasic {
       this.handle.addLayer(this.InteractionLayer);
       this.__layers.set(this.__Id(id), layerObj);
     }
-
-    this.dcPopupOptions = {
-      id: `${this.__layerIdPrefix}dc_popup`,
-      name: `${this.__layerIdPrefix}vnode_popup`,
-      vNode: DrawCancelConfirm,
-      vNodeData: {
-        data: this.__crurentSelDrawData,
-        cancelCb: () => {
-          console.log("cancelCb", this.__crurentSelDrawData);
-          console.log(this.interactionSource);
-          this.__removeSourceFeatureById(this.__crurentSelDrawData.id);
-          this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
-          if (this.customCallbackFunc) {
-            this.customCallbackFunc(drawActionType.delete, this.__crurentSelDrawData);
-          }
-        },
-        confirmCb: () => {
-          console.log("confirmCb", this.__crurentSelDrawData);
-          this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
-          if (this.customCallbackFunc) {
-            this.customCallbackFunc(drawActionType.complete, this.__crurentSelDrawData);
-          }
-        },
-      },
-      wrapX: true,
-      callback: (feature: any) => {
-        this.__crurentSelDrawData = feature.get("__drawData");
-        this.dcPopupOptions.vNodeData.data = this.__crurentSelDrawData;
-      },
-      popupIsCenter: false,
-      eventType: mapEventType.singleclick,
-    };
-    this.vuePopupIns.addLayer(this.dcPopupOptions);
-
-    this.dcEventOptions = {
-      id: `${this.__layerIdPrefix}_map_event`,
-      type: mapEventType.singleclick,
-      cb: this.dcNodePopupCb(this.dcPopupOptions),
-      delay: 300,
-      debounce: false,
-    };
-    this.mapEventIns!.addEvent(this.dcEventOptions);
-
-    this.dcEventOptions = {
-      id: `${this.__layerIdPrefix}_map_event`,
-      type: mapEventType.dblclick,
-      cb: this.dcNodePopupCb(this.dcPopupOptions),
-      delay: 300,
-      debounce: false,
-    };
-    this.mapEventIns!.addEvent(this.dcEventOptions);
-
-    this.dcEventOptions = {
-      id: `${this.__layerIdPrefix}_map_event`,
-      type: mapEventType.pointerdrag,
-      cb: this.dcNodePopupCb(this.dcPopupOptions),
-      delay: 300,
-      debounce: true,
-    };
-    this.mapEventIns!.addEvent(this.dcEventOptions);
   }
 
   public destructor() {
-    this.mapEventIns!.destructor();
-    this.vuePopupIns!.destructor();
     this.modify = null;
     this.snapTag = null;
     this.drawTag = null;
@@ -288,46 +206,9 @@ export default class OlDrawBasic {
       this.handle.removeInteraction(this.drawTag);
       this.handle.removeInteraction(this.snapTag);
       this.handle.removeInteraction(this.modify);
+      this.modify = null;
     }
   }
-
-  public dcNodePopupCb = (options: any) => {
-    return (event: any) => {
-      if (this.isShowDcActionPopup) {
-        let pixel = event.pixel;
-        if (!pixel.length) {
-          pixel = this.handle.getEventPixel(event.originalEvent);
-        }
-        const feature = this.handle.forEachFeatureAtPixel(pixel, function (feature: any) {
-          const isCustom = feature.get(isCustomizeFlag);
-          const metadata = feature.get(customMeta);
-          const id = metadata?.id;
-          // console.log("dcNodePopupCb isCustom", feature, isCustom, metadata);
-          if (isCustom && id && id.startsWith("draw_")) {
-            return feature;
-          }
-        });
-
-        if (feature) {
-          console.log("dcNodePopupCb 3", feature);
-          if (options.callback) {
-            options.callback(feature);
-            this.vuePopupIns?.updateLayer(this.dcPopupOptions as VueNodeOptions);
-          }
-          let position = event.coordinate;
-          if (options.popupIsCenter) {
-            const featureExtent = feature.getGeometry().getExtent();
-            position = getCenter(featureExtent);
-          }
-          this.vuePopupIns?.showPopupByID(this.dcPopupOptions.id, position);
-        } else {
-          if (options.eventType == mapEventType.pointermove) {
-            this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
-          }
-        }
-      }
-    };
-  };
 
   public drawStyleFunction(
     feature: any,
@@ -442,7 +323,6 @@ export default class OlDrawBasic {
   public modifyStyleFunction(feature: any) {
     feature.get("features").forEach((modifyFeature: any) => {
       const modifyGeometry = modifyFeature.get(geodesicModifyGeometryFlag);
-      // console.log("modifyStyle", modifyGeometry);
       if (modifyGeometry) {
         const modifyPoint = feature.getGeometry().getCoordinates();
         const geometries = modifyFeature.getGeometry().getGeometries();
@@ -510,7 +390,7 @@ export default class OlDrawBasic {
         },
       });
 
-      if (shape == MAP_DRAW_POINT) {
+      if (shape == MAP_DRAW_TEXT || shape == MAP_DRAW_POINT) {
         geoType = MAP_DRAW_POINT;
         const coord = poly.getCoordinates();
         formatCoords = getCorrdinateLongitudeLatitude(coord);
@@ -673,7 +553,6 @@ export default class OlDrawBasic {
     const isShowSegments = options.isShowSegments ?? false;
     const isShowLngLat = options.isShowLngLat ?? false;
     const isShowLabel = options.isShowLabel ?? false;
-    this.isShowDcActionPopup = options.isShowAction ?? false;
 
     if (this.handle && this.olBaseHandle) {
       if (isClear) {
@@ -688,10 +567,13 @@ export default class OlDrawBasic {
       // 要不要先清楚以前的图层呢？
       this.drawType = shape;
       this.drawModel = shape;
+      this.customCallbackFunc = options.callback;
 
       let geometryFunction: any = null;
 
-      if (shape == MAP_DRAW_POINT) {
+      if (shape === MAP_DRAW_TEXT) {
+        this.drawType = MAP_DRAW_POINT;
+      } else if (shape == MAP_DRAW_POINT) {
         this.drawType = MAP_DRAW_POINT;
       } else if (shape == MAP_DRAW_SQUARE) {
         this.drawType = MAP_DRAW_CIRCLE;
@@ -754,7 +636,7 @@ export default class OlDrawBasic {
         this.setDrawBackCB();
         this.drawLayerZIndex = this.olBaseHandle.getCurrentzIndex() + 1;
         this.InteractionLayer.setZIndex(this.drawLayerZIndex);
-        if (options.needModify) {
+        if (options.needModify && this.modify) {
           this.modify.setActive(false);
         }
 
@@ -772,7 +654,7 @@ export default class OlDrawBasic {
         this.removeDrawBackCB();
         // this.sketchFeature = null;
         // unByKey(this.listener);
-        if (options.needModify) {
+        if (options.needModify && this.modify) {
           this.modify.setActive(true);
         }
 
@@ -812,7 +694,6 @@ export default class OlDrawBasic {
         });
 
         this.modify.on("modifystart", (event: any) => {
-          this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
           event.features.forEach((feature: any) => {
             const geometry = feature.getGeometry();
             if (geometry.getType() === MAP_DRAW_GEOMETRYCOLLECTION) {

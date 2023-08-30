@@ -17,7 +17,7 @@ import CsWmtsLayers from "@/utils/map/cesium/wmtsLayers";
 import type { WMTSOptions } from "@/utils/map/cesium/wmtsLayersTypes";
 
 import CsDrawLayers from "@/utils/map/cesium/drawLayers";
-import type { Drawptions } from "@/utils/map/cesium/drawLayersTypes";
+import type { DrawBasicOptions } from "@/utils/map/cesium/drawLayersTypes";
 
 import {
   mapXYZUrl,
@@ -285,13 +285,13 @@ export default class CsMapHelper extends CsBase {
     }
   }
 
-  public draw(drawOpt: Drawptions) {
+  public draw(drawOpt: DrawBasicOptions) {
     if (this.csDrawIns) {
       this.csDrawIns.drawShape(drawOpt);
     }
   }
 
-  public removeDraw(drawOpt: Drawptions) {
+  public removeDraw(drawOpt: DrawBasicOptions) {
     if (this.csDrawIns) {
       // this.csDrawIns.removeLayer(drawOpt);
     }

@@ -49,12 +49,16 @@ export function createStroke(option: StyleStrokeOptions) {
   const color = getColor(option.color);
   return new StrokeStyle({
     color: color,
+    lineDash: option.lineDash,
     width: option.width,
   });
 }
 
 export function createText(option: StyleTextOptions) {
-  const font = option.font || "12px Calibri,sans-serif";
+  const fontSize = option.fontSize ?? 12;
+  const font = option.font || `${fontSize}px Calibri,sans-serif`;
+  const rotation = option.rotation ?? 0;
+  const rotationR = (rotation * Math.PI) / 180;
   return new Text({
     text: option.text ?? "",
     font: font,
@@ -62,8 +66,9 @@ export function createText(option: StyleTextOptions) {
     backgroundFill: createFill(option),
     padding: option.padding ?? [3, 3, 3, 3],
     textBaseline: option.textBaseline ?? "center",
-    offsetY: option.offsetY,
-    offsetX: option.offsetX,
+    offsetY: option.offsetY ?? 0,
+    offsetX: option.offsetX ?? 0,
+    rotation: rotationR,
   });
 }
 
@@ -90,8 +95,8 @@ export function createRectangle(option: StyleShapeOptions) {
     stroke: createStroke(option),
     fill: createFill(option),
     points: 4,
-    radius: option.radius,
-    radius2: option.radius2,
+    radius: option.radius / Math.SQRT2,
+    radius2: option.radius,
     angle: 0,
     scale: [1, 0.5],
   });
@@ -103,7 +108,7 @@ export function createTriangle(option: StyleShapeOptions) {
     fill: createFill(option),
     points: 3,
     radius: option.radius,
-    rotation: option.rotation,
+    rotation: option.rotation ?? 0,
     angle: 0,
   });
 }
@@ -142,9 +147,18 @@ export function createX(option: StyleShapeOptions) {
 }
 
 export function createIconImage(option: StyleIconOptions) {
+  let color = option.color || option.fillColor;
+  color = getColor(color);
   return new Icon({
     src: option.url,
-    scale: option.scale ?? 1.0,
+    width: option.radius,
+    height: option.radius2,
+    // anchorXUnits: "pixels", // "fraction"
+    // anchorYUnits: "pixels", // "fraction"
+    color: color,
+    anchor: option.iconAnchor,
+    offset: option.iconOffset,
+    rotation: option.rotation ?? 0,
   });
 }
 
@@ -177,15 +191,120 @@ export function createIconImagePoint(option: StyleIconOptions) {
   });
 }
 
-export const drawNormalStyleOptions: any = {
-  width: 2,
-  color: "rgba(24, 144, 255, 1)",
-  fillColor: "rgba(24, 144, 255, .2)",
-  radius: 5,
-  lineDash: [0, 0],
+export const drawNormalStyleOptions = () => {
+  return {
+    width: 2,
+    color: "rgba(24, 144, 255, 1)",
+    fillColor: "rgba(24, 144, 255, .2)",
+    radius: 5,
+    radius2: 5,
+    lineDash: [0, 0],
+    iconWidth: 6,
+    iconHeight: 6,
+    iconPattern: "pattern",
+    iconUrl: "circle",
+    iconAnchor: [0.5, 0.5],
+    iconOffset: [0, 0],
+    arrowPattern: "noNeed",
+  };
 };
 
-export const createDrawNormalStyle = (styleOptions: any = drawNormalStyleOptions) => {
+export const drawTextStyleOptions = () => {
+  return {
+    text: "",
+    fontSize: 14,
+    offsetY: 0,
+    offsetX: 0,
+    rotation: 0,
+    padding: [0, 0, 0, 0],
+    textBaseline: "bottom",
+    color: "rgba(24, 144, 255, 1)",
+    fillColor: "rgba(24, 144, 255, .2)",
+  };
+};
+
+export const createDrawNormalStyle = (
+  styleOptions: any = drawNormalStyleOptions(),
+  textOptions: any = drawTextStyleOptions(),
+) => {
+  // let lineDash = null;
+  // if (styleOptions.lineDash[0] || styleOptions.lineDash[1]) {
+  //   lineDash = styleOptions.lineDash;
+  // }
+
+  styleOptions.radius = styleOptions.iconWidth;
+  styleOptions.radius2 = styleOptions.iconHeight;
+  styleOptions.url = styleOptions.iconUrl;
+
+  let imageStyle: any = null;
+  if (styleOptions.iconPattern == "pattern") {
+    switch (styleOptions.iconUrl) {
+      case "circle": {
+        imageStyle = createCircle(styleOptions);
+        break;
+      }
+      case "square": {
+        imageStyle = createSquare(styleOptions);
+        break;
+      }
+      case "rectangle": {
+        imageStyle = createRectangle(styleOptions);
+        break;
+      }
+      case "triangle": {
+        imageStyle = createTriangle(styleOptions);
+        break;
+      }
+      case "star": {
+        imageStyle = createStar(styleOptions);
+        break;
+      }
+      case "cross": {
+        imageStyle = createCross(styleOptions);
+        break;
+      }
+      case "x": {
+        imageStyle = createX(styleOptions);
+        break;
+      }
+      default: {
+        imageStyle = createCircle(styleOptions);
+        break;
+      }
+    }
+  } else if (styleOptions.iconPattern == "icons") {
+    if (styleOptions.url) {
+      imageStyle = createIconImage(styleOptions);
+    } else {
+      imageStyle = createCircle(styleOptions);
+    }
+  } else {
+    imageStyle = createCircle(styleOptions);
+  }
+
+  if (textOptions.text) {
+    return new Style({
+      geometry: (feature: any) => {
+        return feature.get(geodesicModifyGeometryFlag) || feature.getGeometry();
+      },
+      image: imageStyle,
+      fill: createFill(styleOptions),
+      stroke: createStroke(styleOptions),
+      text: createText(textOptions),
+    });
+  } else {
+    return new Style({
+      geometry: (feature: any) => {
+        return feature.get(geodesicModifyGeometryFlag) || feature.getGeometry();
+      },
+      image: imageStyle,
+      fill: createFill(styleOptions),
+      stroke: createStroke(styleOptions),
+    });
+  }
+};
+
+export const createDrawNormalStyleOld = (styleOptions: any = drawNormalStyleOptions()) => {
   // let lineDash = null;
   // if (styleOptions.lineDash[0] || styleOptions.lineDash[1]) {
   //   lineDash = styleOptions.lineDash;
@@ -216,7 +335,7 @@ export const createDrawNormalStyle = (styleOptions: any = drawNormalStyleOptions
   });
 };
 
-export const createDrawNormalActiveStyle = (styleOptions: any = drawNormalStyleOptions) => {
+export const createDrawNormalActiveStyle = (styleOptions: any = drawNormalStyleOptions()) => {
   return new Style({
     image: new CircleStyle({
       fill: new Fill({
@@ -238,7 +357,7 @@ export const createDrawNormalActiveStyle = (styleOptions: any = drawNormalStyleO
   });
 };
 
-export const createDrawHighlightStyle = (styleOptions: any = drawNormalStyleOptions) => {
+export const createDrawHighlightStyle = (styleOptions: any = drawNormalStyleOptions()) => {
   return new Style({
     image: new CircleStyle({
       fill: new Fill({

@@ -25,13 +25,17 @@ import { mapEventType } from "./olConstant";
 
 import DrawCancelConfirm from "../dom/DrawCancelConfirm.vue";
 import DrawPolygonPropsPanel from "../dom/DrawPolygonPropsPanel.vue";
+import DrawPointPropsPanel from "../dom/DrawPointPropsPanel.vue";
+import DrawTextPropsPanel from "../dom/DrawTextPropsPanel.vue";
+import DrawLinePropsPanel from "../dom/DrawLinePropsPanel.vue";
 
 import { getCorrdinateLongitudeLatitude } from "./olTools";
 import lodash from "lodash";
 
-import * as olPixel from "ol/pixel";
+import type { StyleIconOptions } from "./styleTypes";
 
 import {
+  createIconImagePoint,
   geodesicModifyGeometryFlag,
   createDrawNormalStyle,
   createDrawNormalActiveStyle,
@@ -43,6 +47,7 @@ import {
   createModifyStyle,
   createTipStyle,
   drawNormalStyleOptions,
+  drawTextStyleOptions,
   segmentStyleOptions,
   labelStyleOptions,
   lnglatStyleOptions,
@@ -60,6 +65,7 @@ import { nanoid } from "nanoid";
 import type { DrawBasicOptions } from "./drawBasicLayersTypes";
 
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,
@@ -118,7 +124,170 @@ export default class OlDrawBasic {
   private customCallbackFunc: any = null;
 
   public propsPanelPopupOptions = {
-    [MAP_DRAW_POINT]: {},
+    [MAP_DRAW_TEXT]: {
+      id: `${MAP_DRAW_TEXT}_panel_popup`,
+      name: `${MAP_DRAW_TEXT}_panel_popup`,
+      vNode: DrawTextPropsPanel,
+      vNodeData: {
+        data: this.__crurentSelDrawData,
+        cancelCb: (updateOptions: any) => {
+          // 其实和 updateCb 是一样的
+          console.log("Text cancelCb", this.__crurentSelDrawData);
+
+          this.vuePopupIns?.hiddenPopupByID(this.propsPanelPopupOptions[MAP_DRAW_TEXT].id);
+
+          const isShowSegments = false;
+          const isShowLngLat = false;
+          const isShowLabel = false;
+
+          const style = this.updateDrawStyleFunction(
+            this.__currentFeature,
+            null,
+            isShowSegments,
+            isShowLngLat,
+            isShowLabel,
+            updateOptions.style,
+          );
+
+          this.__currentFeature.setStyle(style);
+        },
+        updateCb: (updateOptions: any) => {
+          console.log(
+            "text updateCb",
+            this.__crurentSelDrawData,
+            this.__currentFeature,
+            this.__currentFeature.getStyle(),
+            this.__currentFeature.getStyleFunction(),
+          );
+          const isShowSegments = false;
+          const isShowLngLat = false;
+          const isShowLabel = false;
+
+          const style = this.updateDrawStyleFunction(
+            this.__currentFeature,
+            null,
+            isShowSegments,
+            isShowLngLat,
+            isShowLabel,
+            updateOptions.style,
+          );
+
+          this.__currentFeature.setStyle(style);
+        },
+
+        confirmCb: (geoProps: any) => {
+          console.log("text confirmCb", this.__crurentSelDrawData, this.__currentFeature, geoProps);
+          this.vuePopupIns?.hiddenPopupByID(this.propsPanelPopupOptions[MAP_DRAW_TEXT].id);
+
+          this.__crurentSelDrawData[editPropsKeyName] = {
+            name: geoProps.name,
+            attributes: lodash.cloneDeep(geoProps.attributes),
+          };
+          this.__crurentSelDrawData["style"] = lodash.cloneDeep(geoProps.style);
+
+          this.__currentFeature["values_"]["__drawData"]["geojson"]["properties"][editPropsKeyName] = {
+            name: geoProps.name,
+            attributes: lodash.cloneDeep(geoProps.attributes),
+          };
+          this.__currentFeature["values_"]["__drawData"]["geojson"]["properties"]["style"] = lodash.cloneDeep(
+            geoProps.style,
+          );
+
+          if (this.customCallbackFunc) {
+            this.customCallbackFunc(drawActionType.edit, this.__crurentSelDrawData);
+          }
+        },
+      },
+      popupIsCenter: false,
+    },
+    [MAP_DRAW_POINT]: {
+      id: `${MAP_DRAW_POINT}_panel_popup`,
+      name: `${MAP_DRAW_POINT}_panel_popup`,
+      vNode: DrawPointPropsPanel,
+      vNodeData: {
+        data: this.__crurentSelDrawData,
+        cancelCb: (updateOptions: any) => {
+          // 其实和 updateCb 是一样的
+          console.log("point cancelCb", this.__crurentSelDrawData);
+
+          this.vuePopupIns?.hiddenPopupByID(this.propsPanelPopupOptions[MAP_DRAW_POINT].id);
+
+          const isShowSegments = this.__currentOptions.isShowSegments ?? false;
+          const isShowLngLat = this.__currentOptions.isShowLngLat ?? false;
+          const isShowLabel = this.__currentOptions.isShowLabel ?? false;
+
+          const style = this.updateDrawStyleFunction(
+            this.__currentFeature,
+            null,
+            isShowSegments,
+            isShowLngLat,
+            isShowLabel,
+            updateOptions.style,
+          );
+
+          this.__currentFeature.setStyle(style);
+        },
+        updateCb: (updateOptions: any) => {
+          console.log(
+            "point updateCb",
+            this.__crurentSelDrawData,
+            this.__currentFeature,
+            this.__currentFeature.getStyle(),
+            this.__currentFeature.getStyleFunction(),
+          );
+
+          // 不能清除了旧样式，不然会导致采用了openlayers 默认的样式。
+          // this.InteractionLayer.setStyle();
+
+          // const drawType = this.__currentOptions.shape;
+          const isShowSegments = this.__currentOptions.isShowSegments ?? false;
+          const isShowLngLat = this.__currentOptions.isShowLngLat ?? false;
+          const isShowLabel = this.__currentOptions.isShowLabel ?? false;
+
+          const style = this.updateDrawStyleFunction(
+            this.__currentFeature,
+            null,
+            isShowSegments,
+            isShowLngLat,
+            isShowLabel,
+            updateOptions.style,
+          );
+
+          this.__currentFeature.setStyle(style);
+        },
+        confirmCb: (geoProps: any) => {
+          console.log("point confirmCb", this.__crurentSelDrawData, this.__currentFeature, geoProps);
+          this.vuePopupIns?.hiddenPopupByID(this.propsPanelPopupOptions[MAP_DRAW_POINT].id);
+
+          this.__crurentSelDrawData[editPropsKeyName] = {
+            name: geoProps.name,
+            attributes: lodash.cloneDeep(geoProps.attributes),
+          };
+          this.__crurentSelDrawData["style"] = lodash.cloneDeep(geoProps.style);
+
+          // this.__currentFeature["values_"]["__drawData"][editPropsKeyName] = {
+          //   name: geoProps.name,
+          //   attributes: lodash.cloneDeep(geoProps.attributes),
+          // };
+          // this.__currentFeature["values_"]["__drawData"]["style"] = lodash.cloneDeep(geoProps.style);
+
+          this.__currentFeature["values_"]["__drawData"]["geojson"]["properties"][editPropsKeyName] = {
+            name: geoProps.name,
+            attributes: lodash.cloneDeep(geoProps.attributes),
+          };
+          this.__currentFeature["values_"]["__drawData"]["geojson"]["properties"]["style"] = lodash.cloneDeep(
+            geoProps.style,
+          );
+
+          // this.__currentFeature.set("__editProps", geoProps);
+
+          if (this.customCallbackFunc) {
+            this.customCallbackFunc(drawActionType.edit, this.__crurentSelDrawData);
+          }
+        },
+      },
+      popupIsCenter: false,
+    },
     [MAP_DRAW_SQUARE]: {},
     [MAP_DRAW_RECTANGLE]: {
       id: `${MAP_DRAW_RECTANGLE}_panel_popup`,
@@ -209,7 +378,82 @@ export default class OlDrawBasic {
       popupIsCenter: false,
     },
     [MAP_DRAW_POLYGON]: {},
-    [MAP_DRAW_LINE]: {},
+    [MAP_DRAW_LINE]: {
+      id: `${MAP_DRAW_LINE}_panel_popup`,
+      name: `${MAP_DRAW_LINE}_panel_popup`,
+      vNode: DrawLinePropsPanel,
+      vNodeData: {
+        data: this.__crurentSelDrawData,
+        cancelCb: (updateOptions: any) => {
+          // 其实和 updateCb 是一样的
+          console.log("point cancelCb", this.__crurentSelDrawData);
+
+          this.vuePopupIns?.hiddenPopupByID(this.propsPanelPopupOptions[MAP_DRAW_LINE].id);
+
+          const isShowSegments = this.__currentOptions.isShowSegments ?? false;
+          const isShowLngLat = this.__currentOptions.isShowLngLat ?? false;
+          const isShowLabel = this.__currentOptions.isShowLabel ?? false;
+
+          const style = this.updateDrawStyleFunction(
+            this.__currentFeature,
+            null,
+            isShowSegments,
+            isShowLngLat,
+            isShowLabel,
+            updateOptions.style,
+          );
+
+          this.__currentFeature.setStyle(style);
+        },
+        updateCb: (updateOptions: any) => {
+          console.log(
+            "point updateCb",
+            this.__crurentSelDrawData,
+            this.__currentFeature,
+            this.__currentFeature.getStyle(),
+            this.__currentFeature.getStyleFunction(),
+          );
+
+          const isShowSegments = this.__currentOptions.isShowSegments ?? false;
+          const isShowLngLat = this.__currentOptions.isShowLngLat ?? false;
+          const isShowLabel = this.__currentOptions.isShowLabel ?? false;
+
+          const style = this.updateDrawStyleFunction(
+            this.__currentFeature,
+            null,
+            isShowSegments,
+            isShowLngLat,
+            isShowLabel,
+            updateOptions.style,
+          );
+
+          this.__currentFeature.setStyle(style);
+        },
+        confirmCb: (geoProps: any) => {
+          console.log("point confirmCb", this.__crurentSelDrawData, this.__currentFeature, geoProps);
+          this.vuePopupIns?.hiddenPopupByID(this.propsPanelPopupOptions[MAP_DRAW_LINE].id);
+
+          this.__crurentSelDrawData[editPropsKeyName] = {
+            name: geoProps.name,
+            attributes: lodash.cloneDeep(geoProps.attributes),
+          };
+          this.__crurentSelDrawData["style"] = lodash.cloneDeep(geoProps.style);
+
+          this.__currentFeature["values_"]["__drawData"]["geojson"]["properties"][editPropsKeyName] = {
+            name: geoProps.name,
+            attributes: lodash.cloneDeep(geoProps.attributes),
+          };
+          this.__currentFeature["values_"]["__drawData"]["geojson"]["properties"]["style"] = lodash.cloneDeep(
+            geoProps.style,
+          );
+
+          if (this.customCallbackFunc) {
+            this.customCallbackFunc(drawActionType.edit, this.__crurentSelDrawData);
+          }
+        },
+      },
+      popupIsCenter: false,
+    },
     [MAP_DRAW_GEOMETRY_CIRCLE]: {},
     [MAP_DRAW_GEODESIC_CIRCLE]: {},
     [MAP_MEASURE_DISTANCE]: {},
@@ -228,7 +472,7 @@ export default class OlDrawBasic {
     isShowLabel: boolean,
     styleOptions: any,
   ) {
-    let geoStyleOptions = { ...drawNormalStyleOptions };
+    let geoStyleOptions = { ...drawNormalStyleOptions() };
 
     let vertexStyleOptions = { ...lnglatStyleOptions };
 
@@ -236,13 +480,23 @@ export default class OlDrawBasic {
 
     let kmArealabelStyleOptions = { ...labelStyleOptions };
 
+    let textStyleOptions = { ...drawTextStyleOptions() };
+
     if (styleOptions && styleOptions.geo) {
       geoStyleOptions = {
         width: styleOptions.geo.width,
         color: styleOptions.geo.color,
         fillColor: styleOptions.geo.fillColor,
         radius: styleOptions.geo.radius,
+        radius2: styleOptions.geo.radius2,
         lineDash: styleOptions.geo.lineDash,
+        iconWidth: styleOptions.geo.iconWidth,
+        iconHeight: styleOptions.geo.iconHeight,
+        iconPattern: styleOptions.geo.iconPattern,
+        iconUrl: styleOptions.geo.iconUrl,
+        iconAnchor: styleOptions.geo.iconAnchor,
+        iconOffset: styleOptions.geo.iconOffset,
+        arrowPattern: styleOptions.geo.arrowPattern,
       };
     }
 
@@ -270,7 +524,34 @@ export default class OlDrawBasic {
       };
     }
 
-    const styles = [createDrawNormalStyle(geoStyleOptions)];
+    if (styleOptions && styleOptions.text) {
+      textStyleOptions = {
+        text: styleOptions.text.text || "点击编辑文本",
+        fontSize: styleOptions.text.fontSize,
+        offsetY: styleOptions.text.offsetY,
+        offsetX: styleOptions.text.offsetX,
+        padding: styleOptions.text.padding,
+        textBaseline: styleOptions.text.textBaseline,
+        color: styleOptions.text.color,
+        fillColor: styleOptions.text.fillColor,
+        rotation: styleOptions.text.rotation,
+      };
+    }
+
+    const drawtypeTemp = this.__currentOptions.shape;
+    if (drawtypeTemp && drawtypeTemp == MAP_DRAW_TEXT) {
+      geoStyleOptions.color = "rgba(24, 144, 255, 0)";
+      geoStyleOptions.fillColor = "rgba(24, 144, 255, 0)";
+      // if (styleOptions && styleOptions.text && styleOptions.text.text) {
+      //   geoStyleOptions.color = "rgba(24, 144, 255, 0)";
+      //   geoStyleOptions.fillColor = "rgba(24, 144, 255, 0)";
+      // } else {
+      //   geoStyleOptions.color = "rgba(24, 144, 255, 1)";
+      //   geoStyleOptions.fillColor = "rgba(24, 144, 255, .2)";
+      // }
+    }
+
+    const styles = [createDrawNormalStyle(geoStyleOptions, textStyleOptions)];
 
     const geometry = feature.getGeometry();
     const type = geometry.getType();
@@ -364,9 +645,57 @@ export default class OlDrawBasic {
       }
     }
 
+    if (geoStyleOptions.iconPattern == "arrow") {
+      if (geoStyleOptions.iconUrl) {
+        geoStyleOptions.radius = geoStyleOptions.iconWidth;
+        geoStyleOptions.radius2 = geoStyleOptions.iconHeight;
+        geoStyleOptions.url = geoStyleOptions.iconUrl;
+
+        if (geoStyleOptions.arrowPattern == "last") {
+          const coordinatesTemp = geometry.getCoordinates();
+
+          if (coordinatesTemp.length && coordinatesTemp.length >= 2) {
+            const lines = coordinatesTemp.length - 1;
+            let lineCount = 0;
+            geometry.forEachSegment((start: any, end: any) => {
+              lineCount++;
+              if (lineCount == lines) {
+                const dx = end[0] - start[0];
+                const dy = end[1] - start[1];
+                const rotation = Math.atan2(dy, dx);
+                geoStyleOptions.rotation = -rotation;
+
+                // arrows
+                const arrowStyle = createIconImagePoint(geoStyleOptions as StyleIconOptions);
+                const segmentPoint = new Point(end);
+                arrowStyle.setGeometry(segmentPoint);
+                styles.push(arrowStyle);
+              }
+            });
+          }
+        } else if (geoStyleOptions.arrowPattern == "every") {
+          geometry.forEachSegment((start: any, end: any) => {
+            const dx = end[0] - start[0];
+            const dy = end[1] - start[1];
+            const rotation = Math.atan2(dy, dx);
+            geoStyleOptions.rotation = -rotation;
+
+            // arrows
+            const arrowStyle = createIconImagePoint(geoStyleOptions as StyleIconOptions);
+            const segmentPoint = new Point(end);
+            arrowStyle.setGeometry(segmentPoint);
+            styles.push(arrowStyle);
+          });
+        } else if (geoStyleOptions.arrowPattern == "noNeed") {
+        }
+      }
+    }
+
     return styles;
   }
 
+  // 用来计算当前层级下 编辑面板的显示位置。
+  // 默认编辑面板宽度为460px
   public getPanelPosition() {
     const container = this.olBaseHandle?.container;
     let windowWidth = window.innerWidth - 480;
@@ -476,18 +805,46 @@ export default class OlDrawBasic {
 
           const drawtype = this.__currentOptions.shape;
           switch (drawtype) {
+            case MAP_DRAW_TEXT: {
+              this.propsPanelPopupOptions[MAP_DRAW_TEXT].vNodeData.data = this.__crurentSelDrawData;
+              this.vuePopupIns?.updateLayer(this.propsPanelPopupOptions[MAP_DRAW_TEXT] as VueNodeOptions);
+              // 计算个显示位置
+              // const corrdinates = this.getPanelPosition();
+              const corrdinates = this.handle.getCoordinateFromPixel([0, 0]);
+              this.vuePopupIns?.showPopupByID(this.propsPanelPopupOptions[MAP_DRAW_TEXT].id, corrdinates);
+              break;
+            }
             case MAP_DRAW_POINT: {
+              this.propsPanelPopupOptions[MAP_DRAW_POINT].vNodeData.data = this.__crurentSelDrawData;
+              this.vuePopupIns?.updateLayer(this.propsPanelPopupOptions[MAP_DRAW_POINT] as VueNodeOptions);
+              // 计算个显示位置
+              // const corrdinates = this.getPanelPosition();
+              const corrdinates = this.handle.getCoordinateFromPixel([0, 0]);
+              this.vuePopupIns?.showPopupByID(this.propsPanelPopupOptions[MAP_DRAW_POINT].id, corrdinates);
               break;
             }
             case MAP_DRAW_SQUARE:
             case MAP_DRAW_RECTANGLE:
             case MAP_DRAW_POLYGON:
-            case MAP_MEASURE_AREA: {
+            case MAP_MEASURE_AREA:
+            case MAP_DRAW_GEOMETRY_CIRCLE:
+            case MAP_DRAW_GEODESIC_CIRCLE: {
               this.propsPanelPopupOptions[MAP_DRAW_RECTANGLE].vNodeData.data = this.__crurentSelDrawData;
               this.vuePopupIns?.updateLayer(this.propsPanelPopupOptions[MAP_DRAW_RECTANGLE] as VueNodeOptions);
               // 计算个显示位置
-              const corrdinates = this.getPanelPosition();
+              // const corrdinates = this.getPanelPosition();
+              const corrdinates = this.handle.getCoordinateFromPixel([0, 0]);
               this.vuePopupIns?.showPopupByID(this.propsPanelPopupOptions[MAP_DRAW_RECTANGLE].id, corrdinates);
+              break;
+            }
+            case MAP_DRAW_LINE:
+            case MAP_MEASURE_DISTANCE: {
+              this.propsPanelPopupOptions[MAP_DRAW_LINE].vNodeData.data = this.__crurentSelDrawData;
+              this.vuePopupIns?.updateLayer(this.propsPanelPopupOptions[MAP_DRAW_LINE] as VueNodeOptions);
+              // 计算个显示位置
+              // const corrdinates = this.getPanelPosition();
+              const corrdinates = this.handle.getCoordinateFromPixel([0, 0]);
+              this.vuePopupIns?.showPopupByID(this.propsPanelPopupOptions[MAP_DRAW_LINE].id, corrdinates);
               break;
             }
           }
@@ -517,6 +874,9 @@ export default class OlDrawBasic {
     };
     this.vuePopupIns?.addLayer(this.dcPopupOptions);
     this.vuePopupIns?.addLayer(this.propsPanelPopupOptions[MAP_DRAW_RECTANGLE]);
+    this.vuePopupIns?.addLayer(this.propsPanelPopupOptions[MAP_DRAW_POINT]);
+    this.vuePopupIns?.addLayer(this.propsPanelPopupOptions[MAP_DRAW_TEXT]);
+    this.vuePopupIns?.addLayer(this.propsPanelPopupOptions[MAP_DRAW_LINE]);
 
     const eventCb = this.dcNodePopupCb(this.dcPopupOptions);
 
@@ -658,7 +1018,18 @@ export default class OlDrawBasic {
     isShowLngLat: boolean,
     isShowLabel: boolean,
   ) {
-    const styles = [createDrawNormalStyle({ ...drawNormalStyleOptions })];
+    const geoStyleOptions = { ...drawNormalStyleOptions() };
+
+    const textStyleOptions = { ...drawTextStyleOptions() };
+
+    const drawtypeTemp = this.__currentOptions.shape;
+    if (drawtypeTemp && drawtypeTemp == MAP_DRAW_TEXT) {
+      geoStyleOptions.color = "rgba(24, 144, 255, 0)";
+      geoStyleOptions.fillColor = "rgba(24, 144, 255, 0)";
+      textStyleOptions.text = "点击编辑文本";
+    }
+
+    const styles = [createDrawNormalStyle(geoStyleOptions, textStyleOptions)];
     // // 为了 测地圆的绘制 方案一。
     // const modifyGeometry = feature.get(geodesicModifyGeometryFlag);
     // if (modifyGeometry) {
@@ -832,7 +1203,7 @@ export default class OlDrawBasic {
         },
       });
 
-      if (shape == MAP_DRAW_POINT) {
+      if (shape == MAP_DRAW_TEXT || shape == MAP_DRAW_POINT) {
         geoType = MAP_DRAW_POINT;
         const coord = poly.getCoordinates();
         formatCoords = getCorrdinateLongitudeLatitude(coord);
@@ -1019,7 +1390,9 @@ export default class OlDrawBasic {
 
       let geometryFunction: any = null;
 
-      if (shape == MAP_DRAW_POINT) {
+      if (shape === MAP_DRAW_TEXT) {
+        this.drawType = MAP_DRAW_POINT;
+      } else if (shape == MAP_DRAW_POINT) {
         this.drawType = MAP_DRAW_POINT;
       } else if (shape == MAP_DRAW_SQUARE) {
         this.drawType = MAP_DRAW_CIRCLE;

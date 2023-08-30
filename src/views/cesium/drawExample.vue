@@ -32,6 +32,7 @@ import { screenEventType } from "@/utils/map/cesium/csConstant";
 import { nanoid } from "nanoid";
 
 import {
+  MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
   MAP_DRAW_SQUARE,
   MAP_DRAW_RECTANGLE,

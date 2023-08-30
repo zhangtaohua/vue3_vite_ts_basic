@@ -8,8 +8,8 @@ import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
-import drawLayers from "@/utils/map/ol/drawLayers";
-import type { DrawBasicOptions } from "@/utils/map/ol/drawLayersTypes";
+import drawBasicLayers from "@/utils/map/ol/drawBasicLayers";
+import type { DrawBasicOptions } from "@/utils/map/ol/drawLabelLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import type { EventOptions } from "@/utils/map/ol/mapEventTypes";
@@ -33,7 +33,7 @@ export default class OlDrawHelper extends OlBase {
   private __funcLayers: any = null; // 功能图层
   public XYZIns: xyzLayers | null = null;
   public BingmapIns: bingmapsLayers | null = null;
-  public DrawIns: drawLayers | null = null;
+  public DrawIns: drawBasicLayers | null = null;
   public mapboxLayerIns: mapboxLayers | null = null;
 
   public vuePopupIns: OpenLayerVueNodePopup | null = null;
@@ -108,7 +108,7 @@ export default class OlDrawHelper extends OlBase {
 
     this.XYZIns = new xyzLayers(this);
     this.BingmapIns = new bingmapsLayers(this);
-    this.DrawIns = new drawLayers(this);
+    this.DrawIns = new drawBasicLayers(this);
     this.mapboxLayerIns = new mapboxLayers(this);
 
     this.mapEventIns = new OpenLayersMapEvent(this);

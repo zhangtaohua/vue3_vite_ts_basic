@@ -9,7 +9,8 @@
         <router-link to="/openlayers/geojson" class="ol_example_title">Geojson实例</router-link>
         <router-link to="/openlayers/dawnline" class="ol_example_title">DawnLine 实例</router-link>
         <router-link to="/openlayers/orbit" class="ol_example_title">卫星轨道 实例</router-link>
-        <router-link to="/openlayers/draw" class="ol_example_title">绘制 实例</router-link>
+        <router-link to="/openlayers/draw" class="ol_example_title">普通绘制 实例</router-link>
+        <router-link to="/openlayers/drawlabel" class="ol_example_title">绘制标注 实例</router-link>
         <router-link to="/openlayers/comprehensive" class="ol_example_title">综合实例</router-link>
       </div>
 

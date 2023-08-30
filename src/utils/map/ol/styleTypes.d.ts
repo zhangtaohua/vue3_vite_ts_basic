@@ -6,6 +6,7 @@ export interface StyleColorOptions {
 
 export interface StyleStrokeOptions extends StyleColorOptions {
   width: number;
+  lineDash?: string | Array<number>;
 }
 
 export interface StyleTextOptions extends StyleStrokeOptions {
@@ -15,6 +16,8 @@ export interface StyleTextOptions extends StyleStrokeOptions {
   textBaseline?: string;
   offsetX?: number;
   offsetY?: number;
+  fontSize?: number;
+  rotation?: number;
 }
 
 export interface StyleShapeOptions extends StyleStrokeOptions {
@@ -29,6 +32,13 @@ export interface StyleShapeOptions extends StyleStrokeOptions {
 
 export interface StyleIconOptions {
   url: any;
-  scale: number;
+  scale?: number;
   offset?: Array<number>;
+  radius?: number;
+  radius2?: number;
+  color?: string | Array<number>;
+  fillColor?: string | Array<number>;
+  iconAnchor?: Array<number>;
+  iconOffset?: Array<number>;
+  rotation?: number;
 }

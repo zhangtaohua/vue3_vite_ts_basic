@@ -120,42 +120,42 @@ function onBlur() {
 .label_title {
   width: 80px;
   height: 32px;
-  font-size: 1rem;
   color: #f0f1f5;
+  font-size: 1rem;
 }
 
 .input_box {
-  background-color: transparent;
   width: 320px;
+  background-color: transparent;
 }
 
 .input_cls {
   width: 110px;
   height: 32px;
-  color: #f0f1f5;
+  margin-right: 4px;
   padding: 0 8px;
-  line-height: 32px;
+  color: #f0f1f5;
   font-size: 1rem;
+  line-height: 32px;
   background-color: transparent;
   border: 1px solid #94a7c0;
   border-radius: 4px;
-  margin-right: 4px;
 }
 
 .input_cls::placeholder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: flex-start;
+  padding: 0;
   color: #94a7c0;
   font-size: 1rem;
   line-height: 32px;
-  padding: 0px;
-  display: flex;
-  flex-direction: row;
-  justify-items: flex-start;
-  align-items: center;
 }
 
 .input_error_cls {
-  border: 1px solid #ef0d2e;
   color: #ef0d2e;
+  border: 1px solid #ef0d2e;
 }
 
 .input_placeholder {
@@ -172,30 +172,30 @@ function onBlur() {
 .props_des_box {
   width: 338px;
   height: 64px;
-  margin-left: calc(80px + 2%);
   margin-top: 4px;
+  margin-left: calc(80px + 2%);
 }
 
 .text_cls {
   width: 100%;
   height: 100%;
-  color: #f0f1f5;
   padding: 0 8px;
-  line-height: 32px;
+  color: #f0f1f5;
   font-size: 1rem;
+  line-height: 32px;
   background-color: transparent;
   border: 1px solid #94a7c0;
   border-radius: 4px;
 }
 
 .text_cls::placeholder {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: flex-start;
+  padding: 0;
   color: #94a7c0;
   font-size: 1rem;
   line-height: 32px;
-  padding: 0px;
-  display: flex;
-  flex-direction: row;
-  justify-items: flex-start;
-  align-items: center;
 }
 </style>
