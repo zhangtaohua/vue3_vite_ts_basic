@@ -10,6 +10,7 @@ import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
 import { getCenter } from "ol/extent";
 import { unByKey } from "ol/Observable.js";
+import { GeoJSON } from "ol/format";
 
 import OlBase from "./base";
 
@@ -33,6 +34,7 @@ import { getCorrdinateLongitudeLatitude } from "./olTools";
 import lodash from "lodash";
 
 import type { StyleIconOptions } from "./styleTypes";
+import type { GeojsonBasicOptions } from "./geojsonBasicLayersTypes";
 
 import {
   createIconImagePoint,
@@ -538,10 +540,16 @@ export default class OlDrawBasic {
       };
     }
 
+    // 这里还是为了兼容文本处理。
     const drawtypeTemp = this.__currentOptions.shape;
     if (drawtypeTemp && drawtypeTemp == MAP_DRAW_TEXT) {
       geoStyleOptions.color = "rgba(24, 144, 255, 0)";
       geoStyleOptions.fillColor = "rgba(24, 144, 255, 0)";
+      // 这是为了在第一次绘制完文本后，但文本没有值，
+      // 此时强制更新一次样式，就需要设置一个文本，不然什么也看不见。
+      if (!textStyleOptions.text) {
+        textStyleOptions.text = "点击编辑文本";
+      }
       // if (styleOptions && styleOptions.text && styleOptions.text.text) {
       //   geoStyleOptions.color = "rgba(24, 144, 255, 0)";
       //   geoStyleOptions.fillColor = "rgba(24, 144, 255, 0)";
@@ -1185,15 +1193,19 @@ export default class OlDrawBasic {
 
       let poly = null;
       let propFeature = null;
+      let drawType: any = null;
       const featureId = `draw_${nanoid(10)}`;
       if (event.type == "drawend") {
         propFeature = event.feature;
         poly = event.feature.getGeometry();
+        drawType = poly.getType();
       } else if (event.type == "modifyend") {
         const features = event.features.getArray();
         propFeature = features[0];
         poly = features[0].getGeometry();
+        drawType = poly.getType();
       }
+
       propFeature.setId(featureId);
       propFeature.setProperties({
         [isCustomizeFlag]: true,
@@ -1347,7 +1359,56 @@ export default class OlDrawBasic {
         ...this.__drawData,
       };
 
+      // 强制更新一次样式，不然切换到文本时样式都会消失
+      if (event.type == "drawend") {
+        const isShowSegments = options.isShowSegments ?? false;
+        const isShowLngLat = options.isShowLngLat ?? false;
+        const isShowLabel = options.isShowLabel ?? false;
+
+        const style = this.updateDrawStyleFunction(propFeature, null, isShowSegments, isShowLngLat, isShowLabel, null);
+
+        propFeature.setStyle(style);
+      } else if (event.type == "modifyend") {
+        const isShowSegments = options.isShowSegments ?? false;
+        const isShowLngLat = options.isShowLngLat ?? false;
+        const isShowLabel = options.isShowLabel ?? false;
+
+        const oldDrawData = propFeature.get("__drawData");
+        let oldGeojson: any = null;
+        let oldGeojsonPorps: any = null;
+        let oldGeojsonStyle: any = null;
+
+        if (oldDrawData) {
+          oldGeojson = oldDrawData["geojson"];
+          if (oldGeojson) {
+            oldGeojsonPorps = oldGeojson["properties"];
+            if (oldGeojsonPorps) {
+              oldGeojsonStyle = oldGeojsonPorps["style"];
+            }
+          }
+        }
+        console.log("oldGeojson", oldDrawData, oldGeojson, oldGeojsonStyle);
+        const style = this.updateDrawStyleFunction(
+          propFeature,
+          null,
+          isShowSegments,
+          isShowLngLat,
+          isShowLabel,
+          oldGeojsonStyle,
+        );
+
+        propFeature.setStyle(style);
+
+        // 要把修改过的旧的值设置回去。
+        // if (oldGeojsonStyle) {
+        //   this.__drawData["geojson"]["properties"][editPropsKeyName] =
+        //     oldDrawData["geojson"]["properties"][editPropsKeyName];
+        //   this.__drawData["geojson"]["properties"]["style"] = oldGeojsonStyle;
+        // }
+      }
+
       propFeature.set("__drawData", this.__drawData);
+
       if (this.customCallbackFunc) {
         if (event.type == "drawend") {
           this.customCallbackFunc(drawActionType.draw, this.__drawData);
@@ -1528,7 +1589,6 @@ export default class OlDrawBasic {
         });
 
         this.modify.on("modifyend", (event: any) => {
-          console.log("event", event.features);
           event.features.forEach((feature: any) => {
             const modifyGeometry = feature.get(geodesicModifyGeometryFlag);
             if (modifyGeometry) {
@@ -1536,7 +1596,22 @@ export default class OlDrawBasic {
               feature.unset(geodesicModifyGeometryFlag, true);
             }
           });
-          this.getDrawData(options)(event);
+          // 因为有可能会去修改别的图形，所以这里要做处理
+          const features = event.features.getArray();
+          const propFeature = features[0];
+          const customMetaData = propFeature.get(customMeta);
+          let oldOptions: any = null;
+          if (customMetaData) {
+            oldOptions = {
+              ...customMetaData,
+            };
+          }
+          console.log("modifyend", oldOptions, options);
+          if (oldOptions) {
+            this.getDrawData(oldOptions)(event);
+          } else {
+            this.getDrawData(options)(event);
+          }
         });
       }
 
@@ -1574,7 +1649,6 @@ export default class OlDrawBasic {
     });
 
     this.modify.on("modifyend", (event: any) => {
-      console.log("modifyend 2", event.features);
       event.features.forEach((feature: any) => {
         const modifyGeometry = feature.get(geodesicModifyGeometryFlag);
         if (modifyGeometry) {
@@ -1582,7 +1656,22 @@ export default class OlDrawBasic {
           feature.unset(geodesicModifyGeometryFlag, true);
         }
       });
-      this.getDrawData(options)(event);
+      // 因为有可能会去修改别的图形，所以这里要做处理
+      const features = event.features.getArray();
+      const propFeature = features[0];
+      const customMetaData = propFeature.get(customMeta);
+      let oldOptions: any = null;
+      if (customMetaData) {
+        oldOptions = {
+          ...customMetaData,
+        };
+      }
+      console.log("modifyend 2", event.features, oldOptions, options);
+      if (oldOptions) {
+        this.getDrawData(oldOptions)(event);
+      } else {
+        this.getDrawData(options)(event);
+      }
     });
 
     this.handle.addInteraction(this.snapTag);
@@ -1608,6 +1697,61 @@ export default class OlDrawBasic {
 
     return coordinatesNew;
   }
+
+  public getAllDrawData() {
+    console.log("getAllDrawData", this.interactionSource);
+    const allGeojson = {
+      type: "FeatureCollection",
+      features: [],
+    };
+
+    this.interactionSource.forEachFeature((feature: any) => {
+      console.log("featrue", feature);
+      const isCustom = feature.get(isCustomizeFlag);
+      // const metadata = feature.get(customMeta);
+      const drawData = feature.get("__drawData");
+      if (isCustom) {
+        const geojosnTemp = lodash.cloneDeep(drawData.geojson);
+        allGeojson.features.push(geojosnTemp);
+      }
+    });
+
+    console.log("allGeojson", allGeojson);
+    return allGeojson;
+  }
+
+  public saveAllDrawData() {
+    console.log("saveAllDrawData");
+  }
+
+  public addGeojsonData(options: GeojsonBasicOptions) {
+    if (!options.data || !options.id) {
+      return null;
+    }
+    const id = this.__Id(options.id);
+    let name = options.name ? options.name : nanoid(10);
+    name = this.__Name(name);
+    const meta = {
+      [isCustomizeFlag]: true,
+      [customMeta]: options,
+    };
+
+    const GeoJsonReader = new GeoJSON({
+      dataProjection: "EPSG:4326",
+      featureProjection: "EPSG:3857",
+    });
+
+    const featrues = GeoJsonReader.readFeatures(options.data);
+
+    this.interactionSource.addFeatures(featrues);
+
+    // 这一步要不要设置呢？
+    this.interactionSource.forEachFeature((featue: any) => {
+      featue.setProperties(meta);
+    });
+  }
+
+  public removeGeojsonData(options: GeojsonBasicOptions) {}
 
   public getOrginDrawData() {
     return this.__drawData;

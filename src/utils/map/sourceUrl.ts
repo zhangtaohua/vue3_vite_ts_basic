@@ -130,11 +130,49 @@ export const mapXYZUrl = {
    */
   google_vec: "http://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}",
   google_img: "http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}",
-  // google_sate: "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+  google_maps: "https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}",
+  google_terrain: "https://mt1.google.com/vt/lyrs=t&x={x}&y={y}&z={z}",
+  google_roads: "https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}",
+  google_satellite: "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+  google_streets: "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+
+  cartocdn_dark_nolabel: "http://basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png",
+  cartocdn_light_nolabels: "http://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+  cartocdn_voyager_nolabels: "https://basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png",
+
+  esri_world_imagery: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  esri_world_streets:
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+  esri_world_light_gray_base:
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+  esri_world_topo_map: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+
+  memomaps_tilegen: "http://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png",
+
+  openstreetmap: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  openstreetmap_br: "https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png",
+  openstreetmap_cyclosm: "https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+  openstreetmap_hot: "https://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+  openstreetmap_cycle: "http://tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
+  wmflabs_bw_mapnik: "http://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+
+  stamen_terrain: "http://a.tile.stamen.com/terrain/{z}/{x}/{y}.png",
+  stamen_terrain_background: "http//a.tile.stamen.com/terrain-background/{z}/{x}/{y}.png",
+  stamen_terrain_high: "http://a.tile.stamen.com/terrain/{z}/{x}/{y}@2x.png", // 高清
+  stamen_watercolor: "https://stamen-tiles-c.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg",
+  stamen_watercolor2: "http://a.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg",
+
+  thunderforest_cycle: "https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=",
+  thunderforest_pioneer: "https://tile.thunderforest.com/pioneer/{z}/{x}/{y}.png?apikey=",
+
+  carto_positron: "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+
   /***
    * MapTiler
    */
   mapTiler: "'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=Nnf5WLkCvc7B6d5i5PSw'",
+
+  mapBox_online: "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=<mapbox key>",
 
   mapbox_local_basic: "/map/styles/basic/{z}/{x}/{y}.png",
   mapbox_local_allblue: "/map/styles/allblue/{z}/{x}/{y}.png",
@@ -169,6 +207,8 @@ export const mapWMTSUrl = {
   tiandi_sp_img_full: `http://t0.tianditu.com/img_w/wmts?service=wmts&tk=${tiandituKey}&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles`,
   tiandi_sp_img_zh_label_full: `http://t0.tianditu.com/cia_w/wmts?service=wmts&tk=${tiandituKey}&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg`,
   tiandi_sp_img_en_label_full: `http://t0.tianditu.com/eia_w/wmts?service=wmts&tk=${tiandituKey}&request=GetTile&version=1.0.0&LAYER=eia&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default.jpg`,
+
+  mapbox: "https://api.mapbox.com/styles/v1/mapbox/streets-v11/wmts?access_token=YOURKEY",
 };
 
 export const mapboxLocalStyle = {

@@ -52,7 +52,7 @@ onUnmounted(() => {
 let mapIns: OlDrawHelper | null = null;
 let GUIIns: GUI | null = null;
 const mapContrl = {
-  bgLayer: gaodeMap,
+  bgLayer: mapboxBasic,
 };
 function initMap() {
   mapIns = new OlDrawHelper("ol_container", window.devicePixelRatio);

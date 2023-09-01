@@ -250,6 +250,18 @@ export default class OlDrawHelper extends OlBase {
     this.DrawIns!.removeallInteraction();
   }
 
+  public getGeojsonData() {
+    this.DrawIns!.getAllDrawData();
+  }
+
+  public saveGeojsonData() {
+    this.DrawIns!.saveAllDrawData();
+  }
+
+  public addGeojsonData(options: any) {
+    this.DrawIns!.addGeojsonData(options);
+  }
+
   public removeDrawLayer(options: DrawBasicOptions) {
     if (options) {
       for (const [key, valueHandle] of this.__funcLayers.entries()) {
