@@ -542,6 +542,7 @@ export default class OlDrawBasic {
 
     // 这里还是为了兼容文本处理。
     const drawtypeTemp = this.__currentOptions.shape;
+    console.log("updateDrawStyleFunction", drawtypeTemp);
     if (drawtypeTemp && drawtypeTemp == MAP_DRAW_TEXT) {
       geoStyleOptions.color = "rgba(24, 144, 255, 0)";
       geoStyleOptions.fillColor = "rgba(24, 144, 255, 0)";
@@ -798,6 +799,8 @@ export default class OlDrawBasic {
           console.log(this.interactionSource);
           this.__removeSourceFeatureById(this.__crurentSelDrawData.id);
           this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
+
+          this.customCallbackFunc = this.__currentOptions.callback;
           if (this.customCallbackFunc) {
             this.customCallbackFunc(drawActionType.delete, this.__crurentSelDrawData);
           }
@@ -806,6 +809,12 @@ export default class OlDrawBasic {
           console.log("modifyCb", this.__crurentSelDrawData);
           this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
           this.intoModifyMode(this.__currentOptions);
+
+          // 取消绘制功能
+          if (this.drawTag) {
+            this.handle.removeInteraction(this.drawTag);
+            this.drawTag = null;
+          }
         },
         editCb: () => {
           console.log("editCb", this.__crurentSelDrawData);
@@ -856,6 +865,7 @@ export default class OlDrawBasic {
               break;
             }
           }
+          this.customCallbackFunc = this.__currentOptions.callback;
           if (this.customCallbackFunc) {
             this.customCallbackFunc(drawActionType.edit, this.__crurentSelDrawData);
           }
@@ -863,8 +873,17 @@ export default class OlDrawBasic {
         confirmCb: () => {
           console.log("confirmCb", this.__crurentSelDrawData);
           this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
+
+          // 取消绘制功能
+          if (this.drawTag) {
+            this.handle.removeInteraction(this.drawTag);
+            this.drawTag = null;
+          }
+
           // 取消编辑顶点功能。
           this.outModifyMode();
+
+          this.customCallbackFunc = this.__currentOptions.callback;
           if (this.customCallbackFunc) {
             this.customCallbackFunc(drawActionType.complete, this.__crurentSelDrawData);
           }
@@ -976,6 +995,7 @@ export default class OlDrawBasic {
     if (this.handle) {
       // this.handle.un('singleclick', this.softDeleteConfrimFeature)
       this.handle.removeInteraction(this.drawTag);
+      this.drawTag = null;
       this.handle.removeInteraction(this.snapTag);
       this.handle.removeInteraction(this.modify);
       this.modify = null;
@@ -1400,11 +1420,11 @@ export default class OlDrawBasic {
         propFeature.setStyle(style);
 
         // 要把修改过的旧的值设置回去。
-        // if (oldGeojsonStyle) {
-        //   this.__drawData["geojson"]["properties"][editPropsKeyName] =
-        //     oldDrawData["geojson"]["properties"][editPropsKeyName];
-        //   this.__drawData["geojson"]["properties"]["style"] = oldGeojsonStyle;
-        // }
+        if (oldGeojsonStyle) {
+          this.__drawData["geojson"]["properties"][editPropsKeyName] =
+            oldDrawData["geojson"]["properties"][editPropsKeyName];
+          this.__drawData["geojson"]["properties"]["style"] = oldGeojsonStyle;
+        }
       }
 
       propFeature.set("__drawData", this.__drawData);
@@ -1608,8 +1628,10 @@ export default class OlDrawBasic {
           }
           console.log("modifyend", oldOptions, options);
           if (oldOptions) {
+            this.__currentOptions = oldOptions;
             this.getDrawData(oldOptions)(event);
           } else {
+            this.__currentOptions = options;
             this.getDrawData(options)(event);
           }
         });
@@ -1668,8 +1690,10 @@ export default class OlDrawBasic {
       }
       console.log("modifyend 2", event.features, oldOptions, options);
       if (oldOptions) {
+        this.__currentOptions = oldOptions;
         this.getDrawData(oldOptions)(event);
       } else {
+        this.__currentOptions = options;
         this.getDrawData(options)(event);
       }
     });
