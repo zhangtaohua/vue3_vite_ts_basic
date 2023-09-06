@@ -285,8 +285,14 @@ export default class OlGeojsonLayers {
       featureProjection: "EPSG:3857",
     });
 
+    let wrapX = options.wrapX;
+    if (wrapX == undefined) {
+      wrapX = true;
+    }
+
     const source = new VectorSource({
       features: GeoJsonReader.readFeatures(options.data),
+      wrapX: wrapX,
     });
 
     source.set("id", id);

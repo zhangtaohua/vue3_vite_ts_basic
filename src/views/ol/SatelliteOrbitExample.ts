@@ -262,6 +262,10 @@ export default class OlSatelliteOrbitHelper extends OlBase {
     }
   }
 
+  public resetOrbitAnimation() {
+    this.SatelliteOrbitIns?.resetTick();
+  }
+
   public updateOrbit(options: SatelliteOrbitOptions) {
     this.SatelliteOrbitIns?.tick(options);
   }

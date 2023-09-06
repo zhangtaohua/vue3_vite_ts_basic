@@ -16,6 +16,7 @@ export interface SatelliteOrbitOptions {
   satStyleFunction?: any;
   oldOrbitStyle?: any;
   oldOribtStyleFunction?: any;
+  orbitType?: string;
   isPopup?: boolean;
   popupType?: string;
   htmlString?: string;
@@ -31,4 +32,5 @@ export interface SatelliteOrbitOptions {
   delay?: number;
   debounce?: boolean;
   debounceOption?: any; // 请参考 lodash 来设置。
+  animationStep?: number;
 }

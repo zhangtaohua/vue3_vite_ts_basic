@@ -23,8 +23,13 @@ import {
   getGeoPointFromLongitudeLatitude,
   getTwoDimArrayFromLngLatObj,
   getGeoLineFromArray,
-  calibratePosions,
+  getMultiDimArrayFromLngLatObj,
+  getGeoMultiLineFromArray,
+  calibratePosionsExpand,
+  calibratePosionsMerge,
 } from "../geoCommon";
+
+import { satelliteOrbitShowType } from "@/utils/map/geoConstant";
 
 export default class OlSatelliteOrbitLayers {
   public olBaseHandle: OlBase | null = null;
@@ -34,6 +39,8 @@ export default class OlSatelliteOrbitLayers {
   private __layers: any = null;
   private __GeojsonLayers: any = null;
   private __layerIdPrefix = "SATELLITE_ORBIT_";
+
+  public tickCount = 0;
 
   constructor(mapBaseIns: OlBase) {
     this.olBaseHandle = mapBaseIns;
@@ -74,12 +81,23 @@ export default class OlSatelliteOrbitLayers {
     const timeInterval = options.timeInterval ? options.timeInterval : 1000;
 
     const orbitIns = new SatelliteOrbit(options.tle1, options.tle2);
-    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, timeInterval, true);
+    let orbitType = satelliteOrbitShowType.merge;
+    if (options.orbitType) {
+      orbitType = options.orbitType;
+    }
+
+    let wrapX = options.wrapX;
+    if (wrapX == undefined) {
+      wrapX = true;
+    }
+
+    const lnglatDatas = orbitIns.getOrbitGeojson(options.startTime, options.endTime, timeInterval, orbitType);
     const oribtOptions = {
       ...options,
       id: `${options.id}_orbit`,
       data: lnglatDatas.geojson,
       isPopup: false,
+      wrapX: wrapX,
     };
 
     let satOptions = null;
@@ -88,9 +106,12 @@ export default class OlSatelliteOrbitLayers {
     let OldLnglatData: any = null;
     if (options.isShowSat) {
       const now = new Date().toString();
-      OldLnglatData = orbitIns.getOrbitGeojson(options.startTime, now, timeInterval, true);
+      let orbitType = satelliteOrbitShowType.merge;
+      if (options.orbitType) {
+        orbitType = options.orbitType;
+      }
+      OldLnglatData = orbitIns.getOrbitGeojson(options.startTime, now, timeInterval, orbitType);
       const currentData = orbitIns.getCurrenPositionGeojson(now);
-      console.log("currentData", currentData);
       satOptions = {
         ...options,
         id: `${options.id}_satellite`,
@@ -98,6 +119,7 @@ export default class OlSatelliteOrbitLayers {
         isPopup: true,
         style: options.satStyle,
         styleFunction: options.satStyleFunction,
+        wrapX: wrapX,
       };
 
       oribtOldOptions = {
@@ -107,6 +129,7 @@ export default class OlSatelliteOrbitLayers {
         isPopup: false,
         style: options.oldOrbitStyle,
         styleFunction: options.oldOribtStyleFunction,
+        wrapX: wrapX,
       };
     }
     const layerObj = {
@@ -146,24 +169,51 @@ export default class OlSatelliteOrbitLayers {
     }
   }
 
+  public resetTick() {
+    this.tickCount = 0;
+  }
+
   public tick(options: SatelliteOrbitOptions) {
     const id = options.id;
     const layerObj = this.__layers.get(this.__Id(id));
     if (layerObj) {
       //  更新卫星位置和 旧轨道数据。
       if (layerObj.options.isShowSat) {
-        const now = new Date().toString();
+        let orbitType = satelliteOrbitShowType.merge;
+        if (layerObj.options.orbitType) {
+          orbitType = layerObj.options.orbitType;
+        }
+        let animationStep = 0;
+        if (layerObj.options.animationStep) {
+          animationStep = layerObj.options.animationStep;
+        }
+        let nowTimestamp = new Date().getTime();
+        nowTimestamp = nowTimestamp + this.tickCount * animationStep * 1000;
+        const now = new Date(nowTimestamp).toString();
         const currentData = layerObj.orbitIns.getCurrenPositionGeojson(now);
+        this.tickCount = this.tickCount + 1;
 
-        layerObj.positions.push(currentData.position);
-        const positionNew = calibratePosions(layerObj.positions);
-        const twoDimArray = getTwoDimArrayFromLngLatObj(positionNew);
-        const geojsonData = getGeoLineFromArray(twoDimArray);
-        layerObj.oribtOldOptions.data = geojsonData;
-        this.GeojsonMapIns?.updateFeaturesData(layerObj.oribtOldOptions);
-        //
-        layerObj.satOptions.data = currentData.geojson;
-        this.GeojsonMapIns?.updateFeaturesData(layerObj.satOptions);
+        if (orbitType == satelliteOrbitShowType.merge) {
+          layerObj.positions.push(currentData.position);
+          const positionNew = calibratePosionsMerge(layerObj.positions);
+          const twoDimArray = getMultiDimArrayFromLngLatObj(positionNew);
+          const geojsonData = getGeoMultiLineFromArray(twoDimArray);
+          layerObj.oribtOldOptions.data = geojsonData;
+          this.GeojsonMapIns?.updateFeaturesData(layerObj.oribtOldOptions);
+          //
+          layerObj.satOptions.data = currentData.geojson;
+          this.GeojsonMapIns?.updateFeaturesData(layerObj.satOptions);
+        } else if (orbitType == satelliteOrbitShowType.expand) {
+          layerObj.positions.push(currentData.position);
+          const positionNew = calibratePosionsExpand(layerObj.positions);
+          const twoDimArray = getTwoDimArrayFromLngLatObj(positionNew);
+          const geojsonData = getGeoLineFromArray(twoDimArray);
+          layerObj.oribtOldOptions.data = geojsonData;
+          this.GeojsonMapIns?.updateFeaturesData(layerObj.oribtOldOptions);
+          //
+          layerObj.satOptions.data = currentData.geojson;
+          this.GeojsonMapIns?.updateFeaturesData(layerObj.satOptions);
+        }
       }
     }
   }

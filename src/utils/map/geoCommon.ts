@@ -1,4 +1,5 @@
 import Geojson from "geojson";
+import * as turf from "@turf/turf";
 
 export function getLongitudeFromText(lng: string, toFixed = 6) {
   let longitude = 0.0;
@@ -342,7 +343,15 @@ export function getGeoLineFromArray(twoDimArray: any, props: any = {}) {
   return Geojson.parse(lindObj, { LineString: "line" });
 }
 
-export function calibratePosions(positions: any) {
+export function getGeoMultiLineFromArray(twoDimArray: any, props: any = {}) {
+  const lindObj = {
+    line: twoDimArray,
+    ...props,
+  };
+  return Geojson.parse(lindObj, { MultiLineString: "line" });
+}
+
+export function calibratePosionsExpand(positions: any) {
   const positionNew = [];
   if (positions.length >= 2) {
     let isPlus = -1;
@@ -379,6 +388,77 @@ export function calibratePosions(positions: any) {
   return positionNew;
 }
 
+export function calibratePosionsMerge(positions: any) {
+  const positionNew = [];
+  if (positions.length >= 2) {
+    const negative = -180;
+    const postive = 180;
+    const gap = 50;
+    let newArrayIndex = 0;
+
+    positionNew.push([]);
+    positionNew[newArrayIndex].push(positions[0]);
+    for (let i = 1; i < positions.length; i++) {
+      const positionOld = { ...positions[i - 1] };
+      const position = { ...positions[i] };
+      const midPosition = {
+        longitude: 0,
+        latitude: 0,
+        altitude: 0,
+      };
+
+      if (positionOld.longitude < 0 && position.longitude >= 0) {
+        // 从 -180 附近 直接到了 180
+        if (positionOld.longitude - negative < gap && postive - position.longitude < gap) {
+          midPosition.longitude = -180;
+          if (position.latitude >= positionOld.latitude) {
+            midPosition.latitude =
+              ((position.latitude - positionOld.latitude) / (positionOld.longitude + 180 + 180 - position.longitude)) *
+                (positionOld.longitude + 180) +
+              positionOld.latitude;
+          } else {
+            midPosition.latitude =
+              positionOld.latitude -
+              (Math.abs(position.latitude - positionOld.latitude) /
+                (positionOld.longitude + 180 + 180 - position.longitude)) *
+                (positionOld.longitude + 180);
+          }
+          midPosition.altitude = positionOld.altitude + Math.abs(positionOld.altitude - position.altitude) / 2;
+          positionNew[newArrayIndex].push({ ...midPosition });
+          positionNew.push([]);
+          newArrayIndex = newArrayIndex + 1;
+          midPosition.longitude = 180;
+          positionNew[newArrayIndex].push({ ...midPosition });
+        }
+      } else if (positionOld.longitude >= 0 && position.longitude < 0) {
+        if (postive - positionOld.longitude < gap && position.longitude - negative < gap) {
+          midPosition.longitude = 180;
+          if (position.latitude >= positionOld.latitude) {
+            midPosition.latitude =
+              ((position.latitude - positionOld.latitude) / (180 - positionOld.longitude + 180 - position.longitude)) *
+                (180 - positionOld.longitude) +
+              positionOld.latitude;
+          } else {
+            midPosition.latitude =
+              positionOld.latitude -
+              (Math.abs(positionOld.latitude - position.latitude) /
+                (180 - positionOld.longitude + 180 - position.longitude)) *
+                (180 - positionOld.longitude);
+          }
+          midPosition.altitude = position.altitude + Math.abs(positionOld.altitude - position.altitude) / 2;
+          positionNew[newArrayIndex].push({ ...midPosition });
+          positionNew.push([]);
+          newArrayIndex = newArrayIndex + 1;
+          midPosition.longitude = -180;
+          positionNew[newArrayIndex].push({ ...midPosition });
+        }
+      }
+      positionNew[newArrayIndex].push(position);
+    }
+  }
+  return positionNew;
+}
+
 export function getTwoDimArrayFromLngLatObj(positions: any) {
   const twoDimArray = [];
   if (positions.length) {
@@ -388,4 +468,21 @@ export function getTwoDimArrayFromLngLatObj(positions: any) {
     }
   }
   return twoDimArray;
+}
+
+export function getMultiDimArrayFromLngLatObj(positions: any) {
+  const multiDimArray = [];
+  if (positions.length) {
+    for (let i = 0; i < positions.length; i++) {
+      const positionTemp = positions[i];
+      if (positionTemp.length) {
+        multiDimArray.push([]);
+        for (let j = 0; j < positionTemp.length; j++) {
+          const positionTemp2 = positionTemp[j];
+          multiDimArray[i].push([positionTemp2.longitude, positionTemp2.latitude]);
+        }
+      }
+    }
+  }
+  return multiDimArray;
 }

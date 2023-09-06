@@ -22,7 +22,8 @@ import {
   getGeoPointFromLongitudeLatitude,
   getTwoDimArrayFromLngLatObj,
   getGeoLineFromArray,
-  calibratePosions,
+  calibratePosionsExpand,
+  calibratePosionsMerge,
 } from "../geoCommon";
 
 export default class CsSatelliteOrbitLayers {

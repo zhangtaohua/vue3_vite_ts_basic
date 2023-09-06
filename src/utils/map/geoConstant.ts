@@ -66,3 +66,8 @@ export const geometryType = {
   polygon: "Polygon",
   geometryCollection: "GeometryCollection",
 };
+
+export const satelliteOrbitShowType = {
+  expand: "expand",
+  merge: "merge",
+};

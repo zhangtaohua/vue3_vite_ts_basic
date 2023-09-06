@@ -3,10 +3,14 @@ import { twoline2satrec, sgp4, propagate, gstime, eciToGeodetic, degreesLong, de
 import {
   getGeoPointFromLongitudeLatitude,
   getTwoDimArrayFromLngLatObj,
+  getMultiDimArrayFromLngLatObj,
   getGeoLineFromArray,
-  calibratePosions,
+  getGeoMultiLineFromArray,
+  calibratePosionsExpand,
+  calibratePosionsMerge,
 } from "../geoCommon";
 
+import { satelliteOrbitShowType } from "@/utils/map/geoConstant";
 export default class SatelliteOrbit {
   public satrec: any = null;
   public minsPerInterval = 0;
@@ -81,18 +85,31 @@ export default class SatelliteOrbit {
     }
   }
 
-  public getOrbitGeojson(startTime: any, endTime: any, intervalInMilliSeconds = 1000, isCalibrate = true) {
+  public getOrbitGeojson(
+    startTime: any,
+    endTime: any,
+    intervalInMilliSeconds = 1000,
+    orbitType = satelliteOrbitShowType.merge,
+  ) {
     const positions = this.getOrbitDatas(startTime, endTime, intervalInMilliSeconds);
     let positionNew = null;
-    if (isCalibrate) {
-      positionNew = calibratePosions(positions);
+    if (orbitType == satelliteOrbitShowType.merge) {
+      positionNew = calibratePosionsMerge(positions);
+      const multiDimArray = getMultiDimArrayFromLngLatObj(positionNew);
+      const geojsonData = getGeoMultiLineFromArray(multiDimArray);
+      return {
+        geojson: geojsonData,
+        positions: positions,
+      };
+    } else if (orbitType == satelliteOrbitShowType.expand) {
+      positionNew = calibratePosionsExpand(positions);
+      const twoDimArray = getTwoDimArrayFromLngLatObj(positionNew);
+      const geojsonData = getGeoLineFromArray(twoDimArray);
+      return {
+        geojson: geojsonData,
+        positions: positions,
+      };
     }
-    const twoDimArray = getTwoDimArrayFromLngLatObj(positionNew);
-    const geojsonData = getGeoLineFromArray(twoDimArray);
-    return {
-      geojson: geojsonData,
-      positions: positions,
-    };
   }
 
   public getCurrenPositionGeojson(startTime: any) {
