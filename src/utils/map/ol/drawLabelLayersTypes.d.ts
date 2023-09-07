@@ -1,4 +1,4 @@
-export interface DrawBasicOptions {
+export interface DrawLabelOptions {
   shape: string;
   isClear: boolean;
   isFreehand: boolean;

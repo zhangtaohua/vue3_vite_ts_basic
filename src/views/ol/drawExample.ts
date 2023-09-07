@@ -9,7 +9,7 @@ import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
 import drawBasicLayers from "@/utils/map/ol/drawBasicLayers";
-import type { DrawBasicOptions } from "@/utils/map/ol/drawLabelLayersTypes";
+import type { DrawBasicOptions } from "@/utils/map/ol/drawBasicLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import type { EventOptions } from "@/utils/map/ol/mapEventTypes";

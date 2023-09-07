@@ -391,7 +391,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
-  console.log("mounted", props.vNodeData);
+  // console.log("mounted", props.vNodeData);
   init();
 });
 

@@ -297,8 +297,8 @@ export default class OlGeojsonLayers {
 
     source.set("id", id);
     source.set("name", name);
-    source.forEachFeature((featue: any) => {
-      featue.setProperties(meta);
+    source.forEachFeature((feature: any) => {
+      feature.setProperties(meta);
     });
 
     const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
@@ -518,8 +518,8 @@ export default class OlGeojsonLayers {
           [customMeta]: options,
         };
 
-        layerObj.source.forEachFeature((featue: any) => {
-          featue.setProperties(meta);
+        layerObj.source.forEachFeature((feature: any) => {
+          feature.setProperties(meta);
         });
         return true;
       } else {

@@ -8,7 +8,7 @@ import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
-import OlGeojsonLayers from "@/utils/map/ol/geojsonLayers";
+import OlGeojsonLayers from "@/utils/map/ol/geojsonLabelLayers";
 import type { GeojsonOptions } from "@/utils/map/ol/geojsonLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";

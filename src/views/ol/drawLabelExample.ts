@@ -9,7 +9,7 @@ import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
 import drawLabelLayers from "@/utils/map/ol/drawLabelLayers";
-import type { DrawBasicOptions } from "@/utils/map/ol/drawLabelLayersTypes";
+import type { DrawLabelOptions } from "@/utils/map/ol/drawLabelLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import type { EventOptions } from "@/utils/map/ol/mapEventTypes";
@@ -241,7 +241,7 @@ export default class OlDrawHelper extends OlBase {
     this.flyToPositionAndZoom(longitude, latitude, zoom);
   }
 
-  public draw(options: DrawBasicOptions) {
+  public draw(options: DrawLabelOptions) {
     return this.DrawIns!.drawShape(options);
   }
 
@@ -251,7 +251,8 @@ export default class OlDrawHelper extends OlBase {
   }
 
   public getGeojsonData() {
-    this.DrawIns!.getAllDrawData();
+    const allGeojson = this.DrawIns!.getAllDrawData();
+    console.log("getGeojsonData", allGeojson);
   }
 
   public saveGeojsonData() {
@@ -262,7 +263,11 @@ export default class OlDrawHelper extends OlBase {
     this.DrawIns!.addGeojsonData(options);
   }
 
-  public removeDrawLayer(options: DrawBasicOptions) {
+  public removeGeojsonData(options: any) {
+    this.DrawIns!.removeGeojsonData(options);
+  }
+
+  public removeDrawLayer(options: DrawLabelOptions) {
     if (options) {
       for (const [key, valueHandle] of this.__funcLayers.entries()) {
         if (options.id == key.id) {

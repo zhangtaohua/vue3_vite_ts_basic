@@ -31,6 +31,7 @@ import geojson23 from "@/assets/json/geometryProvince/23.json";
 import geojson31 from "@/assets/json/geometryProvince/31.json";
 import geojson41 from "@/assets/json/geometryProvince/41.json";
 import maptest from "@/assets/json/map.json";
+import geojsonDraw from "@/assets/json/geojsonDraw.json";
 
 onMounted(() => {
   initMap();
@@ -44,6 +45,7 @@ onMounted(() => {
   addGeojson(geojsonsSource.geojson8);
   addGeojson(geojsonsSource.geojson9);
   addGeojson(geojsonsSource.geojson10);
+  addGeojson(geojsonsSource.geojson11);
   initGUI();
 });
 
@@ -65,6 +67,7 @@ const mapContrl = {
   geojson8: true,
   geojson9: true,
   geojson10: true,
+  geojson11: true,
 };
 function initMap() {
   mapIns = new OlMapGeojsonHelper("ol_container", window.devicePixelRatio);
@@ -197,6 +200,17 @@ function initGUI() {
         addGeojson(geojsonsSource.geojson10);
       } else {
         removeGeojson(geojsonsSource.geojson10);
+      }
+    });
+
+  imgFolder
+    .add(mapContrl, "geojson11")
+    .name("11 绘制数据 vnode click 回调")
+    .onChange((value: any) => {
+      if (value) {
+        addGeojson(geojsonsSource.geojson11);
+      } else {
+        removeGeojson(geojsonsSource.geojson11);
       }
     });
 }
@@ -360,6 +374,48 @@ const geojsonsSource = {
   geojson10: {
     id: "geojson_test_10",
     data: maptest,
+  },
+  geojson11: {
+    id: "geojson_test_11",
+    data: geojsonDraw,
+    isPopup: true,
+    popupType: popupType.vnode,
+    hasClose: true,
+    eventType: mapEventType.singleclick,
+    vNode: staticImagePopup,
+    vNodeData: {
+      name: "我是VueNode标题",
+      longitude: "149.757575E",
+      latitude: "30.435657N",
+      satellite: "QL_*",
+      time: "2023-07-28 12:00:00",
+      x: 180,
+      y: 1620,
+    },
+    customT: customT,
+    callback: (feature: any, options: any) => {
+      let name = "无名字";
+      let featureName = feature.get("name");
+      let editProps = feature.get("editProps");
+      if (featureName) {
+        name = featureName;
+      } else if (editProps) {
+        if (editProps.name) {
+          name = editProps.name;
+        }
+      }
+      options.vNode = staticImagePopup2;
+      let randomStr = nanoid(10);
+      options.vNodeData = {
+        name: `VueNode标题_${randomStr}`,
+        longitude: "149.757575E",
+        latitude: "30.435657N",
+        satellite: `城市名：${name}`,
+        time: "2023-07-31 12:00:00",
+        x: 180,
+        y: 1620,
+      };
+    },
   },
 };
 

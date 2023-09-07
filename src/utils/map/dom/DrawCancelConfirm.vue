@@ -6,10 +6,10 @@
       {{ vNodeData.data.id }}
     </div>
     <div class="row_nw_center_center info_box">
-      <div class="row_nw_center_center info_del" @click="cancelHandle">删除图形</div>
-      <div class="row_nw_center_center info_del" @click="modifyHandle">修改顶点</div>
-      <div class="row_nw_center_center info_del" @click="editHandle">编辑属性</div>
-      <div class="row_nw_center_center info_confirm" @click="confirmHandle">绘制完成</div>
+      <div class="row_nw_center_center info_del" @click="cancelHandle">删除</div>
+      <div class="row_nw_center_center info_del" @click="modifyHandle">修改</div>
+      <div class="row_nw_center_center info_del" @click="editHandle">属性</div>
+      <div class="row_nw_center_center info_confirm" @click="confirmHandle">完成</div>
     </div>
   </div>
 </template>
@@ -117,7 +117,7 @@ export default defineComponent({
 }
 
 .info_del {
-  width: 120px;
+  width: max-content;
   height: 100%;
   margin-right: 1rem;
   color: rgb(255 41 41 / 85%);
@@ -127,6 +127,7 @@ export default defineComponent({
   border: 1px solid rgb(255 41 41 / 85%);
   border-radius: 0.25rem;
   cursor: pointer;
+  padding: 0px 6px 0px 6px;
 }
 
 .info_del:hover {
@@ -135,7 +136,7 @@ export default defineComponent({
 }
 
 .info_confirm {
-  width: 120px;
+  width: max-content;
   height: 100%;
   color: rgb(255 255 255 / 85%);
   font-weight: 400;
@@ -144,6 +145,7 @@ export default defineComponent({
   border: 1px solid rgb(14 105 241);
   border-radius: 0.25rem;
   cursor: pointer;
+  padding: 0px 6px 0px 6px;
 }
 
 .info_confirm:hover {

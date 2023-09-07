@@ -23,6 +23,7 @@ export const MAP_INTER_ZOOMOUT = "zoomout";
 
 export const isCustomizeFlag = "customize";
 export const customMeta = "customMeta";
+export const isCustomOldDrawData = "isCustomOldDrawData";
 
 // 不要改下面的名字，不然可能导致画不成功图形
 export const MAP_DRAW_TEXT = "Text";

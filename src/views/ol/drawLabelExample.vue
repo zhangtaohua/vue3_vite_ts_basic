@@ -18,6 +18,8 @@ import { mapEventType } from "@/utils/map/ol/olConstant";
 
 import { Style } from "ol/style";
 
+import drawGeojsonData from "@/assets/json/geojsonDraw.json";
+
 import {
   MAP_DRAW_TEXT,
   MAP_DRAW_POINT,
@@ -55,7 +57,8 @@ const mapContrl = {
   bgLayer: mapboxBasic,
   getGeojson: getGeojsonFunc,
   saveGeojson: saveGeojsonFunc,
-  addGeojson: "",
+  addGeojson: addGeojsonFunc,
+  removeGeojson: removeGeojsonFunc,
 };
 
 function getGeojsonFunc() {
@@ -66,197 +69,28 @@ function saveGeojsonFunc() {
   mapIns.saveGeojsonData();
 }
 
+// 注意加载旧的文件，由于旧文件中没有记录旧有的回调函数
+// 所以，如果对旧的geojson 进行了修改，是不会单独触发回调的，
+// 只能通过获取所有geojson 文件来获取所有的geojson
+// 或者如下所示，在设置项中增加一个回调函数来处理。
 function addGeojsonFunc() {
   const testOpt = {
     id: "testDraw_id",
-    data: {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [54.972162740899364, -48.514568096989265],
-          },
-          properties: {
-            id: "draw_-Yi2gly0AU",
-            shape: "Text",
-            geoType: "Point",
-            coordinates: [54.972162740899364, -48.514568096989265],
-            center: [54.972162740899364, -48.514568096989265],
-            area: {
-              area: 0,
-              areaString: "0 m<sup>2</sup>",
-            },
-            length: {
-              length: 0,
-              lengthString: "0 m",
-            },
-            editProps: {
-              name: "哈哈哈",
-              attributes: {
-                properties: [],
-                keyValues: [],
-                json: {},
-              },
-            },
-            style: {
-              geo: {
-                width: 2,
-                color: "rgba(24, 144, 255, 1)",
-                fillColor: "rgba(24, 144, 255, .2)",
-                radius: 5,
-                radius2: 5,
-                lineDash: [0, 0],
-                iconWidth: 6,
-                iconHeight: 6,
-                iconPattern: "pattern",
-                iconUrl: "circle",
-                iconAnchor: [0.5, 0.5],
-                iconOffset: [0, 0],
-                arrowPattern: "noNeed",
-              },
-              vertex: {
-                fontSize: 12,
-                color: "rgba(255, 255, 255, 1)",
-                fillColor: "rgba(0, 0, 0, 0.4)",
-              },
-              line: {
-                fontSize: 12,
-                color: "rgba(255, 255, 255, 1)",
-                fillColor: "rgba(0, 0, 0, 0.4)",
-              },
-              label: {
-                fontSize: 14,
-                color: "rgba(255, 255, 255, 1)",
-                fillColor: "rgba(0, 0, 0, 0.7)",
-              },
-              text: {
-                text: "哈哈哈",
-                fontSize: 14,
-                offsetY: 0,
-                offsetX: 0,
-                rotation: 0,
-                padding: [0, 0, 0, 0],
-                textBaseline: "bottom",
-                color: "rgba(24, 144, 255, 1)",
-                fillColor: "rgba(24, 144, 255, .2)",
-              },
-            },
-          },
-        },
-        {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [63.1948608137045, -38.48553320489411],
-          },
-          properties: {
-            id: "draw_Bb6HO-Ieu3",
-            shape: "Text",
-            geoType: "Point",
-            coordinates: [63.1948608137045, -38.48553320489411],
-            center: [63.1948608137045, -38.48553320489411],
-            area: {
-              area: 0,
-              areaString: "0 m<sup>2</sup>",
-            },
-            length: {
-              length: 0,
-              lengthString: "0 m",
-            },
-          },
-        },
-        {
-          type: "Feature",
-          geometry: {
-            type: "Polygon",
-            coordinates: [
-              [
-                [80.66809421841542, -62.45371245764521],
-                [101.48179871520345, -50.51613913965824],
-                [79.6402569593148, -35.405874370782364],
-                [58.82655246252677, -51.165183042794546],
-                [80.66809421841542, -62.45371245764521],
-              ],
-            ],
-          },
-          properties: {
-            id: "draw_KbpMrJQea6",
-            shape: "Square",
-            geoType: "Polygon",
-            coordinates: [
-              [
-                [80.66809421841542, -62.45371245764521],
-                [101.48179871520345, -50.51613913965824],
-                [79.6402569593148, -35.405874370782364],
-                [58.82655246252677, -51.165183042794546],
-                [80.66809421841542, -62.45371245764521],
-              ],
-            ],
-            center: [80.15417558886512, -50.84178961138964],
-            area: {
-              area: 4645194093477.72,
-              areaString: "4645194.09 km<sup>2</sup>",
-            },
-            length: {
-              length: 0,
-              lengthString: "0 m",
-            },
-            editProps: {
-              name: "",
-              attributes: {
-                properties: [
-                  {
-                    name: "keyvalue",
-                    values: 10,
-                    units: "天",
-                    describe: "des",
-                  },
-                ],
-                keyValues: [],
-                json: {},
-              },
-            },
-            style: {
-              geo: {
-                width: 2,
-                color: "rgb(5, 160, 69)",
-                fillColor: "rgb(200, 230, 202)",
-                radius: 5,
-                radius2: 5,
-                lineDash: [0, 0],
-                iconWidth: 6,
-                iconHeight: 6,
-                iconPattern: "pattern",
-                iconUrl: "circle",
-                iconAnchor: [0.5, 0.5],
-                iconOffset: [0, 0],
-                arrowPattern: "noNeed",
-              },
-              vertex: {
-                fontSize: 12,
-                color: "rgba(255, 255, 255, 1)",
-                fillColor: "rgba(0, 0, 0, 0.4)",
-              },
-              line: {
-                fontSize: 12,
-                color: "rgba(255, 255, 255, 1)",
-                fillColor: "rgba(0, 0, 0, 0.4)",
-              },
-              label: {
-                fontSize: 14,
-                color: "rgba(255, 255, 255, 1)",
-                fillColor: "rgba(0, 0, 0, 0.7)",
-              },
-              text: null,
-            },
-          },
-        },
-      ],
+    data: drawGeojsonData,
+    callback: (action: string, data: any) => {
+      console.log(`加载旧有draw回调函数:`, action, data);
     },
+    isShowAction: true, // 为了加载数据后就可以编辑 ，如果不要编辑设置为false
   };
-  mapIns.saveGeojsonData(testOpt);
+  mapIns?.addGeojsonData(testOpt);
+}
+
+function removeGeojsonFunc() {
+  const testOpt = {
+    id: "testDraw_id",
+    data: drawGeojsonData,
+  };
+  mapIns?.removeGeojsonData(testOpt);
 }
 
 function initMap() {
@@ -286,6 +120,8 @@ function initGUI() {
 
   imgFolder.add(mapContrl, "getGeojson");
   imgFolder.add(mapContrl, "saveGeojson");
+  imgFolder.add(mapContrl, "addGeojson");
+  imgFolder.add(mapContrl, "removeGeojson");
 }
 
 const testCb = (name: string) => {

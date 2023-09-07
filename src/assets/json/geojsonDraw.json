@@ -1,0 +1,511 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [32.749546331516605, -20.036625912504803] },
+      "properties": {
+        "id": "draw_x3taOcE4FQ",
+        "shape": "Point",
+        "geoType": "Point",
+        "coordinates": [32.749546331516605, -20.036625912504803],
+        "center": [32.749546331516605, -20.036625912504803],
+        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "length": { "length": 0, "lengthString": "0 m" },
+        "editProps": {
+          "name": "",
+          "attributes": {
+            "properties": [
+              { "name": "1", "values": 1, "units": "1", "describe": "1" },
+              { "name": "1", "values": 1, "units": "1", "describe": "1" }
+            ],
+            "keyValues": [
+              { "name": "2", "values": "2" },
+              { "name": "2", "values": "2" }
+            ],
+            "json": {}
+          }
+        },
+        "style": {
+          "geo": {
+            "width": 2,
+            "color": "rgb(81, 45, 167)",
+            "fillColor": "rgb(158, 168, 219)",
+            "radius": 5,
+            "radius2": 5,
+            "lineDash": [0, 0],
+            "iconWidth": 64,
+            "iconHeight": 64,
+            "iconPattern": "icons",
+            "iconUrl": "/src/utils/map/assets/icons/geo/coins.svg",
+            "iconAnchor": [0.5, 0.1],
+            "iconOffset": [0, 0],
+            "arrowPattern": "noNeed"
+          },
+          "vertex": { "fontSize": 12, "color": "rgb(5, 160, 69)", "fillColor": "rgb(200, 230, 202)" },
+          "line": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+          "label": { "fontSize": 14, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.7)" },
+          "text": null
+        },
+        "__drawData": {
+          "id": "draw_x3taOcE4FQ",
+          "shape": "Point",
+          "geoType": "Point",
+          "coordinates": [32.749546331516605, -20.036625912504803],
+          "center": [32.749546331516605, -20.036625912504803],
+          "geojson": {
+            "type": "Feature",
+            "geometry": { "type": "Point", "coordinates": [32.749546331516605, -20.036625912504803] },
+            "properties": {
+              "id": "draw_x3taOcE4FQ",
+              "shape": "Point",
+              "geoType": "Point",
+              "coordinates": [32.749546331516605, -20.036625912504803],
+              "center": [32.749546331516605, -20.036625912504803],
+              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "length": { "length": 0, "lengthString": "0 m" },
+              "editProps": {
+                "name": "",
+                "attributes": {
+                  "properties": [
+                    { "name": "1", "values": 1, "units": "1", "describe": "1" },
+                    { "name": "1", "values": 1, "units": "1", "describe": "1" }
+                  ],
+                  "keyValues": [
+                    { "name": "2", "values": "2" },
+                    { "name": "2", "values": "2" }
+                  ],
+                  "json": {}
+                }
+              },
+              "style": {
+                "geo": {
+                  "width": 2,
+                  "color": "rgb(81, 45, 167)",
+                  "fillColor": "rgb(158, 168, 219)",
+                  "radius": 5,
+                  "radius2": 5,
+                  "lineDash": [0, 0],
+                  "iconWidth": 64,
+                  "iconHeight": 64,
+                  "iconPattern": "icons",
+                  "iconUrl": "/src/utils/map/assets/icons/geo/coins.svg",
+                  "iconAnchor": [0.5, 0.1],
+                  "iconOffset": [0, 0],
+                  "arrowPattern": "noNeed"
+                },
+                "vertex": { "fontSize": 12, "color": "rgb(5, 160, 69)", "fillColor": "rgb(200, 230, 202)" },
+                "line": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+                "label": { "fontSize": 14, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.7)" },
+                "text": null
+              }
+            }
+          },
+          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "length": { "length": 0, "lengthString": "0 m" },
+          "oldDrawOptions": {
+            "shape": "Point",
+            "isClear": false,
+            "isFreehand": false,
+            "needModify": false,
+            "once": false,
+            "isShowSegments": true,
+            "isShowLngLat": true,
+            "isShowLabel": true,
+            "isShowAction": true
+          }
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [39.64246928901102, -25.311708733856946] },
+      "properties": {
+        "id": "draw_laP_pTSM2J",
+        "shape": "Text",
+        "geoType": "Point",
+        "coordinates": [39.64246928901102, -25.311708733856946],
+        "center": [39.64246928901102, -25.311708733856946],
+        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "length": { "length": 0, "lengthString": "0 m" },
+        "__drawData": {
+          "id": "draw_laP_pTSM2J",
+          "shape": "Text",
+          "geoType": "Point",
+          "coordinates": [39.64246928901102, -25.311708733856946],
+          "center": [39.64246928901102, -25.311708733856946],
+          "geojson": {
+            "type": "Feature",
+            "geometry": { "type": "Point", "coordinates": [39.64246928901102, -25.311708733856946] },
+            "properties": {
+              "id": "draw_laP_pTSM2J",
+              "shape": "Text",
+              "geoType": "Point",
+              "coordinates": [39.64246928901102, -25.311708733856946],
+              "center": [39.64246928901102, -25.311708733856946],
+              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "length": { "length": 0, "lengthString": "0 m" }
+            }
+          },
+          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "length": { "length": 0, "lengthString": "0 m" },
+          "oldDrawOptions": {
+            "shape": "Text",
+            "isClear": false,
+            "isFreehand": false,
+            "needModify": false,
+            "once": false,
+            "isShowSegments": false,
+            "isShowLngLat": false,
+            "isShowLabel": false,
+            "isShowAction": true
+          }
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [42.18287878620701, -17.793421273808065] },
+      "properties": {
+        "id": "draw_7x-J8ck1oJ",
+        "shape": "Text",
+        "geoType": "Point",
+        "coordinates": [42.18287878620701, -17.793421273808065],
+        "center": [42.18287878620701, -17.793421273808065],
+        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "length": { "length": 0, "lengthString": "0 m" },
+        "editProps": { "name": "测试文本", "attributes": { "properties": [], "keyValues": [], "json": {} } },
+        "style": {
+          "geo": {
+            "width": 2,
+            "color": "rgba(24, 144, 255, 1)",
+            "fillColor": "rgba(24, 144, 255, .2)",
+            "radius": 5,
+            "radius2": 5,
+            "lineDash": [0, 0],
+            "iconWidth": 6,
+            "iconHeight": 6,
+            "iconPattern": "pattern",
+            "iconUrl": "circle",
+            "iconAnchor": [0.5, 0.5],
+            "iconOffset": [0, 0],
+            "arrowPattern": "noNeed"
+          },
+          "vertex": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+          "line": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+          "label": { "fontSize": 14, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.7)" },
+          "text": {
+            "text": "测试文本",
+            "fontSize": 14,
+            "offsetY": 0,
+            "offsetX": 0,
+            "rotation": 0,
+            "padding": [3, 3, 3, 3],
+            "textBaseline": "bottom",
+            "color": "rgb(216, 27, 67)",
+            "fillColor": "rgba(251, 135, 158, 0.38)"
+          }
+        },
+        "__drawData": {
+          "id": "draw_7x-J8ck1oJ",
+          "shape": "Text",
+          "geoType": "Point",
+          "coordinates": [42.18287878620701, -17.793421273808065],
+          "center": [42.18287878620701, -17.793421273808065],
+          "geojson": {
+            "type": "Feature",
+            "geometry": { "type": "Point", "coordinates": [42.18287878620701, -17.793421273808065] },
+            "properties": {
+              "id": "draw_7x-J8ck1oJ",
+              "shape": "Text",
+              "geoType": "Point",
+              "coordinates": [42.18287878620701, -17.793421273808065],
+              "center": [42.18287878620701, -17.793421273808065],
+              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "length": { "length": 0, "lengthString": "0 m" },
+              "editProps": { "name": "测试文本", "attributes": { "properties": [], "keyValues": [], "json": {} } },
+              "style": {
+                "geo": {
+                  "width": 2,
+                  "color": "rgba(24, 144, 255, 1)",
+                  "fillColor": "rgba(24, 144, 255, .2)",
+                  "radius": 5,
+                  "radius2": 5,
+                  "lineDash": [0, 0],
+                  "iconWidth": 6,
+                  "iconHeight": 6,
+                  "iconPattern": "pattern",
+                  "iconUrl": "circle",
+                  "iconAnchor": [0.5, 0.5],
+                  "iconOffset": [0, 0],
+                  "arrowPattern": "noNeed"
+                },
+                "vertex": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+                "line": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+                "label": { "fontSize": 14, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.7)" },
+                "text": {
+                  "text": "测试文本",
+                  "fontSize": 14,
+                  "offsetY": 0,
+                  "offsetX": 0,
+                  "rotation": 0,
+                  "padding": [3, 3, 3, 3],
+                  "textBaseline": "bottom",
+                  "color": "rgb(216, 27, 67)",
+                  "fillColor": "rgba(251, 135, 158, 0.38)"
+                }
+              }
+            }
+          },
+          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "length": { "length": 0, "lengthString": "0 m" },
+          "oldDrawOptions": {
+            "shape": "Text",
+            "isClear": false,
+            "isFreehand": false,
+            "needModify": false,
+            "once": false,
+            "isShowSegments": false,
+            "isShowLngLat": false,
+            "isShowLabel": false,
+            "isShowAction": true,
+            "id": "draw_r0zzPtHcSd",
+            "addId": "testDraw_id"
+          }
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [40.75636344645894, -21.75971016518001] },
+      "properties": {
+        "id": "draw_g_Gyk4Gi8Y",
+        "shape": "Point",
+        "geoType": "Point",
+        "coordinates": [40.75636344645894, -21.75971016518001],
+        "center": [40.75636344645894, -21.75971016518001],
+        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "length": { "length": 0, "lengthString": "0 m" },
+        "editProps": {
+          "name": "",
+          "attributes": {
+            "properties": [
+              { "name": "aa", "values": 1, "units": "a", "describe": "aaa" },
+              { "name": "bb", "values": 0, "units": "bb", "describe": "bb" }
+            ],
+            "keyValues": [{ "name": "cc", "values": "ccc" }],
+            "json": {}
+          }
+        },
+        "style": {
+          "geo": {
+            "width": 2,
+            "color": "rgba(24, 144, 255, 1)",
+            "fillColor": "rgba(24, 144, 255, .2)",
+            "radius": 5,
+            "radius2": 5,
+            "lineDash": [0, 0],
+            "iconWidth": 12,
+            "iconHeight": 12,
+            "iconPattern": "pattern",
+            "iconUrl": "triangle",
+            "iconAnchor": [0.5, 0.5],
+            "iconOffset": [0, 0],
+            "arrowPattern": "noNeed"
+          },
+          "vertex": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+          "line": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+          "label": { "fontSize": 14, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.7)" },
+          "text": null
+        },
+        "__drawData": {
+          "id": "draw_g_Gyk4Gi8Y",
+          "shape": "Point",
+          "geoType": "Point",
+          "coordinates": [40.75636344645894, -21.75971016518001],
+          "center": [40.75636344645894, -21.75971016518001],
+          "geojson": {
+            "type": "Feature",
+            "geometry": { "type": "Point", "coordinates": [40.75636344645894, -21.75971016518001] },
+            "properties": {
+              "id": "draw_g_Gyk4Gi8Y",
+              "shape": "Point",
+              "geoType": "Point",
+              "coordinates": [40.75636344645894, -21.75971016518001],
+              "center": [40.75636344645894, -21.75971016518001],
+              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "length": { "length": 0, "lengthString": "0 m" },
+              "editProps": {
+                "name": "",
+                "attributes": {
+                  "properties": [
+                    { "name": "aa", "values": 1, "units": "a", "describe": "aaa" },
+                    { "name": "bb", "values": 0, "units": "bb", "describe": "bb" }
+                  ],
+                  "keyValues": [{ "name": "cc", "values": "ccc" }],
+                  "json": {}
+                }
+              },
+              "style": {
+                "geo": {
+                  "width": 2,
+                  "color": "rgba(24, 144, 255, 1)",
+                  "fillColor": "rgba(24, 144, 255, .2)",
+                  "radius": 5,
+                  "radius2": 5,
+                  "lineDash": [0, 0],
+                  "iconWidth": 12,
+                  "iconHeight": 12,
+                  "iconPattern": "pattern",
+                  "iconUrl": "triangle",
+                  "iconAnchor": [0.5, 0.5],
+                  "iconOffset": [0, 0],
+                  "arrowPattern": "noNeed"
+                },
+                "vertex": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+                "line": { "fontSize": 12, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.4)" },
+                "label": { "fontSize": 14, "color": "rgba(255, 255, 255, 1)", "fillColor": "rgba(0, 0, 0, 0.7)" },
+                "text": null
+              }
+            }
+          },
+          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "length": { "length": 0, "lengthString": "0 m" },
+          "oldDrawOptions": {
+            "shape": "Point",
+            "isClear": false,
+            "isFreehand": false,
+            "needModify": false,
+            "once": false,
+            "isShowSegments": true,
+            "isShowLngLat": true,
+            "isShowLabel": true,
+            "isShowAction": true,
+            "id": "draw_giq82tPgod"
+          }
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [27.346101063687577, -20.654102633696667],
+          [31.9074147993241, -16.022900707326144],
+          [41.2124948200226, -14.21759089304102],
+          [48.10007856083374, -17.333694509259928],
+          [46.27555306657913, -25.189721288150693],
+          [30.903925777484066, -27.032710325794085],
+          [27.25487478897485, -24.486030932577435]
+        ]
+      },
+      "properties": {
+        "id": "draw_1olJAuS0rr",
+        "shape": "Distance",
+        "geoType": "LineString",
+        "coordinates": [
+          [27.346101063687577, -20.654102633696667],
+          [31.9074147993241, -16.022900707326144],
+          [41.2124948200226, -14.21759089304102],
+          [48.10007856083374, -17.333694509259928],
+          [46.27555306657913, -25.189721288150693],
+          [30.903925777484066, -27.032710325794085],
+          [27.25487478897485, -24.486030932577435]
+        ],
+        "center": [48.10007856083374, -17.333694509259928],
+        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "length": { "length": 5441236.63, "lengthString": "5441.24 km" },
+        "__drawData": {
+          "id": "draw_1olJAuS0rr",
+          "shape": "Distance",
+          "geoType": "LineString",
+          "coordinates": [
+            [27.346101063687577, -20.654102633696667],
+            [31.9074147993241, -16.022900707326144],
+            [41.2124948200226, -14.21759089304102],
+            [48.10007856083374, -17.333694509259928],
+            [46.27555306657913, -25.189721288150693],
+            [30.903925777484066, -27.032710325794085],
+            [27.25487478897485, -24.486030932577435]
+          ],
+          "center": [48.10007856083374, -17.333694509259928],
+          "geojson": {
+            "type": "Feature",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [27.346101063687577, -20.654102633696667],
+                [31.9074147993241, -16.022900707326144],
+                [41.2124948200226, -14.21759089304102],
+                [48.10007856083374, -17.333694509259928],
+                [46.27555306657913, -25.189721288150693],
+                [30.903925777484066, -27.032710325794085],
+                [27.25487478897485, -24.486030932577435]
+              ]
+            },
+            "properties": {
+              "id": "draw_1olJAuS0rr",
+              "shape": "Distance",
+              "geoType": "LineString",
+              "coordinates": [
+                [27.346101063687577, -20.654102633696667],
+                [31.9074147993241, -16.022900707326144],
+                [41.2124948200226, -14.21759089304102],
+                [48.10007856083374, -17.333694509259928],
+                [46.27555306657913, -25.189721288150693],
+                [30.903925777484066, -27.032710325794085],
+                [27.25487478897485, -24.486030932577435]
+              ],
+              "center": [48.10007856083374, -17.333694509259928],
+              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "length": { "length": 5441236.63, "lengthString": "5441.24 km" }
+            }
+          },
+          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "length": { "length": 5441236.63, "lengthString": "5441.24 km" },
+          "oldDrawOptions": {
+            "shape": "Distance",
+            "isClear": false,
+            "isFreehand": false,
+            "needModify": false,
+            "once": false,
+            "isShowSegments": true,
+            "isShowLngLat": true,
+            "isShowLabel": true,
+            "isShowAction": true
+          }
+        },
+        "editProps": {
+          "name": "长度测试",
+          "attributes": {
+            "properties": [{ "name": "俣哈哈", "values": 0, "units": "俣哈哈", "describe": "俣哈哈" }],
+            "keyValues": [{ "name": "俣哈哈", "values": "俣哈哈" }],
+            "json": {}
+          }
+        },
+        "style": {
+          "geo": {
+            "width": 2,
+            "color": "rgb(216, 27, 67)",
+            "fillColor": "rgba(24, 144, 255, .2)",
+            "radius": 5,
+            "radius2": 5,
+            "lineDash": [0, 0],
+            "iconWidth": 24,
+            "iconHeight": 24,
+            "iconPattern": "arrow",
+            "iconUrl": "/src/utils/map/assets/icons/arrow/arrow1_3.svg",
+            "iconAnchor": [0.5, 0.5],
+            "iconOffset": [0, 0],
+            "arrowPattern": "every"
+          },
+          "vertex": { "fontSize": 12, "color": "rgb(5, 160, 69)", "fillColor": "rgb(200, 230, 202)" },
+          "line": { "fontSize": 12, "color": "rgb(0, 135, 129)", "fillColor": "rgb(178, 223, 220)" },
+          "label": { "fontSize": 14, "color": "rgb(81, 45, 167)", "fillColor": "rgb(158, 168, 219)" },
+          "text": null
+        }
+      }
+    }
+  ]
+}

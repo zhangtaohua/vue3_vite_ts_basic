@@ -259,8 +259,8 @@ export default class OlBasicGeoJson {
 
     source.set("id", id);
     source.set("name", name);
-    source.forEachFeature((featue: any) => {
-      featue.setProperties(meta);
+    source.forEachFeature((feature: any) => {
+      feature.setProperties(meta);
     });
 
     const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
