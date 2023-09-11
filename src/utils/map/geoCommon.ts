@@ -1,5 +1,4 @@
 import Geojson from "geojson";
-import * as turf from "@turf/turf";
 
 export function getLongitudeFromText(lng: string, toFixed = 6) {
   let longitude = 0.0;

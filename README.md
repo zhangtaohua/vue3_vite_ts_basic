@@ -48,12 +48,10 @@ revert: 回退
 
 2、yarn prepare
 
-3、husky install
+3、安装 EditorConfig for VS Code 插件
 
-4、安装 EditorConfig for VS Code 插件
+4、安装 ESLint for VS Code 插件
 
-5、安装 ESLint for VS Code 插件
+5、安装 Prettier for VS Code 插件
 
-6、安装 Prettier for VS Code 插件
-
-7、安装 Stylelint for VS Code 插件
+6、安装 Stylelint for VS Code 插件

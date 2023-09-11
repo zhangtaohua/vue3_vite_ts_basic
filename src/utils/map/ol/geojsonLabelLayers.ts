@@ -631,9 +631,8 @@ export default class OlGeojsonLabelLayers {
     source.set("name", name);
     source.forEachFeature((feature: any) => {
       const oldCalcDrawData = feature.get("__drawData");
-      console.log("createLayerByData", feature, oldCalcDrawData);
+      // console.log("createLayerByData", feature, oldCalcDrawData);
       if (oldCalcDrawData) {
-        console.log("NND");
         meta[isCustomOldDrawData] = true;
       }
       feature.setProperties(meta);

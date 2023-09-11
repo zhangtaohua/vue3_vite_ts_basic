@@ -120,6 +120,7 @@ export default defineComponent({
   width: max-content;
   height: 100%;
   margin-right: 1rem;
+  padding: 0 6px;
   color: rgb(255 41 41 / 85%);
   font-weight: 400;
   font-size: 1rem;
@@ -127,7 +128,6 @@ export default defineComponent({
   border: 1px solid rgb(255 41 41 / 85%);
   border-radius: 0.25rem;
   cursor: pointer;
-  padding: 0px 6px 0px 6px;
 }
 
 .info_del:hover {
@@ -138,6 +138,7 @@ export default defineComponent({
 .info_confirm {
   width: max-content;
   height: 100%;
+  padding: 0 6px;
   color: rgb(255 255 255 / 85%);
   font-weight: 400;
   font-size: 1rem;
@@ -145,7 +146,6 @@ export default defineComponent({
   border: 1px solid rgb(14 105 241);
   border-radius: 0.25rem;
   cursor: pointer;
-  padding: 0px 6px 0px 6px;
 }
 
 .info_confirm:hover {
