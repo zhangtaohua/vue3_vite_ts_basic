@@ -200,7 +200,7 @@ export default class OlSatelliteOrbitHelper extends OlBase {
   public addBgLayer(id: string) {
     // 先隐藏map
     this.__hiddenGaodeXYZLayer();
-    this.__hiddenGaodeXYZLayer();
+    this.__hiddenGoogleXYZLayer();
     this.__hiddenBingmapLayer(bingMap);
     this.__hiddenBingmapLayer(bingLightMap);
     this.__hiddenMapboxStyleLayer();
