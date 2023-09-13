@@ -8,6 +8,7 @@ import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import { transparentPolygonStyle } from "./style";
 
+import { load } from "ol/Image";
 import { nanoid } from "nanoid";
 
 import OlBase from "./base";
@@ -15,6 +16,8 @@ import { transformExtentTo3857 } from "./olTools";
 import { earthExtent, isCustomizeFlag, customMeta } from "../geoConstant";
 import { getRectangleFromExtent } from "../geoCommon";
 import type { StaticImageBasicOptions } from "./imageBasicLayersTypes";
+
+import { getExtentFromRectCoords, getEastRadiansFromRectCoords } from "../geoCommon";
 
 export default class OlStaticImageBasicLayers {
   public olBaseHandle: OlBase | null = null;
@@ -58,49 +61,154 @@ export default class OlStaticImageBasicLayers {
     if (!options.url || !options.id) {
       return null;
     }
-    // [left, bottom, right, top]
-    let extent = earthExtent;
-    if (options.extent && options.extent.length && options.extent.length === 4) {
-      extent = options.extent;
+    if (options.isRotation) {
+      if (options.extent && options.extent?.length) {
+        if (options.extent[0] && options.extent[0].length >= 5) {
+          const coordinates = options.extent[0];
+          // [left, bottom, right, top]
+          let extent = getExtentFromRectCoords(options.extent);
+          const extentAngle = Math.atan2(extent[2] - extent[0], extent[3] - extent[1]);
+
+          extent = transformExtentTo3857(extent);
+          const { vectorOneAngle, vectorTwoAngle, vectorThreeAngle } = getEastRadiansFromRectCoords(options.extent);
+
+          let name = options.name ? options.name : nanoid(10);
+          name = this.__Name(name);
+          const id = this.__Id(options.id);
+          const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
+
+          const meta = {
+            [isCustomizeFlag]: true,
+            [customMeta]: options,
+          };
+
+          const imageOptions = {
+            url: options.url,
+            imageExtent: extent,
+            interpolate: true,
+            wrapX: options.wrapX,
+            // 原始方案 替换了原来的canvas
+            imageLoadFunction: (wrapImg: any, url: string) => {
+              wrapImg.getImage().src = url;
+
+              wrapImg.getImage().onload = () => {
+                const img = wrapImg.getImage();
+                // console.log("imgRes", wrapImg, img.width, img.height);
+                const canvasNew = document.createElement("canvas");
+                const contextCva = canvasNew.getContext("2d");
+
+                const diagonalLength = Math.sqrt(img.width * img.width + img.height * img.height);
+                const width1 = Math.abs(diagonalLength * Math.cos(vectorOneAngle));
+                const width2 = Math.abs(diagonalLength * Math.cos(vectorTwoAngle));
+                const realWidth = width1 > width2 ? width1 : width2;
+
+                const height1 = Math.abs(diagonalLength * Math.sin(vectorOneAngle));
+                const height2 = Math.abs(diagonalLength * Math.sin(vectorTwoAngle));
+                const realHeight = height1 > height2 ? height1 : height2;
+
+                // console.log("wH", width1, width2, realWidth, height1, height2, realHeight);
+                // 计算旋转后的画布大小
+                canvasNew.width = realWidth > img.width ? Math.ceil(realWidth) : img.width;
+                canvasNew.height = realHeight > img.height ? Math.ceil(realHeight) : img.height;
+
+                // 这其实是不对的，要用原始的矩形经纬度来算，但是拿不到呀！
+                const realAngle = vectorOneAngle - extentAngle - 0.2;
+
+                // contextCva.moveTo(0, canvasNew.height / 2);
+                // contextCva.lineTo(canvasNew.width, canvasNew.height / 2);
+                // contextCva.stroke();
+
+                // contextCva.beginPath();
+                // contextCva.moveTo(canvasNew.width / 2, 0);
+                // contextCva.lineTo(canvasNew.width / 2, canvasNew.height);
+                // contextCva.stroke();
+
+                // 平移转换，改变画笔的原点位置为画布的中心点
+                contextCva.translate(canvasNew.width / 2, canvasNew.height / 2);
+                // 旋转转换，改变画笔的旋转角度
+                contextCva.rotate(realAngle);
+                // 调用绘制图片的方法把图片绘制到canvas中
+                contextCva.drawImage(img, -img.width / 2, -img.height / 2);
+
+                // 还原坐标系
+                contextCva.translate(-canvasNew.width / 2, -canvasNew.height / 2);
+                contextCva.rotate(-realAngle);
+                // 使用 restore()进行恢复
+                contextCva.restore();
+
+                // const imgSrc = canvasNew.toDataURL(); //获取图片的DataURL
+                wrapImg.setImage(canvasNew);
+              };
+            },
+          };
+          const source = new StaticImage(imageOptions);
+          source.setProperties(meta);
+
+          const opacity = options.opacity ? options.opacity : 1;
+          const layer = new ImageLayer({
+            source: source,
+            extent: extent,
+            zIndex: zIndex,
+            opacity: opacity,
+          });
+          layer.setProperties(meta);
+          layer.set("id", id);
+          layer.set("name", name);
+
+          const layerObj = {
+            options,
+            imageOptions,
+            source,
+            layer,
+          };
+          return layerObj;
+        }
+      }
+    } else {
+      // [left, bottom, right, top]
+      let extent = earthExtent;
+      if (options.extent && options.extent.length && options.extent.length === 4) {
+        extent = options.extent;
+      }
+      extent = transformExtentTo3857(extent);
+      let name = options.name ? options.name : nanoid(10);
+      name = this.__Name(name);
+      const id = this.__Id(options.id);
+      const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
+
+      const meta = {
+        [isCustomizeFlag]: true,
+        [customMeta]: options,
+      };
+
+      const imageOptions = {
+        url: options.url,
+        imageExtent: extent,
+        interpolate: true,
+        wrapX: options.wrapX,
+      };
+      const source = new StaticImage(imageOptions);
+      source.setProperties(meta);
+
+      const opacity = options.opacity ? options.opacity : 1;
+      const layer = new ImageLayer({
+        source: source,
+        extent: extent,
+        zIndex: zIndex,
+        opacity: opacity,
+      });
+      layer.setProperties(meta);
+      layer.set("id", id);
+      layer.set("name", name);
+
+      const layerObj = {
+        options,
+        imageOptions,
+        source,
+        layer,
+      };
+      return layerObj;
     }
-    extent = transformExtentTo3857(extent);
-    let name = options.name ? options.name : nanoid(10);
-    name = this.__Name(name);
-    const id = this.__Id(options.id);
-    const zIndex = options.zIndex ? options.zIndex : this.olBaseHandle!.getCurrentzIndex();
-
-    const meta = {
-      [isCustomizeFlag]: true,
-      [customMeta]: options,
-    };
-
-    const imageOptions = {
-      url: options.url,
-      imageExtent: extent,
-      interpolate: true,
-      wrapX: options.wrapX,
-    };
-    const source = new StaticImage(imageOptions);
-    source.setProperties(meta);
-
-    const opacity = options.opacity ? options.opacity : 1;
-    const layer = new ImageLayer({
-      source: source,
-      extent: extent,
-      zIndex: zIndex,
-      opacity: opacity,
-    });
-    layer.setProperties(meta);
-    layer.set("id", id);
-    layer.set("name", name);
-
-    const layerObj = {
-      options,
-      imageOptions,
-      source,
-      layer,
-    };
-    return layerObj;
   }
 
   public addLayer(options: StaticImageBasicOptions) {

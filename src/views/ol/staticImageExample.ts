@@ -8,6 +8,7 @@ import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
+// import OlStaticImageLayers from "@/utils/map/ol/imageBasicLayers";
 import OlStaticImageLayers from "@/utils/map/ol/imageLayers";
 import type { StaticImageOptions } from "@/utils/map/ol/imageLayersTypes";
 

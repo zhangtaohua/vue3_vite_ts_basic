@@ -154,7 +154,7 @@ export function clockwiseRotatePoint(x: number, y: number, x0: number, y0: numbe
   return [x1, y1];
 }
 
-export function getExtentFromDrawPolygon(coordinates: any) {
+export function getExtentFromRectCoords(coordinates: any) {
   let minLongitude = 180;
   let maxLongitude = -180;
   let minLatitude = 85;
@@ -183,6 +183,32 @@ export function getExtentFromDrawPolygon(coordinates: any) {
     }
   }
   return [minLongitude, minLatitude, maxLongitude, maxLatitude];
+}
+
+export function getEastRadiansFromRectCoords(coordinates: any) {
+  if (coordinates.length) {
+    const coordinates1 = coordinates[0];
+    if (coordinates1.length >= 4) {
+      const vectorOneX = coordinates1[2][0] - coordinates1[0][0];
+      const vectorOneY = coordinates1[2][1] - coordinates1[0][1];
+      const vectorOneAngle = Math.atan2(vectorOneY, vectorOneX);
+
+      const vectorTwoX = coordinates1[3][0] - coordinates1[1][0];
+      const vectorTwoY = coordinates1[3][1] - coordinates1[1][1];
+      const vectorTwoAngle = Math.atan2(vectorTwoY, vectorTwoX);
+
+      const vectorThreeX = coordinates1[1][0] - coordinates1[0][0];
+      const vectorThreeY = coordinates1[1][1] - coordinates1[0][1];
+      const vectorThreeAngle = Math.atan2(vectorThreeY, vectorThreeX);
+
+      return {
+        vectorOneAngle,
+        vectorTwoAngle,
+        vectorThreeAngle,
+      };
+    }
+  }
+  return null;
 }
 
 export function getCenterFromExtent(extent: any) {

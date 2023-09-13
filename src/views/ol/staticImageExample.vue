@@ -26,6 +26,7 @@ onMounted(() => {
   addImage(imagesSource.image5);
   addImage(imagesSource.image6);
   addImage(imagesSource.image7);
+  addImage(imagesSource.image8);
   initGUI();
 });
 
@@ -44,6 +45,7 @@ const mapContrl = {
   image5: true,
   image6: true,
   image7: true,
+  image8: true,
 };
 function initMap() {
   mapIns = new staticImageExample("ol_container", window.devicePixelRatio);
@@ -146,6 +148,18 @@ function initGUI() {
         addImage(imagesSource.image7);
       } else {
         removeImage(imagesSource.image7);
+      }
+    });
+
+  imgFolder
+    .add(mapContrl, "image8")
+    .name("8 点击 vnode 回调")
+    .onChange((value: any) => {
+      if (value) {
+        randomStr = nanoid(10);
+        addImage(imagesSource.image8);
+      } else {
+        removeImage(imagesSource.image8);
       }
     });
 }
@@ -293,7 +307,57 @@ const imagesSource = {
       };
     },
   },
+  image8: {
+    id: "image_test_8",
+    url: pexels1,
+    isRotation: true,
+    // 请按左下，右下，右上，左上， 左下的方式给范围 且是三维数组
+    extent: [
+      [
+        [118.46893347912199, 22.75546237850905],
+        [118.88603982083796, 23.777274727756733],
+        [117.77375624292873, 24.158414502944936],
+        [117.35664990121275, 23.139558956848617],
+        [118.46893347912199, 22.75546237850905],
+      ],
+    ],
+    isPopup: true,
+    popupType: popupType.vnode,
+    hasClose: true,
+    eventType: "singleclick",
+    vNode: staticImagePopup,
+    vNodeData: {
+      name: "我是VueNode标题",
+      longitude: "149.757575E",
+      latitude: "30.435657N",
+      satellite: "QL_*",
+      time: "2023-07-28 12:00:00",
+      x: 180,
+      y: 1620,
+    },
+    customT: customT,
+  },
 };
+
+const a = [
+  [
+    [124.45200657668943, 17.485382428595727],
+    [136.31782253901244, 17.485382428595727],
+    [136.31782253901244, 23.44901968620303],
+    [124.45200657668943, 23.44901968620303],
+    [124.45200657668943, 17.485382428595727],
+  ],
+];
+
+const b = [
+  [
+    [118.46893347912199, 22.75546237850905],
+    [118.88603982083796, 23.777274727756733],
+    [117.77375624292873, 24.158414502944936],
+    [117.35664990121275, 23.139558956848617],
+    [118.46893347912199, 22.75546237850905],
+  ],
+];
 
 function addImage(MapImageOptions: StaticImageOptions) {
   if (mapIns) {

@@ -43,7 +43,7 @@ export default class OlMapboxStyleLayers {
 
   public clearLayer() {
     if (this.handle) {
-      this.__layerIdentifier.forEach((identifier: any) => {
+      this.__layerIdentifier.forEach((identifier: string) => {
         this.handle!.getLayers()
           .getArray()
           .filter((layer: any) => {
