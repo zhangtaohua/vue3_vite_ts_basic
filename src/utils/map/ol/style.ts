@@ -542,11 +542,11 @@ export const createTipStyle = () => {
 
 export const transparentPolygonStyle = new Style({
   stroke: new StrokeStyle({
-    color: "rgba(255, 0, 0, 0.5)",
+    color: "rgba(255, 255, 255, 0.0)",
     width: 0,
   }),
   fill: new Fill({
-    color: "rgba(255, 0, 0, 1.0)",
+    color: "rgba(255, 255, 255, 0.0)",
   }),
 });
 

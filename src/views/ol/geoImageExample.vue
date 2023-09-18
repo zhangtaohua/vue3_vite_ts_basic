@@ -22,6 +22,11 @@ onMounted(() => {
   initMap();
   addImage(imagesSource.image1);
   addImage(imagesSource.image2);
+  addImage(imagesSource.image3);
+  addImage(imagesSource.image4);
+  addImage(imagesSource.image5);
+  addImage(imagesSource.image6);
+  addImage(imagesSource.image7);
   addImage(imagesSource.image8);
   initGUI();
 });
@@ -205,7 +210,16 @@ const imagesSource = {
   image3: {
     id: "image_test_3",
     url: pexels1,
-    extent: [111, 25, 113, 26],
+    bbox: [
+      [
+        [115.13905109446158, 20.97700236551765],
+        [115.52556811629653, 22.044703806056248],
+        [113.45911220857984, 22.66491497351177],
+        [113.06070235530382, 21.679230813643485],
+        [115.13905109446158, 20.97700236551765],
+      ],
+    ],
+    isRotation: true,
     isPopup: true,
     popupType: popupType.normal,
     hasClose: true,
@@ -227,7 +241,16 @@ const imagesSource = {
   image4: {
     id: "image_test_4",
     url: pexels1,
-    extent: [111, 26.5, 113, 27.5],
+    bbox: [
+      [
+        [115.95660681120556, 21.657125898618915],
+        [117.09237221382823, 21.657125898618915],
+        [117.09237221382823, 22.384783347439637],
+        [115.95660681120556, 22.384783347439637],
+        [115.95660681120556, 21.657125898618915],
+      ],
+    ],
+    isRotation: true,
     isPopup: true,
     popupType: popupType.normal,
     hasClose: true,
@@ -243,7 +266,16 @@ const imagesSource = {
   image5: {
     id: "image_test_5",
     url: pexels1,
-    extent: [111, 28, 113, 29],
+    bbox: [
+      [
+        [113.87536130901745, 19.654157597179065],
+        [114.82084140858292, 20.4083542148704],
+        [114.01807528631036, 21.29190789320579],
+        [113.07259518674489, 20.542052007597107],
+        [113.87536130901745, 19.654157597179065],
+      ],
+    ],
+    isRotation: true,
     isPopup: true,
     popupType: popupType.normal,
     hasClose: true,
@@ -270,7 +302,16 @@ const imagesSource = {
   image6: {
     id: "image_test_6",
     url: pexels2,
-    extent: [114, 22, 116, 23],
+    bbox: [
+      [
+        [114.63055610552571, 22.71429087334542],
+        [114.86841273434719, 23.589084730610566],
+        [113.91698621906119, 23.80688432949438],
+        [113.67912959023971, 22.933523474547968],
+        [114.63055610552571, 22.71429087334542],
+      ],
+    ],
+    isRotation: true,
     isPopup: true,
     popupType: popupType.vnode,
     hasClose: true,
@@ -290,7 +331,16 @@ const imagesSource = {
   image7: {
     id: "image_test_7",
     url: pexels2,
-    extent: [114, 23.5, 116, 24.5],
+    bbox: [
+      [
+        [115.89119623827965, 23.501863352973885],
+        [115.13005502605087, 23.774237575291764],
+        [114.832734240024, 23.075834808676035],
+        [115.59387545225276, 22.8020262674967],
+        [115.89119623827965, 23.501863352973885],
+      ],
+    ],
+    isRotation: true,
     isPopup: true,
     popupType: popupType.vnode,
     hasClose: true,
