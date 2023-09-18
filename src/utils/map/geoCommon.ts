@@ -185,30 +185,79 @@ export function getExtentFromRectCoords(coordinates: any) {
   return [minLongitude, minLatitude, maxLongitude, maxLatitude];
 }
 
-export function getEastRadiansFromRectCoords(coordinates: any) {
+// 重新排列extent 坐标顺利， 左下 右下 右上 左上 再左下 即逆时针。
+export function getLbToRuCoordinates(coordinates: any) {
   if (coordinates.length) {
-    const coordinates1 = coordinates[0];
-    if (coordinates1.length >= 4) {
-      const vectorOneX = coordinates1[2][0] - coordinates1[0][0];
-      const vectorOneY = coordinates1[2][1] - coordinates1[0][1];
-      const vectorOneAngle = Math.atan2(vectorOneY, vectorOneX);
-
-      const vectorTwoX = coordinates1[3][0] - coordinates1[1][0];
-      const vectorTwoY = coordinates1[3][1] - coordinates1[1][1];
-      const vectorTwoAngle = Math.atan2(vectorTwoY, vectorTwoX);
-
-      const vectorThreeX = coordinates1[1][0] - coordinates1[0][0];
-      const vectorThreeY = coordinates1[1][1] - coordinates1[0][1];
-      const vectorThreeAngle = Math.atan2(vectorThreeY, vectorThreeX);
-
-      return {
-        vectorOneAngle,
-        vectorTwoAngle,
-        vectorThreeAngle,
-      };
+    let newBbox: any = [];
+    let isRegular = false;
+    const bbox: any = coordinates[0];
+    if (bbox.length && bbox.length >= 5) {
+      if (bbox[1][0] - bbox[0][0] > 0) {
+        // 第二点经度 > 第一个点 向左
+        if (bbox[2][1] - bbox[1][1] > 0) {
+          // 第三点纬度 > 第二个点 向上
+          if (bbox[2][0] - bbox[3][0] > 0) {
+            // 第三点经度 > 第四个点 向右
+            newBbox = [[...bbox[0]], [...bbox[1]], [...bbox[2]], [...bbox[3]], [...bbox[0]]];
+          } // 无else 不可能存在
+        } else {
+          // 第三点纬度 > 第二个点 向下
+          if (bbox[2][0] - bbox[3][0] > 0) {
+            newBbox = [[...bbox[3]], [...bbox[2]], [...bbox[1]], [...bbox[0]], [...bbox[3]]];
+          }
+        }
+      } else if (bbox[1][0] - bbox[0][0] < 0) {
+        // 第二点经度 > 第一个点 向右
+        if (bbox[2][1] - bbox[1][1] > 0) {
+          // 第三点纬度 > 第二个点 向上
+          if (bbox[3][0] - bbox[2][0] > 0) {
+            // 第四点经度 > 第三个点 向右
+            newBbox = [[...bbox[1]], [...bbox[0]], [...bbox[3]], [...bbox[2]], [...bbox[1]]];
+          } // 无else 不可能存在
+        } else {
+          // 第三点纬度 > 第二个点 向下
+          if (bbox[3][0] - bbox[2][0] > 0) {
+            newBbox = [[...bbox[2]], [...bbox[3]], [...bbox[0]], [...bbox[1]], [...bbox[2]]];
+          }
+        }
+      } else {
+        isRegular = true;
+        if (bbox[1][1] - bbox[0][1] > 0) {
+          if (bbox[2][0] - bbox[1][0] > 0) {
+            // 第三点经度 > 第二个点 向右
+            if (bbox[2][1] - bbox[3][1] > 0) {
+              // 第三点经度 > 第四个点 向下
+              newBbox = [[...bbox[0]], [...bbox[3]], [...bbox[2]], [...bbox[1]], [...bbox[0]]];
+            }
+          } else {
+            if (bbox[2][1] - bbox[3][1] > 0) {
+              // 第三点经度 > 第四个点 向下
+              newBbox = [[...bbox[3]], [...bbox[0]], [...bbox[1]], [...bbox[2]], [...bbox[3]]];
+            }
+          }
+        } else {
+          if (bbox[2][0] - bbox[1][0] > 0) {
+            // 第三点经度 > 第二个点 向右
+            if (bbox[3][1] - bbox[2][1] > 0) {
+              // 第三点经度 > 第四个点 向下
+              newBbox = [[...bbox[1]], [...bbox[2]], [...bbox[3]], [...bbox[0]], [...bbox[1]]];
+            }
+          } else {
+            if (bbox[3][1] - bbox[2][1] > 0) {
+              // 第三点经度 > 第四个点 向下
+              newBbox = [[...bbox[2]], [...bbox[1]], [...bbox[0]], [...bbox[3]], [...bbox[2]]];
+            }
+          }
+        }
+      }
+    }
+    if (newBbox.length !== 5) {
+      console.log("计算左下右上矩阵出错！！");
+      return [];
+    } else {
+      return [newBbox];
     }
   }
-  return null;
 }
 
 export function getCenterFromExtent(extent: any) {

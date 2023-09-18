@@ -8,9 +8,9 @@ import type { BingMapsOptions } from "@/utils/map/ol/bingmapLayersTypes";
 import mapboxLayers from "@/utils/map/ol/mapboxLayers";
 import type { MapboxOptions } from "@/utils/map/ol/mapboxLayersTypes";
 
-import OlStaticImageLayers from "@/utils/map/ol/imageBasicLayers";
-// import OlStaticImageLayers from "@/utils/map/ol/imageLayers";
-import type { StaticImageOptions } from "@/utils/map/ol/imageLayersTypes";
+// import OlGeoImageBasicExtLayers from "@/utils/map/ol/imageGeoBasicExtLayers";
+import OlGeoImageBasicExtLayers from "@/utils/map/ol/imageGeoExtLayers";
+import type { GeoImageExtOptions } from "@/utils/map/ol/imageGeoExtLayersTypes";
 
 import OpenLayersMapEvent from "@/utils/map/ol/mapEvent";
 import type { EventOptions } from "@/utils/map/ol/mapEventTypes";
@@ -34,7 +34,7 @@ export default class OlMapHelper extends OlBase {
   private __funcLayers: any = null; // 功能图层
   public XYZIns: xyzLayers | null = null;
   public BingmapIns: bingmapsLayers | null = null;
-  public ImageMapIns: OlStaticImageLayers | null = null;
+  public ImageMapIns: OlGeoImageBasicExtLayers | null = null;
   public mapboxLayerIns: mapboxLayers | null = null;
 
   public vuePopupIns: OpenLayerVueNodePopup | null = null;
@@ -109,7 +109,7 @@ export default class OlMapHelper extends OlBase {
 
     this.XYZIns = new xyzLayers(this);
     this.BingmapIns = new bingmapsLayers(this);
-    this.ImageMapIns = new OlStaticImageLayers(this);
+    this.ImageMapIns = new OlGeoImageBasicExtLayers(this);
     this.mapboxLayerIns = new mapboxLayers(this);
 
     this.mapEventIns = new OpenLayersMapEvent(this);
@@ -242,7 +242,7 @@ export default class OlMapHelper extends OlBase {
     this.flyToPositionAndZoom(longitude, latitude, zoom);
   }
 
-  public addImagesLayer(options: StaticImageOptions) {
+  public addImagesLayer(options: GeoImageExtOptions) {
     if (options) {
       const isAdded = this.ImageMapIns!.addLayer(options);
       if (isAdded) {
@@ -251,7 +251,7 @@ export default class OlMapHelper extends OlBase {
     }
   }
 
-  public removeImagesLayer(options: StaticImageOptions) {
+  public removeImagesLayer(options: GeoImageExtOptions) {
     if (options) {
       const funcLayersKeys = this.__funcLayers.keys();
       console.log(funcLayersKeys);

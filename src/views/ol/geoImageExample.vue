@@ -5,8 +5,8 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
 
-import staticImageExample from "./staticImageExample";
-import type { StaticImageOptions } from "@/utils/map/ol/imageLayersTypes";
+import geoImageExample from "./geoImageExample";
+import type { GeoImageExtOptions } from "@/utils/map/ol/imageGeoExtLayersTypes";
 
 import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue, popupType } from "./MapConst";
 import GUI from "lil-gui";
@@ -22,11 +22,6 @@ onMounted(() => {
   initMap();
   addImage(imagesSource.image1);
   addImage(imagesSource.image2);
-  addImage(imagesSource.image3);
-  addImage(imagesSource.image4);
-  addImage(imagesSource.image5);
-  addImage(imagesSource.image6);
-  addImage(imagesSource.image7);
   addImage(imagesSource.image8);
   initGUI();
 });
@@ -35,7 +30,7 @@ onUnmounted(() => {
   disposeMap();
 });
 
-let mapIns: staticImageExample | null = null;
+let mapIns: geoImageExample | null = null;
 let GUIIns: GUI | null = null;
 const mapContrl = {
   bgLayer: gaodeMap,
@@ -49,7 +44,7 @@ const mapContrl = {
   image8: true,
 };
 function initMap() {
-  mapIns = new staticImageExample("ol_container", window.devicePixelRatio);
+  mapIns = new geoImageExample("ol_container", window.devicePixelRatio);
   mapIns.addBgLayer(mapContrl.bgLayer);
 }
 
@@ -172,12 +167,29 @@ const imagesSource = {
   image1: {
     id: "image_test_1",
     url: pexels1,
-    extent: [111, 22, 113, 23],
+    bbox: [
+      [
+        [110.76342809639932, 22.891079537851112],
+        [109.41424552021081, 23.76802526908787],
+        [108.45920616852678, 22.527492881029403],
+        [109.80838874471532, 21.642539335563114],
+        [110.76342809639932, 22.891079537851112],
+      ],
+    ],
   },
   image2: {
     id: "image_test_2",
     url: pexels1,
-    extent: [111, 23.5, 113, 24.5],
+    bbox: [
+      [
+        [112.61286938061279, 24.128237174508243],
+        [111.7487861576606, 24.721747108615318],
+        [111.0969339017493, 23.934401882912525],
+        [111.96101712470148, 23.337235771494733],
+        [112.61286938061279, 24.128237174508243],
+      ],
+    ],
+    isRotation: true,
     isPopup: true,
     popupType: popupType.normal,
     hasClose: true,
@@ -311,9 +323,18 @@ const imagesSource = {
   image8: {
     id: "image_test_8",
     url: pexels3,
-    isRotation: true,
-    // 请按左下，右下，右上，左上， 左下的方式给范围 且是三维数组
-    extent: [
+    // extent 可给可不给，不给会从 bbox 中计算出来，给可以和bbox一样
+    // 也可以只给左下 右上点一维4个点。
+    // extent: [
+    //   [
+    //     [108.86959728872603, 20.060637912154448],
+    //     [105.88748348068856, 19.626054243965754],
+    //     [106.34950111291971, 16.793640507227252],
+    //     [109.3316149209572, 17.235434578797324],
+    //     [108.86959728872603, 20.060637912154448],
+    //   ],
+    // ],
+    bbox: [
       [
         [108.86959728872603, 20.060637912154448],
         [105.88748348068856, 19.626054243965754],
@@ -322,6 +343,8 @@ const imagesSource = {
         [108.86959728872603, 20.060637912154448],
       ],
     ],
+    isRotation: true,
+    rotationInDegree: 0,
     isPopup: true,
     popupType: popupType.vnode,
     hasClose: true,
@@ -340,13 +363,13 @@ const imagesSource = {
   },
 };
 
-function addImage(MapImageOptions: StaticImageOptions) {
+function addImage(MapImageOptions: GeoImageExtOptions) {
   if (mapIns) {
     mapIns.addImagesLayer(MapImageOptions);
   }
 }
 
-function removeImage(MapImageOptions: StaticImageOptions) {
+function removeImage(MapImageOptions: GeoImageExtOptions) {
   if (mapIns) {
     mapIns.removeImagesLayer(MapImageOptions);
   }

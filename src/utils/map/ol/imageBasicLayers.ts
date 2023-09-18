@@ -2,22 +2,16 @@ import { Map as olMap } from "ol";
 import StaticImage from "ol/source/ImageStatic";
 import ImageLayer from "ol/layer/Image";
 import { getCenter } from "ol/extent";
-import Polygon from "ol/geom/Polygon.js";
-import Feature from "ol/Feature";
-import VectorSource from "ol/source/Vector";
-import VectorLayer from "ol/layer/Vector";
-import { transparentPolygonStyle } from "./style";
 
-import { load } from "ol/Image";
 import { nanoid } from "nanoid";
 
 import OlBase from "./base";
-import { transformExtentTo3857 } from "./olTools";
-import { earthExtent, isCustomizeFlag, customMeta } from "../geoConstant";
-import { getRectangleFromExtent } from "../geoCommon";
 import type { StaticImageBasicOptions } from "./imageBasicLayersTypes";
 
-import { getExtentFromRectCoords, getEastRadiansFromRectCoords } from "../geoCommon";
+import { transformExtentTo3857, getAngleOfNorthFromCoordinates, getEastRadiansFromRectCoords } from "./olTools";
+
+import { getRectangleFromExtent, getExtentFromRectCoords } from "../geoCommon";
+import { earthExtent, isCustomizeFlag, customMeta } from "../geoConstant";
 
 export default class OlStaticImageBasicLayers {
   public olBaseHandle: OlBase | null = null;
@@ -64,12 +58,17 @@ export default class OlStaticImageBasicLayers {
     if (options.isRotation) {
       if (options.extent && options.extent?.length) {
         if (options.extent[0] && options.extent[0].length >= 5) {
-          const coordinates = options.extent[0];
           // [left, bottom, right, top]
           let extent = getExtentFromRectCoords(options.extent);
-          const extentAngle = Math.atan2(extent[2] - extent[0], extent[3] - extent[1]);
-
           extent = transformExtentTo3857(extent);
+
+          let extentAngle = 0;
+          if (options.rotationInDegree) {
+            extentAngle = (options.rotationInDegree * Math.PI) / 180;
+          } else {
+            extentAngle = getAngleOfNorthFromCoordinates(options.extent);
+          }
+
           const { vectorOneAngle, vectorTwoAngle, vectorThreeAngle } = getEastRadiansFromRectCoords(options.extent);
 
           let name = options.name ? options.name : nanoid(10);
@@ -111,8 +110,7 @@ export default class OlStaticImageBasicLayers {
                 canvasNew.width = realWidth > img.width ? Math.ceil(realWidth) : img.width;
                 canvasNew.height = realHeight > img.height ? Math.ceil(realHeight) : img.height;
 
-                // 这其实是不对的，要用原始的矩形经纬度来算，但是拿不到呀！
-                const realAngle = vectorOneAngle - extentAngle - 0.2;
+                const realAngle = extentAngle;
 
                 // contextCva.moveTo(0, canvasNew.height / 2);
                 // contextCva.lineTo(canvasNew.width, canvasNew.height / 2);

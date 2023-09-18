@@ -30,6 +30,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/ol/staticImageExample.vue"),
       },
       {
+        path: "/openlayers/geoImage",
+        name: "geoExample",
+        component: () => import("@/views/ol/geoImageExample.vue"),
+      },
+      {
         path: "/openlayers/geojson",
         name: "GeojsonExample",
         component: () => import("@/views/ol/geojsonExample.vue"),

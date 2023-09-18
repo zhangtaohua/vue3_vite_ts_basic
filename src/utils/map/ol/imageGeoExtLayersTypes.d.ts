@@ -1,8 +1,10 @@
-export interface StaticImageOptions {
+export interface GeoImageExtOptions {
   id: string;
   url: string;
-  extent: any;
+  bbox: any;
+  extent?: any;
   name?: string;
+  level?: string | number;
   zIndex?: number;
   wrapX?: boolean;
   opacity?: number;
