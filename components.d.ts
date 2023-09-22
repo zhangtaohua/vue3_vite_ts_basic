@@ -7,6 +7,19 @@ export {}
 
 declare module "vue" {
   export interface GlobalComponents {
+    AButton: typeof import("ant-design-vue/es")["Button"];
+    ACheckbox: typeof import("ant-design-vue/es")["Checkbox"];
+    AInput: typeof import("ant-design-vue/es")["Input"];
+    AModal: typeof import("ant-design-vue/es")["Modal"];
+    APopconfirm: typeof import("ant-design-vue/es")["Popconfirm"];
+    ARadioGroup: typeof import("ant-design-vue/es")["RadioGroup"];
+    ARangePicker: typeof import("ant-design-vue/es")["RangePicker"];
+    ATable: typeof import("ant-design-vue/es")["Table"];
+    AUpload: typeof import("ant-design-vue/es")["Upload"];
+    AUploadDragger: typeof import("ant-design-vue/es")["UploadDragger"];
+    EchartsErrorNoData: typeof import("./src/components/echarts/EchartsErrorNoData.vue")["default"];
+    EchartsOptionBase: typeof import("./src/components/echarts/EchartsOptionBase.vue")["default"];
+    EchartsOptionScatter: typeof import("./src/components/echarts/EchartsOptionScatter.vue")["default"];
     RouterLink: typeof import("vue-router")["RouterLink"];
     RouterView: typeof import("vue-router")["RouterView"];
   }

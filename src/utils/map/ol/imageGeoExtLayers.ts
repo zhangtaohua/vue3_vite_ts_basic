@@ -20,10 +20,11 @@ import {
   transformRectCoordinatesTo3857,
   getAngleOfNorthFromCoordinates,
   getEastRadiansFromRectCoords,
+  getAngleOfNorthFromCoordinates2,
 } from "./olTools";
 
 import { earthExtent, popupType, isCustomizeFlag, customMeta } from "../geoConstant";
-import { getRectangleFromExtent, getExtentFromRectCoords, getLbToRuCoordinates } from "../geoCommon";
+import { getRectangleFromExtent, getExtentFromRectCoords } from "../geoCommon";
 
 import type { GeoImageExtOptions } from "./imageGeoExtLayersTypes";
 
@@ -205,6 +206,7 @@ export default class OlGeoImageExtLayers {
         rotation = (options.rotationInDegree * Math.PI) / 180;
       } else {
         rotation = getAngleOfNorthFromCoordinates(options.bbox);
+        const b = getAngleOfNorthFromCoordinates2(options.bbox);
       }
     }
 

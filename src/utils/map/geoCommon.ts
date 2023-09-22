@@ -260,6 +260,19 @@ export function getLbToRuCoordinates(coordinates: any) {
   }
 }
 
+// 计算两点对于正北方向的朝向角度
+export function angleOfNorth(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const rad = Math.PI / 180,
+    a1 = lat1 * rad,
+    a2 = lat2 * rad,
+    b1 = lon1 * rad,
+    b2 = lon2 * rad;
+  const a = Math.sin(b2 - b1) * Math.cos(a2);
+  const b = Math.cos(a1) * Math.sin(a2) - Math.sin(a1) * Math.cos(a2) * Math.cos(b2 - b1);
+
+  return Math.atan2(a, b);
+}
+
 export function getCenterFromExtent(extent: any) {
   if (extent.length === 4) {
     const lng = (extent[0] + extent[2]) / 2;

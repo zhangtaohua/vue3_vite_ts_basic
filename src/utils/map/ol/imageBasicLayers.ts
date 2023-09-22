@@ -130,6 +130,7 @@ export default class OlStaticImageBasicLayers {
 
                 // 还原坐标系
                 contextCva.translate(-canvasNew.width / 2, -canvasNew.height / 2);
+
                 contextCva.rotate(-realAngle);
                 // 使用 restore()进行恢复
                 contextCva.restore();

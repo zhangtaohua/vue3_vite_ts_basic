@@ -13,7 +13,7 @@ import { transformExtentTo3857, transformRectCoordinatesTo3857, getAngleOfNorthF
 import type { GeoImageBasicExtOptions } from "./imageGeoBasicExtLayersTypes";
 
 import { earthExtent, isCustomizeFlag, customMeta } from "../geoConstant";
-import { getRectangleFromExtent, getExtentFromRectCoords, getLbToRuCoordinates } from "../geoCommon";
+import { getRectangleFromExtent, getExtentFromRectCoords } from "../geoCommon";
 
 export default class OlGeoImageBasicExtLayers {
   public olBaseHandle: OlBase | null = null;

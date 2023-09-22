@@ -95,6 +95,43 @@ export function getAngleOfNorthFromCoordinates(coordinates: any) {
       }
     }
   }
+  // console.log("angle 0", angle);
+  return angle;
+}
+
+// extent 要是3857坐标系计算才比较准确 计算与正北的夹角.
+export function getAngleOfNorthFromCoordinates2(coordinates: any) {
+  let angle = 0;
+  const bbox = getLbToRuCoordinates(coordinates);
+  if (bbox?.length) {
+    const newBbox = bbox[0];
+    if (newBbox.length >= 5) {
+      newBbox[0] = transformTo3857(newBbox[0]);
+      newBbox[1] = transformTo3857(newBbox[1]);
+      newBbox[2] = transformTo3857(newBbox[2]);
+      newBbox[3] = transformTo3857(newBbox[3]);
+      newBbox[4] = transformTo3857(newBbox[4]);
+
+      const fakePoint1 = transformTo3857([0, 0]);
+      const fakePoint2 = transformTo3857([0, 85]);
+
+      const vectorCToP2 = [newBbox[1][0] - newBbox[2][0], newBbox[1][1] - newBbox[2][1]];
+      const vectorCToP3 = [fakePoint1[0] - fakePoint2[0], fakePoint1[1] - fakePoint2[1]];
+
+      const cosP2ToP3 =
+        (vectorCToP2[0] * vectorCToP3[0] + vectorCToP2[1] * vectorCToP3[1]) /
+        (Math.sqrt(vectorCToP2[0] * vectorCToP2[0] + vectorCToP2[1] * vectorCToP2[1]) *
+          Math.sqrt(vectorCToP3[0] * vectorCToP3[0] + vectorCToP3[1] * vectorCToP3[1]));
+      const angleP2ToP3 = Math.acos(cosP2ToP3);
+      // console.log("cosP2ToP31", cosP2ToP3, angleP2ToP3, (angleP2ToP3 * 180) / Math.PI);
+      if (newBbox[2][0] < newBbox[1][0]) {
+        angle = -angleP2ToP3;
+      } else {
+        angle = angleP2ToP3;
+      }
+    }
+  }
+  // console.log("angle 2", angle);
   return angle;
 }
 

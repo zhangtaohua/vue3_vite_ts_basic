@@ -26,6 +26,12 @@
         <router-link to="/cesium/geojson" class="ol_example_title">图层 geojson 实例</router-link>
         <router-link to="/cesium/draw" class="ol_example_title">图层 draw 实例</router-link>
       </div>
+
+      <div class="row_nw_center_center ol_title">report 实例</div>
+      <div class="row_nw_fs_center ol_example_box">
+        <router-link to="/report/create" class="ol_example_title">创建报告 实例</router-link>
+        <router-link to="/report/wang" class="ol_example_title">editor ol插件 实例</router-link>
+      </div>
     </div>
   </div>
 </template>

@@ -112,6 +112,22 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/report",
+    name: "reportExample",
+    children: [
+      {
+        path: "/report/create",
+        name: "reportCreatedExample",
+        component: () => import("@/views/report/createExample.vue"),
+      },
+      {
+        path: "/report/wang",
+        name: "wangOlExample",
+        component: () => import("@/views/report/wangOlExample.vue"),
+      },
+    ],
+  },
   // pathMatch is the name of the param, e.g., going to /not/found yields
   // { params: { pathMatch: ['not', 'found'] }}
   // this is thanks to the last *, meaning repeated params and it is necessary if you

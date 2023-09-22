@@ -1,0 +1,42 @@
+.w-e-text-container {
+  background-color: transparent !important;
+  outline: 1px solid red;
+}
+
+.rj_pagination_top {
+  width: 100%;
+  // height: calc(2cm - 51px);
+  height: 2cm;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(255 0 0 / 10%);
+}
+
+.rj_pagination_adgap {
+  width: 100%;
+  min-height: 2cm;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(255 0 0 / 20%);
+}
+
+.rj_pagination_gap {
+  width: 100%;
+  height: 2cm;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(255 0 0 / 10%);
+}
+
+.rj_pagination_next {
+  width: 100%;
+  height: auto;
+  min-height: 4cm;
+  background-color: rgb(255 0 0 / 10%);
+}
+
+.rj_pagination_page_break {
+  width: 100%;
+  height: 0;
+  page-break-before: always;
+}
