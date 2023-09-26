@@ -1,5 +1,5 @@
 /**
- * @description render elem 这是为了editor.insertNode("OL-MAP") 生效
+ * @description render elem 这是为了editor.insertNode("RJ-PAGINATION") 生效
  * @author RJ(zthvivid@163.com)
  */
 

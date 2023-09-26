@@ -1,13 +1,35 @@
 /**
- * @description link-card plugin
+ * @description RJ-PAGINATION plugin
  * @author RJ(zthvivid@163.com)
  */
 
+import { Editor, Point } from "slate";
 import { DomEditor, IDomEditor, SlateTransforms } from "@wangeditor/editor";
 import { wangEditorPaginationType } from "./custom-types";
 
+function deleteHandler(newEditor: IDomEditor): boolean {
+  const { selection } = newEditor;
+  if (selection == null) return false;
+
+  const [cellNodeEntry] = Editor.nodes(newEditor, {
+    match: (n: any) => {
+      return DomEditor.checkNodeType(n, wangEditorPaginationType);
+    },
+  });
+
+  if (cellNodeEntry) {
+    const [, cellPath] = cellNodeEntry;
+    const start = Editor.start(newEditor, cellPath);
+    if (Point.equals(selection.anchor, start)) {
+      return true; // 阻止删除 cell
+    }
+  }
+
+  return false;
+}
+
 function withPagination<T extends IDomEditor>(editor: T) {
-  const { isInline, isVoid, normalizeNode } = editor;
+  const { isInline, isVoid, normalizeNode, deleteBackward, deleteForward } = editor; // 获取当前 editor API
   const newEditor = editor;
 
   // 重写 isInline
@@ -53,6 +75,43 @@ function withPagination<T extends IDomEditor>(editor: T) {
     }
   };
 
+  // 重写 insertBreak 换行
+  // newEditor.insertBreak = () => {
+  //   // if: 是 ctrl + enter ，则执行 insertBreak
+  //   insertBreak();
+
+  //   // else: 则不执行换行
+  //   return;
+  // };
+
+  // 重写 deleteBackward 向后删除
+  newEditor.deleteBackward = (unit: any) => {
+    const res = deleteHandler(newEditor);
+    if (res) {
+      return;
+    } // 命中结果，则 return
+
+    // 执行默认的删除
+    deleteBackward(unit);
+  };
+
+  newEditor.deleteForward = (unit: any) => {
+    const res = deleteHandler(newEditor);
+    if (res) {
+      return;
+    } // 命中结果，则 return
+
+    // 执行默认的删除
+    deleteForward(unit);
+  };
+
+  return newEditor;
+}
+
+export function withBreakAndDelete<T extends IDomEditor>(editor: T): T {
+  // 重写其他 API ...
+
+  // 返回 newEditor ，重要！
   return newEditor;
 }
 

@@ -13,18 +13,17 @@ export const A4EditorHeightPixel = ((A4Height - 4.01) * A4PrintDPI) / inchCm; //
 export const blankParagraphHeight = 52;
 export const blankParagraphRHeight = 21 + 15;
 export const paginationGap = (2 * A4PrintDPI) / inchCm; // 因为是2cm的占度
+export const topPaginationTag: PaginationElement = {
+  type: wangEditorPaginationType,
+  page: 1,
+  width: 0,
+  height: 0,
+  children: [{ text: "" }],
+};
 
 export function insertPageHeader(editor: any) {
   editor.clear();
-
-  const paginationTag: PaginationElement = {
-    type: wangEditorPaginationType,
-    page: 1,
-    width: 0,
-    height: 0,
-    children: [{ text: "" }],
-  };
-  editor.insertNode(paginationTag);
+  editor.insertNode(topPaginationTag);
 
   const children = [...editor.children];
   children.shift();
@@ -34,7 +33,7 @@ export function insertPageHeader(editor: any) {
 
 export function adjustPagePagination(editor: any) {
   const oldChildren = [...editor.children];
-  const newChildren = [oldChildren[0]];
+  const newChildren = [{ ...topPaginationTag }];
 
   // 用来计算一页的高度
   let oldPageHeight = 0;
@@ -43,6 +42,10 @@ export function adjustPagePagination(editor: any) {
 
   const oldChildrenLength = oldChildren.length;
   console.log("oldChildrenLength", oldChildrenLength, editor);
+  // 这是为了删除第一行后，还能继续编辑
+  if (oldChildrenLength === 1) {
+    newChildren.push({ type: "paragraph", children: [{ text: "" }] });
+  }
 
   for (let i = 1; i < oldChildrenLength; i++) {
     const child = oldChildren[i];
@@ -98,7 +101,7 @@ export function adjustPagePagination(editor: any) {
         console.log("needGapHeight", needGapHeight);
 
         newChildren.push({
-          type: "RJ-PAGINATION",
+          type: wangEditorPaginationType,
           page: currentPage,
           width: 0,
           height: needGapHeight,

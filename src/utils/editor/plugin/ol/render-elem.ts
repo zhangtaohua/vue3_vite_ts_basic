@@ -1,11 +1,11 @@
 /**
- * @description render elem 这是为了editor.insertNode("OL-MAP") 生效
+ * @description render elem 这是为了editor.insertNode("RJ-OL-MAP") 生效
  * @author RJ(zthvivid@163.com)
  */
 
 import { h, VNode } from "snabbdom";
 import { DomEditor, IDomEditor, SlateElement } from "@wangeditor/editor";
-import { OlMapElement } from "./custom-types";
+import { wangEditorOlMapType, OlMapElement } from "./custom-types";
 
 import OlBase from "@/utils/map/ol/base";
 import xyzLayers from "@/utils/map/ol/xyzLayers";
@@ -138,7 +138,7 @@ function renderOlMap(elem: SlateElement, children: VNode[] | null, editor: IDomE
 }
 
 const conf = {
-  type: "OL-MAP", // 节点 type ，重要！！！
+  type: wangEditorOlMapType, // 节点 type ，重要！！！
   renderElem: renderOlMap,
 };
 

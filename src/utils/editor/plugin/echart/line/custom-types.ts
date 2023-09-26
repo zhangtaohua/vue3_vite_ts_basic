@@ -7,12 +7,12 @@ type EmptyText = {
   text: "";
 };
 
-export const wangEditorOlMapType = "RJ-OL-MAP";
+export const wangEditorEchartLineType = "RJ-ECHART-LINE";
 
-export type OlMapElement = {
-  type: "RJ-OL-MAP";
+export type EchartLineElement = {
+  type: "RJ-ECHART-LINE";
   title: string;
-  link: string;
-  geojson?: any;
+  name: string;
+  chart: any;
   children: EmptyText[]; // void 元素必须有一个空 text
 };

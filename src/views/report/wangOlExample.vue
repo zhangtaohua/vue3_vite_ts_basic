@@ -41,7 +41,12 @@
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
 
+import { EchartLineMenuKey } from "@/utils/editor/plugin/echart/line/menu/lineMenu";
+import EchartLineModule from "@/utils/editor/plugin/echart/line/index";
+
+import { OlMapModalMenuKey } from "@/utils/editor/plugin/ol/menu/olModalMenu";
 import OlMapModule from "@/utils/editor/plugin/ol/index";
+
 import PaginationModule from "@/utils/editor/plugin/pagination";
 
 import { wangEditorPaginationType, PaginationElement } from "@/utils/editor/plugin/pagination/custom-types";
@@ -49,7 +54,7 @@ import { insertPageHeader, adjustPagePagination } from "@/utils/editor/plugin/pa
 
 import { Boot } from "@wangeditor/editor";
 
-// Boot.registerMenu(OlMapModalMenuConf);
+Boot.registerModule(EchartLineModule);
 Boot.registerModule(OlMapModule);
 Boot.registerModule(PaginationModule);
 
@@ -72,7 +77,8 @@ const mode = "default"; // 或 'simple' "default"
 const toolbarConfig: Partial<IToolbarConfig> = {
   excludeKeys: ["uploadImage", "group-video"],
   insertKeys: {
-    keys: ["OlMapModalMenuConf"], // show menu in toolbar
+    index: 30, // 插入的位置，基于当前的 toolbarKeys
+    keys: ["|", EchartLineMenuKey, OlMapModalMenuKey, "|"], // show menu in toolbar
   },
 };
 const editorConfig = {
@@ -125,7 +131,11 @@ const handleChange = (editor: any) => {
 
 <style scoped>
 #editor-toolbar {
-  width: 1450px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   margin: 0 auto;
   background-color: #fcfcfc;
 }

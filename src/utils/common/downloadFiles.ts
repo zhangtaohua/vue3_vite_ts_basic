@@ -21,17 +21,13 @@ export function downloadFile(url: string, filename: string) {
 }
 
 export function downDataModule(filename: string) {
-  let baseUrl = "";
-  if (window.__MICRO_APP_ENVIRONMENT__) {
-    baseUrl = window.__MICRO_APP_PUBLIC_PATH__;
-  } else {
-    baseUrl = window.__MICRO_APP_BASE_ROUTE__ || process.env.BASE_URL;
-  }
+  let baseUrl = import.meta.env.BASE_URL || "";
   if (baseUrl) {
     baseUrl = baseUrl.replace(/\/$/, "");
   }
   const link = document.createElement("a"); //创建a标签
-  const url = `${baseUrl}/statis/dataModule/${filename}?uuid=${nanoid(12)}`;
+  const url = `${baseUrl}/static/dataModule/${filename}?uuid=${nanoid(12)}`;
+  console.log("downDataModule", url, filename);
 
   link.style.display = "none"; //使其隐藏
   link.href = url; //赋予文件下载地址

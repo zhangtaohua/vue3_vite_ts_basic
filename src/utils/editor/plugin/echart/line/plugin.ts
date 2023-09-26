@@ -1,10 +1,10 @@
 /**
- * @description RJ-OL-MAP plugin
+ * @description echart-line plugin
  * @author RJ(zthvivid@163.com)
  */
 
 import { DomEditor, IDomEditor, SlateTransforms } from "@wangeditor/editor";
-import { wangEditorOlMapType, OlMapElement } from "./custom-types";
+import { wangEditorEchartLineType, EchartLineElement } from "./custom-types";
 
 function withOlMap<T extends IDomEditor>(editor: T) {
   const { isInline, isVoid, normalizeNode } = editor;
@@ -13,7 +13,7 @@ function withOlMap<T extends IDomEditor>(editor: T) {
   // 重写 isInline
   newEditor.isInline = (elem: any) => {
     const type = DomEditor.getNodeType(elem);
-    if (type === wangEditorOlMapType) {
+    if (type === wangEditorEchartLineType) {
       // 针对 type: RJ-OL-MAP ，设置为 not inline
       return false;
     }
@@ -23,7 +23,7 @@ function withOlMap<T extends IDomEditor>(editor: T) {
   // 重写 isVoid
   newEditor.isVoid = (elem: any) => {
     const type = DomEditor.getNodeType(elem);
-    if (type === wangEditorOlMapType) {
+    if (type === wangEditorEchartLineType) {
       return true;
     }
 
@@ -34,7 +34,7 @@ function withOlMap<T extends IDomEditor>(editor: T) {
   newEditor.normalizeNode = ([node, path]) => {
     // console.log("normalizeNode", node, path);
     const type = DomEditor.getNodeType(node);
-    if (type !== wangEditorOlMapType) {
+    if (type !== wangEditorEchartLineType) {
       // 未命中 RJ-OL-MAP ，执行默认的 normalizeNode
       return normalizeNode([node, path]);
     }

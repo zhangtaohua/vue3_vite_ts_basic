@@ -9,23 +9,28 @@
 
 import { DOMElement } from "../utils/dom";
 import { IDomEditor, SlateDescendant, SlateElement } from "@wangeditor/editor";
-import { wangEditorOlMapType, OlMapElement } from "./custom-types";
+import { wangEditorEchartLineType, EchartLineElement } from "./custom-types";
 
 function parseHtml(elem: DOMElement, children: SlateDescendant[], editor: IDomEditor): SlateElement {
-  const link = elem.getAttribute("data-link") || "";
   const title = elem.getAttribute("data-title") || "";
-  const geojson = elem.getAttribute("data-geojson") || "";
+  const name = elem.getAttribute("data-name") || "";
+  let chart = elem.getAttribute("data-chart") || "";
+  console.log("parseHtml", title, name, chart);
+  if (typeof chart == "string") {
+    chart = chart.replaceAll("'", '"');
+    chart = JSON.parse(chart);
+  }
   return {
-    type: "wangEditorOlMapType",
-    link,
+    type: wangEditorEchartLineType,
     title,
-    geojson,
+    name,
+    chart,
     children: [{ text: "" }], // void node 必须有一个空白 text
-  } as OlMapElement;
+  } as EchartLineElement;
 }
 
 const parseHtmlConf = {
-  selector: `div[data-w-e-type="${wangEditorOlMapType}"]`,
+  selector: `div[data-w-e-type="${wangEditorEchartLineType}"]`,
   parseElemHtml: parseHtml,
 };
 

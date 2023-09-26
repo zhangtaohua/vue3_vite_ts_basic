@@ -7,8 +7,10 @@ import BaseModalMenu from "../../modalMenu/baseModalMenu";
 import wangOlModel from "@/views/report/components/wangOlModel.vue";
 // import { genConvertToOlMapConfig } from "./config";
 
+export const OlMapModalMenuKey = "RjOlMapModalMenuConf";
+
 export const OlMapModalMenuConf = {
-  key: "OlMapModalMenuConf",
+  key: OlMapModalMenuKey,
   factory() {
     return new BaseModalMenu("OL MAP", wangOlModel, {
       vNodeData: {},

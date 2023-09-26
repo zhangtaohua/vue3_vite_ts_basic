@@ -9,23 +9,23 @@
 
 import { DOMElement } from "../utils/dom";
 import { IDomEditor, SlateDescendant, SlateElement } from "@wangeditor/editor";
-import { OlMapElement } from "./custom-types";
+import { wangEditorPaginationType, PaginationElement } from "./custom-types";
 
 function parseHtml(elem: DOMElement, children: SlateDescendant[], editor: IDomEditor): SlateElement {
-  const link = elem.getAttribute("data-link") || "";
-  const title = elem.getAttribute("data-title") || "";
-  const geojson = elem.getAttribute("data-geojson") || "";
+  const page = elem.getAttribute("data-page") || 1;
+  const width = elem.getAttribute("data-width") || 0;
+  const height = elem.getAttribute("data-height") || 0;
   return {
-    type: "OL-MAP",
-    link,
-    title,
-    geojson,
+    type: wangEditorPaginationType,
+    page,
+    width,
+    height,
     children: [{ text: "" }], // void node 必须有一个空白 text
-  } as OlMapElement;
+  } as PaginationElement;
 }
 
 const parseHtmlConf = {
-  selector: 'div[data-w-e-type="OL-MAP"]',
+  selector: `div[data-w-e-type="${wangEditorPaginationType}"]`,
   parseElemHtml: parseHtml,
 };
 

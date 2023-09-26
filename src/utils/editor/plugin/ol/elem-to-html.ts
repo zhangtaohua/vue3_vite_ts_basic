@@ -4,12 +4,12 @@
  */
 
 import { SlateElement } from "@wangeditor/editor";
-import { OlMapElement } from "./custom-types";
+import { wangEditorOlMapType, OlMapElement } from "./custom-types";
 
 // 生成 html 的函数
 function olMapToHtml(elem: SlateElement, childrenHtml: string): string {
   const { title = "", link = "", geojson = "" } = elem as OlMapElement;
-  const html = `<div data-w-e-type="link-card" data-w-e-is-void data-title="${title}" data-link="${link}" data-geojson="${geojson}">
+  const html = `<div data-w-e-type="${wangEditorOlMapType}" data-w-e-is-void data-title="${title}" data-link="${link}" data-geojson="${geojson}">
     <div class="info-container">
       <div class="title-container"><p>${title}</p></div>
       <div class="link-container"><span>${link}</span></div>
@@ -23,7 +23,7 @@ function olMapToHtml(elem: SlateElement, childrenHtml: string): string {
 
 // 配置
 const conf = {
-  type: "OL-MAP", // 节点 type ，重要！！！
+  type: wangEditorOlMapType, // 节点 type ，重要！！！
   elemToHtml: olMapToHtml,
 };
 

@@ -60,7 +60,7 @@
 import { ref, reactive } from "vue";
 import { SearchOutlined, UndoOutlined } from "@ant-design/icons-vue";
 import { getAntdvPopupContainer } from "@/utils/common/antdvPositionFixed";
-import type { OlMapElement } from "@/utils/editor/plugin/ol/custom-types";
+import type { wangEditorOlMapType, OlMapElement } from "@/utils/editor/plugin/ol/custom-types";
 
 const props = defineProps({
   vNodeData: {
@@ -134,7 +134,7 @@ function searchImageHandle() {
   // editor.insertText(" 你是不是二呀！ ");
   onclose();
   const olElementTag: OlMapElement = {
-    type: "OL-MAP",
+    type: "wangEditorOlMapType",
     title: "OLTest",
     link: "www.baidu.com",
     geojson: null,

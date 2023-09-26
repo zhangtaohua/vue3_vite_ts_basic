@@ -1,5 +1,5 @@
 /**
- * @description OL-MAP element
+ * @description RJ-PAGINATION element
  * @author RJ(zthvivid@163.com)
  */
 

@@ -6,10 +6,10 @@
 export function genConvertToOlMapConfig() {
   return {
     /**
-     * 异步获取 OL-MAP 信息（可能需要在服务端获取）
-     * @param title OL-MAP text
-     * @param olMapUrl OL-MAP url
-     * @returns OL-MAP info
+     * 异步获取 RJ-OL-MAP 信息（可能需要在服务端获取）
+     * @param title RJ-OL-MAP text
+     * @param olMapUrl RJ-OL-MAP url
+     * @returns RJ-OL-MAP info
      */
     async getOlMapMenuInfo(title: string, olMapUrl: string): Promise<{ title: string; iconImgSrc: string }> {
       // 该函数，用户自定义配置
