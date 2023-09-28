@@ -19,6 +19,7 @@ declare module "vue" {
     AUploadDragger: typeof import("ant-design-vue/es")["UploadDragger"];
     EchartsErrorNoData: typeof import("./src/components/echarts/EchartsErrorNoData.vue")["default"];
     EchartsOptionBase: typeof import("./src/components/echarts/EchartsOptionBase.vue")["default"];
+    EchartsOptionBasePlus: typeof import("./src/components/echarts/EchartsOptionBasePlus.vue")["default"];
     EchartsOptionScatter: typeof import("./src/components/echarts/EchartsOptionScatter.vue")["default"];
     RouterLink: typeof import("vue-router")["RouterLink"];
     RouterView: typeof import("vue-router")["RouterView"];

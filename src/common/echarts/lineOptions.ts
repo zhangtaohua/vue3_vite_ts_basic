@@ -8,6 +8,10 @@ export const simpleLineOptions = {
     type: "value",
     name: "",
   },
+  tooltip: {
+    show: true,
+    trigger: "axis",
+  },
   series: [
     {
       name: "line1",

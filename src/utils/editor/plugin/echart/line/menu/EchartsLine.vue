@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, watch, reactive, nextTick } from "vue";
+import { onBeforeUnmount, ref, watch, reactive, nextTick, onMounted } from "vue";
 
 import {
   UploadOutlined,
@@ -128,18 +128,50 @@ import lodash from "lodash";
 
 import { parse } from "csv-parse/browser/esm";
 
-import { wangEditorEchartLineType, EchartLineElement } from "../custom-types";
+import { Transforms } from "slate";
+import { IDomEditor, DomEditor } from "@wangeditor/core";
 
-import { useEditorEchartLineStore } from "../../../../../../stores/editor/echartLine";
+import { wangEditorEchartLineType, EchartLineElement } from "../custom-types";
 
 import { EchartsLineType, simpleLineTypeOptions } from "../../../../../../common/echarts/lineOptions";
 
 import { downDataModule } from "../../../../../../utils/common/downloadFiles";
 
-const editorEchartLine = useEditorEchartLineStore();
-
 let editor: any = null;
 const isShow = ref(false);
+
+const props = defineProps({
+  isEdit: {
+    type: Boolean,
+    default: false,
+  },
+  title: {
+    type: String,
+    default: "",
+  },
+  name: {
+    type: String,
+    default: "",
+  },
+  chartData: {
+    type: Object,
+    default() {
+      return {};
+    },
+  },
+  editor: {
+    type: Object,
+    default() {
+      return null;
+    },
+  },
+  lineStyle: {
+    type: Object,
+    default() {
+      return {};
+    },
+  },
+});
 
 // 标题 title
 const echartsData = reactive({
@@ -164,11 +196,10 @@ const echartsData = reactive({
 const lineFileList = ref([]);
 
 const onShow = (editorIns: any) => {
-  console.log("onShow", isShow.value, editorIns);
-  const children = editorIns.children;
-  const length = children.length;
-  const lastChild = editorIns.children[length - 1];
-  console.log("onShow", editorIns.getNodePosition(lastChild));
+  // const children = editorIns.children;
+  // const length = children.length;
+  // const lastChild = editorIns.children[length - 1];
+  // console.log("onShow", editorIns.getNodePosition(lastChild));
   editor = editorIns;
   isShow.value = true;
 };
@@ -184,12 +215,12 @@ defineExpose({
 
 const lineFileChangeHandle = (info: UploadChangeParam) => {
   if (info.file.status !== "uploading") {
-    console.log(info.file, info.fileList);
+    // console.log(info.file, info.fileList);
   }
   if (info.file.status === "done") {
-    console.log(`${info.file.name} file uploaded successfully`);
+    // console.log(`${info.file.name} file uploaded successfully`);
   } else if (info.file.status === "error") {
-    console.log(`${info.file.name} file upload failed.`);
+    // console.log(`${info.file.name} file upload failed.`);
   }
 };
 
@@ -197,10 +228,10 @@ const lineFileBeforeUploadHandle: UploadProps["beforeUpload"] = (file) => {
   const lineRecords: any = [];
   return new Promise((_: any, reject: any) => {
     const reader = new FileReader();
-    console.log("file name", file);
+    // console.log("file name", file);
     reader.readAsText(file);
     reader.onload = () => {
-      console.log("reader.result", reader);
+      // console.log("reader.result", reader);
       const csvParse = parse(reader.result, {
         delimiter: ",",
       });
@@ -217,7 +248,7 @@ const lineFileBeforeUploadHandle: UploadProps["beforeUpload"] = (file) => {
       });
       // Test that the parsed records matched the expected records
       csvParse.on("end", () => {
-        console.log("parseEnd", lineRecords);
+        // console.log("parseEnd", lineRecords);
         setCsvDataToEchartsData(lineRecords);
       });
     };
@@ -303,70 +334,62 @@ function addYdataHandle() {
 }
 
 function deleteYdataHandle() {
-  // echartsData.chart.yaxis.splice(index, 1);
   if (echartsData.chart.yaxis.length > 1) {
     echartsData.chart.yaxis.pop();
   }
 }
 
 function initOptions() {
-  // const vnode = lodash.cloneDeep(editorEchartLine.line.options);
-  console.log("isRefresh line");
-  // const node = vnode.node;
-  // nextTick(() => {
-  //   echartsData.title = node.title || "";
-  //   echartsData.name = node.name || "";
-  //   if (node.chart) {
-  //     echartsData.chart.xaxis_name = node.chart.xaxis_name || "";
-  //     echartsData.chart.xaxis_data = node.chart.xaxis_data || "";
-  //     echartsData.chart.xaxis_unit = node.chart.xaxis_unit || "";
-  //     echartsData.chart.yaxis = node.chart.yaxis || [{ name: "", unit: "", data: "" }];
-  //   }
-  // });
+  console.log("编辑恢复初始化", props.isEdit, props);
+  if (props.isEdit) {
+    echartsData.title = props.title || "";
+    echartsData.name = props.name || "";
+    if (props.chartData && props.chartData.xaxis_name) {
+      const chartData = props.chartData;
+      echartsData.chart.line_type = chartData.line_type || EchartsLineType.smooth;
+      echartsData.chart.xaxis_name = chartData.xaxis_name || "";
+      echartsData.chart.xaxis_data = chartData.xaxis_data || "";
+      echartsData.chart.xaxis_unit = chartData.xaxis_unit || "";
+      echartsData.chart.yaxis = lodash.cloneDeep(chartData.yaxis) || [{ name: "", unit: "", data: "" }];
+    }
+  }
 }
 
-watch(
-  () => editorEchartLine.line.isRefresh,
-  () => {
-    initOptions();
-  },
-  {
-    deep: true,
-    immediate: true,
-  },
-);
-
-watch(
-  echartsData,
-  () => {
-    updateVnodeData();
-  },
-  {
-    deep: true,
-    immediate: false,
-  },
-);
-
-function updateVnodeData() {
-  console.log("updateVnodeData", echartsData);
-  const echartsDataTemp = lodash.cloneDeep(echartsData);
-  editorEchartLine.setOptions(echartsDataTemp);
-}
+onMounted(() => {
+  initOptions();
+});
 
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {});
 
 function setEchartHandle() {
-  console.log("setEchartHandle");
+  if (props.isEdit) {
+    const nodeProps: Partial<EchartLineElement> = {
+      title: echartsData.title,
+      name: echartsData.name,
+      chart: lodash.cloneDeep(echartsData.chart),
+      style: lodash.cloneDeep(props.lineStyle),
+    };
+    const editorNew = props.editor || editor;
+
+    editorNew.restoreSelection();
+
+    Transforms.setNodes(editorNew, nodeProps, {
+      match: (n) => DomEditor.checkNodeType(n, wangEditorEchartLineType),
+    });
+  } else {
+    const echartLineTag: EchartLineElement = {
+      type: wangEditorEchartLineType,
+      title: echartsData.title,
+      name: echartsData.name,
+      chart: lodash.cloneDeep(echartsData.chart),
+      children: [{ text: "" }],
+    };
+    const editorNew = props.editor || editor;
+    editorNew.insertNode(echartLineTag);
+  }
+  // resetEchartHandle();
   onclose();
-  const echartLineTag: EchartLineElement = {
-    type: wangEditorEchartLineType,
-    title: echartsData.title,
-    name: echartsData.name,
-    chart: lodash.cloneDeep(echartsData.chart),
-    children: [{ text: "" }],
-  };
-  editor.insertNode(echartLineTag);
 }
 
 function resetEchartHandle() {

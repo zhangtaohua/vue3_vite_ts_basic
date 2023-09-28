@@ -41,8 +41,18 @@
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
 
-import { EchartLineMenuKey } from "@/utils/editor/plugin/echart/line/menu/lineMenu";
+import {
+  EchartLineMenuKey,
+  DeleteEchartMenuKey,
+  EditEchartMenuKey,
+  Width30EchartMenuKey,
+  Width50EchartMenuKey,
+  Width70EchartMenuKey,
+  Width100EchartMenuKey,
+} from "@/utils/editor/plugin/echart/line/menu/index";
 import EchartLineModule from "@/utils/editor/plugin/echart/line/index";
+
+import { wangEditorEchartLineType } from "@/utils/editor/plugin/echart/line/custom-types";
 
 import { OlMapModalMenuKey } from "@/utils/editor/plugin/ol/menu/olModalMenu";
 import OlMapModule from "@/utils/editor/plugin/ol/index";
@@ -84,6 +94,18 @@ const toolbarConfig: Partial<IToolbarConfig> = {
 const editorConfig = {
   placeholder: "请输入内容...",
   autoFocus: true,
+  hoverbarKeys: {
+    [wangEditorEchartLineType]: {
+      menuKeys: [
+        Width30EchartMenuKey,
+        Width50EchartMenuKey,
+        Width70EchartMenuKey,
+        Width100EchartMenuKey,
+        EditEchartMenuKey,
+        DeleteEchartMenuKey,
+      ],
+    },
+  },
 };
 
 let oldPageHeight = 0;

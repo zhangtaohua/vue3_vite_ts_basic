@@ -9,14 +9,30 @@ import withEchartLine from "./plugin";
 import renderElemConf from "./render-elem";
 import elemToHtmlConf from "./elem-to-html";
 import parseHtmlConf from "./parse-elem-html";
-import { EchartLineMenuConf } from "./menu/lineMenu";
+import {
+  EchartLineMenuConf,
+  DeleteEchartMenuConf,
+  EditEchartMenuConf,
+  Width30EchartMenuConf,
+  Width50EchartMenuConf,
+  Width70EchartMenuConf,
+  Width100EchartMenuConf,
+} from "./menu/index";
 
 const module: Partial<IModuleConf> = {
   editorPlugin: withEchartLine,
   renderElems: [renderElemConf],
   elemsToHtml: [elemToHtmlConf],
   parseElemsHtml: [parseHtmlConf],
-  menus: [EchartLineMenuConf],
+  menus: [
+    EchartLineMenuConf,
+    DeleteEchartMenuConf,
+    EditEchartMenuConf,
+    Width30EchartMenuConf,
+    Width50EchartMenuConf,
+    Width70EchartMenuConf,
+    Width100EchartMenuConf,
+  ],
 };
 
 export default module;

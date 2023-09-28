@@ -10,12 +10,21 @@
 import { DOMElement } from "../utils/dom";
 import { IDomEditor, SlateDescendant, SlateElement } from "@wangeditor/editor";
 import { wangEditorEchartLineType, EchartLineElement } from "./custom-types";
+import { A4EditorWidthPixel } from "../../../common/constant";
 
 function parseHtml(elem: DOMElement, children: SlateDescendant[], editor: IDomEditor): SlateElement {
+  const defaultWh = Math.floor(A4EditorWidthPixel * 0.965) + "px";
+
   const title = elem.getAttribute("data-title") || "";
   const name = elem.getAttribute("data-name") || "";
   let chart = elem.getAttribute("data-chart") || "";
-  console.log("parseHtml", title, name, chart);
+  const width = elem.getAttribute("data-width") || defaultWh;
+  const height = elem.getAttribute("data-height") || defaultWh;
+  const style = {
+    width,
+    height,
+  };
+  console.log("parseHtml", title, name, chart, style);
   if (typeof chart == "string") {
     chart = chart.replaceAll("'", '"');
     chart = JSON.parse(chart);
@@ -25,6 +34,7 @@ function parseHtml(elem: DOMElement, children: SlateDescendant[], editor: IDomEd
     title,
     name,
     chart,
+    style,
     children: [{ text: "" }], // void node 必须有一个空白 text
   } as EchartLineElement;
 }

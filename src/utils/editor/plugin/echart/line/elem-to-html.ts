@@ -5,16 +5,31 @@
 
 import { SlateElement } from "@wangeditor/editor";
 import { wangEditorEchartLineType, EchartLineElement } from "./custom-types";
+import { A4EditorWidthPixel } from "../../../common/constant";
 
 // 生成 html 的函数
 function echartToHtml(elem: SlateElement, childrenHtml: string): string {
-  const { title = "", name = "", chart = "" } = elem as EchartLineElement;
+  const { title = "", name = "", chart = null, style = {} } = elem as EchartLineElement;
+  let { width = "", height = "" } = style;
+
+  const defaultWh = Math.floor(A4EditorWidthPixel * 0.965) + "px";
+  if (!width) {
+    width = defaultWh;
+  }
+
+  if (!height) {
+    height = defaultWh;
+  }
+
   let chartStr = JSON.stringify(chart);
 
   chartStr = chartStr.replaceAll('"', "'");
   console.log("echartToHtml", title, name, chart, chartStr);
 
-  const html = `<div data-w-e-type="${wangEditorEchartLineType}" data-w-e-is-void data-title="${title}" data-name="${name}" data-chart="${chartStr}">
+  const html = `<div data-w-e-type="${wangEditorEchartLineType}" data-w-e-is-void 
+  data-title="${title}" data-name="${name}" data-chart="${chartStr}"
+  data-width="${width}" data-height="${height}"
+  >
   </div>`;
   return html;
 }

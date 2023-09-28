@@ -57,7 +57,7 @@ function renderPagination(elem: SlateElement, children: VNode[] | null, editor: 
     [gapHeightVnode, pageBreakVnode, gapVnode],
   );
 
-  console.log("pagination vnode", topBoxVnode, nextPageVnode);
+  // console.log("pagination vnode", topBoxVnode, nextPageVnode);
   if (page == 1) {
     return topBoxVnode;
   } else {

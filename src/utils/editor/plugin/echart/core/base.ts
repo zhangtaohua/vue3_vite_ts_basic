@@ -1,56 +1,69 @@
-import * as echarts from "echarts";
-import ecStat from "echarts-stat";
 import { createApp } from "vue";
+import { nanoid } from "nanoid";
 
 export default class EchartBase {
   public container = "";
   public pixelRatio = 1;
   public language = "zh_CN";
-  public handle: any = null;
+  public vueIns: any = null;
+  public echartHandle: any = null;
+  public errorHandle: any = null;
   public dom: any = null;
 
   constructor(target: string, options: any) {
     this.container = target;
     this.pixelRatio = options.pixelRatio || (window ? window.devicePixelRatio : 1);
     this.language = options.language || "zh_CN";
-
-    echarts.registerTransform(ecStat.transform.regression);
-
-    if (window) {
-      window.addEventListener("resize", this.onWindowResize);
-    }
   }
 
   public destructor() {
     console.log("我被销毁了");
-    if (this.handle) {
-      if (window) {
-        window.removeEventListener("resize", this.onWindowResize);
-      }
-      this.handle.dispose();
-      this.handle = null;
-      this.dom = null;
+    this.removeHandle();
+    this.dom = null;
+  }
+
+  public removeHandle() {
+    if (this.echartHandle) {
+      this.echartHandle.destroyEcharts();
+      this.echartHandle = null;
+    }
+    if (this.errorHandle) {
+      this.errorHandle = null;
+    }
+    if (this.vueIns) {
+      this.vueIns.unmount(this.dom);
+      this.vueIns = null;
     }
   }
 
-  public initEchart() {
+  public renderEchart(vNode: any, options: any, editor: any, isSelected: boolean) {
     if (this.container) {
       this.dom = document.getElementById(this.container);
       if (this.dom) {
-        if (this.handle) {
-          this.handle.dispose();
-          this.handle = null;
-        }
-        this.dom.removeAttribute("_echarts_instance_");
-        this.handle = echarts.init(this.dom);
+        this.removeHandle();
+        const echartId = `rj_echart_inbox_${nanoid(10)}`;
+
+        this.vueIns = createApp(vNode, {
+          echartsId: echartId,
+          echartsOptions: options,
+          editor: editor,
+          isSelected: isSelected,
+        });
+
+        this.echartHandle = this.vueIns.mount(this.dom);
       }
     }
   }
 
-  public updateOptions(optionsNew: any) {
-    this.initEchart();
-    if (this.handle) {
-      this.handle.setOption(optionsNew);
+  public resizeEchart() {
+    if (this.echartHandle) {
+      this.echartHandle.resizeEcharts();
+    }
+  }
+
+  public setCanResize() {
+    if (this.echartHandle) {
+      this.echartHandle.setCanResize();
     }
   }
 
@@ -58,24 +71,14 @@ export default class EchartBase {
     if (this.container) {
       this.dom = document.getElementById(this.container);
       if (this.dom) {
-        if (this.handle) {
-          this.handle.dispose();
-          this.handle = null;
-        }
-        this.dom.removeAttribute("_echarts_instance_");
+        this.removeHandle();
 
-        const errorVueInstance = createApp(vNode, {
+        this.vueIns = createApp(vNode, {
           ...options,
         });
 
-        errorVueInstance.mount(this.dom);
+        this.errorHandle = this.vueIns.mount(this.dom);
       }
-    }
-  }
-
-  public onWindowResize() {
-    if (this.handle) {
-      this.handle.resize();
     }
   }
 }
