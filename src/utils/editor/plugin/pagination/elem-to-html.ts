@@ -9,8 +9,8 @@ import { wangEditorPaginationType, PaginationElement } from "./custom-types";
 // 生成 html 的函数
 function paginationToHtml(elem: SlateElement, childrenHtml: string): string {
   const { page = 1, width = 0, height = 0 } = elem as PaginationElement;
-  const html = `<div data-w-e-type=${wangEditorPaginationType} data-w-e-is-void data-page="${page}" data-width="${width}" data-height="${height}">
-  </div>`;
+  const html = `<div data-w-e-type=${wangEditorPaginationType} data-w-e-is-void data-page="${page}" 
+  data-width="${width}" data-height="${height}"></div>`;
   return html;
 }
 

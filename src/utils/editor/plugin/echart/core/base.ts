@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import { nanoid } from "nanoid";
+import { wangEditorEchartLineType } from "../line/custom-types";
+import type { EchartLineElement } from "../line/custom-types";
 
 export default class EchartBase {
   public container = "";
@@ -36,7 +38,13 @@ export default class EchartBase {
     }
   }
 
-  public renderEchart(vNode: any, options: any, editor: any, isSelected: boolean) {
+  public renderEchart(
+    vNode: any,
+    options: any,
+    editor: any,
+    isSelected: boolean,
+    echartType = wangEditorEchartLineType,
+  ) {
     if (this.container) {
       this.dom = document.getElementById(this.container);
       if (this.dom) {
@@ -48,6 +56,7 @@ export default class EchartBase {
           echartsOptions: options,
           editor: editor,
           isSelected: isSelected,
+          editorEchartType: echartType,
         });
 
         this.echartHandle = this.vueIns.mount(this.dom);

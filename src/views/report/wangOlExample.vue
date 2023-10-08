@@ -54,6 +54,19 @@ import EchartLineModule from "@/utils/editor/plugin/echart/line/index";
 
 import { wangEditorEchartLineType } from "@/utils/editor/plugin/echart/line/custom-types";
 
+import {
+  EchartBarMenuKey,
+  DeleteEchartBarMenuKey,
+  EditEchartBarMenuKey,
+  Width30EchartBarMenuKey,
+  Width50EchartBarMenuKey,
+  Width70EchartBarMenuKey,
+  Width100EchartBarMenuKey,
+} from "@/utils/editor/plugin/echart/bar/menu/index";
+import EchartBarModule from "@/utils/editor/plugin/echart/bar/index";
+
+import { wangEditorEchartBarType } from "@/utils/editor/plugin/echart/bar/custom-types";
+
 import { OlMapModalMenuKey } from "@/utils/editor/plugin/ol/menu/olModalMenu";
 import OlMapModule from "@/utils/editor/plugin/ol/index";
 
@@ -65,6 +78,7 @@ import { insertPageHeader, adjustPagePagination } from "@/utils/editor/plugin/pa
 import { Boot } from "@wangeditor/editor";
 
 Boot.registerModule(EchartLineModule);
+Boot.registerModule(EchartBarModule);
 Boot.registerModule(OlMapModule);
 Boot.registerModule(PaginationModule);
 
@@ -88,7 +102,7 @@ const toolbarConfig: Partial<IToolbarConfig> = {
   excludeKeys: ["uploadImage", "group-video"],
   insertKeys: {
     index: 30, // 插入的位置，基于当前的 toolbarKeys
-    keys: ["|", EchartLineMenuKey, OlMapModalMenuKey, "|"], // show menu in toolbar
+    keys: ["|", EchartLineMenuKey, EchartBarMenuKey, OlMapModalMenuKey, "|"], // show menu in toolbar
   },
 };
 const editorConfig = {
@@ -103,6 +117,16 @@ const editorConfig = {
         Width100EchartMenuKey,
         EditEchartMenuKey,
         DeleteEchartMenuKey,
+      ],
+    },
+    [wangEditorEchartBarType]: {
+      menuKeys: [
+        Width30EchartBarMenuKey,
+        Width50EchartBarMenuKey,
+        Width70EchartBarMenuKey,
+        Width100EchartBarMenuKey,
+        EditEchartBarMenuKey,
+        DeleteEchartBarMenuKey,
       ],
     },
   },

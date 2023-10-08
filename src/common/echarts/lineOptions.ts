@@ -1,4 +1,10 @@
 export const simpleLineOptions = {
+  // grid: {
+  //   left: 60,
+  //   right: 20,
+  //   top: 20,
+  //   bottom: 60,
+  // },
   xAxis: {
     type: "category",
     name: "",
@@ -28,8 +34,8 @@ export enum EchartsLineType {
 }
 
 export const simpleLineTypeOptions = [
-  { label: "光滑", value: EchartsLineType.smooth },
-  { label: "拆线", value: EchartsLineType.polyline },
+  { label: "光滑", value: EchartsLineType.smooth, key: "smooth" },
+  { label: "拆线", value: EchartsLineType.polyline, key: "polyline" },
 ];
 
 export enum EchartsXYSwap {

@@ -2,7 +2,7 @@
   <div v-if="isShow" class="col_nw_fs_center rj_rpt_echart_container" @click="onclose">
     <div class="rj_rpt_echart_wraper" @click.stop="() => {}">
       <div class="row_nw_center_center rj_rpt_line_b">
-        <a-button type="primary" size="large" @click="downDataModule('lineModule.csv')">
+        <a-button type="primary" size="large" @click="downDataModule('barModule.csv')">
           <template #icon><DownloadOutlined /></template>
           下载模块
         </a-button>
@@ -40,8 +40,8 @@
       <div class="h_8r"></div>
 
       <div class="row_nw_fs_center rj_rpt_line_t">
-        <span class="row_nw_fs_center rj_rpt_line_tl">线条类型:</span>
-        <a-radio-group v-model:value="echartsData.chart.line_type" :options="simpleLineTypeOptions" />
+        <span class="row_nw_fs_center rj_rpt_line_tl">是否堆叠:</span>
+        <a-radio-group v-model:value="echartsData.chart.stack_type" :options="simpleBarTypeOptions" />
       </div>
       <div class="h_8r"></div>
 
@@ -131,9 +131,9 @@ import { parse } from "csv-parse/browser/esm";
 import { Transforms } from "slate";
 import { IDomEditor, DomEditor } from "@wangeditor/core";
 
-import { wangEditorEchartLineType, EchartLineElement } from "../custom-types";
+import { wangEditorEchartBarType, EchartBarElement } from "../custom-types";
 
-import { EchartsLineType, simpleLineTypeOptions } from "../../../../../../common/echarts/lineOptions";
+import { EchartsBarType, simpleBarTypeOptions } from "../../../../../../common/echarts/barOptions";
 
 import { downDataModule } from "../../../../../../utils/common/downloadFiles";
 
@@ -179,7 +179,7 @@ const echartsData = reactive({
   name: "",
   // 这里要再包一层，不然输入一次title, name, conclusion 就会画一次图
   chart: {
-    line_type: EchartsLineType.smooth,
+    stack_type: EchartsBarType.noStack,
     xaxis_name: "",
     xaxis_unit: "",
     xaxis_data: "",
@@ -260,7 +260,7 @@ const lineFileBeforeUploadHandle: UploadProps["beforeUpload"] = (file) => {
 function setCsvDataToEchartsData(lineRecords: Array<any>) {
   if (lineRecords.length) {
     const chartsTemp = {
-      line_type: echartsData.chart.line_type,
+      stack_type: echartsData.chart.stack_type,
       xaxis_name: "",
       xaxis_data: "",
       xaxis_unit: "",
@@ -346,7 +346,7 @@ function initOptions() {
     echartsData.name = props.name || "";
     if (props.chartData && props.chartData.xaxis_name) {
       const chartData = props.chartData;
-      echartsData.chart.line_type = chartData.line_type || EchartsLineType.smooth;
+      echartsData.chart.stack_type = chartData.stack_type || EchartsBarType.noStack;
       echartsData.chart.xaxis_name = chartData.xaxis_name || "";
       echartsData.chart.xaxis_data = chartData.xaxis_data || "";
       echartsData.chart.xaxis_unit = chartData.xaxis_unit || "";
@@ -364,7 +364,7 @@ onBeforeUnmount(() => {});
 
 function setEchartHandle() {
   if (props.isEdit) {
-    const nodeProps: Partial<EchartLineElement> = {
+    const nodeProps: Partial<EchartBarElement> = {
       title: echartsData.title,
       name: echartsData.name,
       chart: lodash.cloneDeep(echartsData.chart),
@@ -375,11 +375,11 @@ function setEchartHandle() {
     editorNew.restoreSelection();
 
     Transforms.setNodes(editorNew, nodeProps, {
-      match: (n) => DomEditor.checkNodeType(n, wangEditorEchartLineType),
+      match: (n) => DomEditor.checkNodeType(n, wangEditorEchartBarType),
     });
   } else {
-    const echartLineTag: EchartLineElement = {
-      type: wangEditorEchartLineType,
+    const echartLineTag: EchartBarElement = {
+      type: wangEditorEchartBarType,
       title: echartsData.title,
       name: echartsData.name,
       chart: lodash.cloneDeep(echartsData.chart),
@@ -395,7 +395,7 @@ function setEchartHandle() {
 function resetEchartHandle() {
   echartsData.title = "";
   echartsData.name = "";
-  echartsData.chart.line_type = EchartsLineType.smooth;
+  echartsData.chart.stack_type = EchartsBarType.noStack;
   echartsData.chart.xaxis_name = "";
   echartsData.chart.xaxis_unit = "";
   echartsData.chart.xaxis_data = "";
@@ -406,11 +406,6 @@ function resetEchartHandle() {
       data: "",
     },
   ];
-}
-
-function onTypeChanged(e: any) {
-  console.log("onTypeChanged", e);
-  echartsData.chart.line_type = EchartsLineType.smooth;
 }
 </script>
 

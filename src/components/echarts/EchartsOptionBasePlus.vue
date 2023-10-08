@@ -66,6 +66,10 @@ const props = defineProps({
       return null;
     },
   },
+  editorEchartType: {
+    type: String,
+    default: wangEditorEchartLineType,
+  },
   echartsOptions: {
     type: Object,
     default() {
@@ -190,19 +194,22 @@ let maxDomWidth = Math.floor(A4EditorWidthPixel * 0.965);
 let maxDomHeight = Math.floor(A4EditorHeightPixel * 0.96);
 
 const mousedownHandle = (e: MouseEvent) => {
+  // 这里不能阻止，不然不能实现拖拽
+  // e.preventDefault();
+  // e.stopPropagation();
   console.log("mousedownHandle", e, echartBoxRef.value.clientHeight);
   isDragging = true;
   startPositionX = e.clientX;
   startPositionY = e.clientY;
   oldDomWidth = echartBoxRef.value.clientWidth;
   oldDomHeight = echartBoxRef.value.clientHeight;
-
-  // e.preventDefault();
-  // e.stopPropagation();
   return true;
 };
 
 const mousemoveHandle = lodash.throttle((e: MouseEvent, whichDirection: string) => {
+  // 感觉这里要尽快阻止默认事件，不然可能导致 echart 图表 destroy hook 会被触发而销毁了。
+  e.preventDefault();
+  e.stopPropagation();
   if (isDragging === true) {
     switch (whichDirection) {
       case UL: {
@@ -253,18 +260,16 @@ const mousemoveHandle = lodash.throttle((e: MouseEvent, whichDirection: string) 
     }
     // 更新拖拽元素的位置
     // resizeEcharts();
-    e.preventDefault();
-    e.stopPropagation();
     console.log("mousemoveHandle", currentX, currentY);
   }
   return true;
 }, 100);
 
 const mouseupHandle = (e: MouseEvent) => {
-  console.log("mouseupHandle", e);
-  isDragging = false;
   e.preventDefault();
   e.stopPropagation();
+  console.log("mouseupHandle", e);
+  isDragging = false;
   setTimeout(() => {
     if (props.editor) {
       console.log("propseditor", props, props.editor);
@@ -283,9 +288,10 @@ const mouseupHandle = (e: MouseEvent) => {
         realHeight = 100;
       }
 
-      const echartNode = DomEditor.getSelectedNodeByType(props.editor, wangEditorEchartLineType);
+      const echartNode = DomEditor.getSelectedNodeByType(props.editor, props.editorEchartType);
       if (echartNode == null) return;
 
+      // 下面这里肯定不是太好的，但又不好重新再写一个文件
       const { style = {} } = echartNode as EchartLineElement;
       const propsNew: Partial<EchartLineElement> = {
         style: {
@@ -297,7 +303,7 @@ const mouseupHandle = (e: MouseEvent) => {
 
       props.editor.restoreSelection();
       Transforms.setNodes(props.editor, propsNew, {
-        match: (n: any) => DomEditor.checkNodeType(n, wangEditorEchartLineType),
+        match: (n: any) => DomEditor.checkNodeType(n, props.editorEchartType),
       });
     }
   }, 250);

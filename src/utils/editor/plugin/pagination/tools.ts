@@ -49,7 +49,7 @@ export function adjustPagePagination(editor: any) {
 
   for (let i = 1; i < oldChildrenLength; i++) {
     const child = oldChildren[i];
-    // 如果是自定义的分布占位符，直接不处理。
+    // 如果是自定义的分页占位符，直接不处理。
     if (child.type == wangEditorPaginationType) {
       continue;
     } else {

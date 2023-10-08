@@ -7,20 +7,28 @@ import { h, VNode } from "snabbdom";
 import { DomEditor, IDomEditor, SlateElement } from "@wangeditor/editor";
 import { wangEditorOlMapType, OlMapElement } from "./custom-types";
 
-import OlBase from "@/utils/map/ol/base";
-import xyzLayers from "@/utils/map/ol/xyzLayers";
-import type { XYZOptions } from "@/utils/map/ol/xyzLayersTypes";
-import { mapXYZUrl } from "@/utils/map/sourceUrl";
-import geojsonDraw from "@/assets/json/geojsonDraw.json";
+import OlBase from "../../../map/ol/base";
+import xyzLayers from "../../..//map/ol/xyzLayers";
+import type { XYZOptions } from "../../..//map/ol/xyzLayersTypes";
+import { mapXYZUrl } from "../../../map/sourceUrl";
+import geojsonDraw from "../../../../assets/json/geojsonDraw.json";
 
-import staticImagePopup from "@/views/ol/components/staticImagePopup.vue";
-import staticImagePopup2 from "@/views/ol/components/staticImagePopup2.vue";
+import staticImagePopup from "../../../../views/ol/components/staticImagePopup.vue";
+import staticImagePopup2 from "../../../../views/ol/components/staticImagePopup2.vue";
 
-import OlGeojsonLayers from "@/utils/map/ol/geojsonLabelLayers";
-import type { GeojsonOptions } from "@/utils/map/ol/geojsonLayersTypes";
+import OlGeojsonLayers from "../../../map/ol/geojsonLabelLayers";
+import type { GeojsonOptions } from "../../../map/ol/geojsonLayersTypes";
 
-import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue, popupType } from "@/views/ol/MapConst";
-import { mapEventType } from "@/utils/map/ol/olConstant";
+import {
+  gaodeMap,
+  googleMap,
+  bingMap,
+  bingLightMap,
+  mapboxBasic,
+  mapboxAllBlue,
+  popupType,
+} from "../../../../views/ol/MapConst";
+import { mapEventType } from "../../../map/ol/olConstant";
 import { nanoid } from "nanoid";
 
 const customT = (name: string) => {

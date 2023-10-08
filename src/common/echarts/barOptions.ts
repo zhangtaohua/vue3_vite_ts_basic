@@ -22,9 +22,9 @@ export enum EchartsBarType {
   noStack,
 }
 
-export const simpleLineTypeOptions = [
-  { label: "是", value: EchartsBarType.stack },
-  { label: "否", value: EchartsBarType.noStack },
+export const simpleBarTypeOptions = [
+  { label: "是", value: EchartsBarType.stack, key: "stack" },
+  { label: "否", value: EchartsBarType.noStack, key: "noStack" },
 ];
 
 export const barSeriesOptions = {
