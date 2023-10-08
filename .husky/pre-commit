@@ -6,6 +6,6 @@
 
 # Format and submit code according to lintstagedrc.js configuration
 # yarn lint:lint-staged
-# yarn lint:stylelint
+yarn lint:stylelint
 
-# yarn lint:pretty
+yarn lint:pretty
