@@ -125,7 +125,7 @@
       <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
       <Editor
         v-model="imageData.conclusion"
-        style="height: 300px; overflow-y: hidden"
+        style="height: 300px; overflow-y: hidden;"
         :defaultConfig="editorConfig"
         :mode="mode"
         @onCreated="handleCreated"
