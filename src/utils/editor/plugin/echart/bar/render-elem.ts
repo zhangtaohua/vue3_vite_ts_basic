@@ -249,7 +249,7 @@ function renderEchartBar(elem: SlateElement, children: VNode[] | null, editor: I
           contentEditable: false,
           className: "row_nw_center_center rj_echart_container",
         },
-        style: barStyle,
+        // style: barStyle,
         dataset: {
           selected: selected ? "true" : "", // 标记为 选中
         },
@@ -269,7 +269,7 @@ function renderEchartBar(elem: SlateElement, children: VNode[] | null, editor: I
           contentEditable: false,
           className: "row_nw_center_center rj_echart_container",
         },
-        style: barStyle,
+        // style: barStyle,
         dataset: {
           selected: selected ? "true" : "", // 标记为 选中
         },

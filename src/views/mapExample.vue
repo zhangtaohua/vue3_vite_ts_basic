@@ -8,10 +8,13 @@
         <router-link to="/openlayers/image" class="ol_example_title">静态图实例</router-link>
         <router-link to="/openlayers/geoImage" class="ol_example_title">geo图实例</router-link>
         <router-link to="/openlayers/geojson" class="ol_example_title">Geojson实例</router-link>
+        <router-link to="/openlayers/webgl" class="ol_example_title">Geojson WebGL实例</router-link>
+        <router-link to="/openlayers/mvt" class="ol_example_title">MVT 格式实例</router-link>
         <router-link to="/openlayers/dawnline" class="ol_example_title">DawnLine 实例</router-link>
         <router-link to="/openlayers/orbit" class="ol_example_title">卫星轨道 实例</router-link>
         <router-link to="/openlayers/draw" class="ol_example_title">普通绘制 实例</router-link>
         <router-link to="/openlayers/drawlabel" class="ol_example_title">绘制标注 实例</router-link>
+        <router-link to="/openlayers/drawlabelv2" class="ol_example_title">绘制标注V2 实例</router-link>
         <router-link to="/openlayers/comprehensive" class="ol_example_title">综合实例</router-link>
       </div>
 
@@ -30,7 +33,8 @@
       <div class="row_nw_center_center ol_title">report 实例</div>
       <div class="row_nw_fs_center ol_example_box">
         <router-link to="/report/create" class="ol_example_title">创建报告 实例</router-link>
-        <router-link to="/report/wang" class="ol_example_title">editor ol插件 实例</router-link>
+        <router-link to="/report/wang" class="ol_example_title">wangeditor ol插件 实例</router-link>
+        <router-link to="/report/onlyoffice" class="ol_example_title">office ol插件 实例</router-link>
       </div>
     </div>
   </div>

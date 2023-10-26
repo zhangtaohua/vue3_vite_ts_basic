@@ -249,7 +249,7 @@ function renderEchartLine(elem: SlateElement, children: VNode[] | null, editor: 
           contentEditable: false,
           className: "row_nw_center_center rj_echart_container",
         },
-        style: lineStyle,
+        // style: lineStyle,
         dataset: {
           selected: selected ? "true" : "", // 标记为 选中
         },
@@ -269,7 +269,7 @@ function renderEchartLine(elem: SlateElement, children: VNode[] | null, editor: 
           contentEditable: false,
           className: "row_nw_center_center rj_echart_container",
         },
-        style: lineStyle,
+        // style: lineStyle,
         dataset: {
           selected: selected ? "true" : "", // 标记为 选中
         },

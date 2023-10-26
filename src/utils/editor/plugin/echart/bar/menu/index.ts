@@ -9,6 +9,10 @@ import EchartWidth30 from "./Width30";
 import EchartWidth50 from "./Width50";
 import EchartWidth70 from "./Width70";
 import EchartWidth100 from "./Width100";
+import EchartHeightMinus from "./HeightMinus";
+import EchartHeightPlus from "./HeightPlus";
+import EchartWidthMinus from "./WidthMinus";
+import EchartWidthPlus from "./WidthPlus";
 
 import BaseModalMenu from "../../../modalMenu/baseModalMenu";
 
@@ -76,5 +80,41 @@ export const Width100EchartBarMenuConf = {
   key: Width100EchartBarMenuKey,
   factory() {
     return new EchartWidth100();
+  },
+};
+
+export const HeightPlusEchartBarMenuKey = "EchartBarHeightPlus";
+
+export const HeightPlusEchartBarMenuConf = {
+  key: HeightPlusEchartBarMenuKey,
+  factory() {
+    return new EchartHeightPlus();
+  },
+};
+
+export const HeightMinusEchartBarMenuKey = "EchartBarHeightMinus";
+
+export const HeightMinusEchartBarMenuConf = {
+  key: HeightMinusEchartBarMenuKey,
+  factory() {
+    return new EchartHeightMinus();
+  },
+};
+
+export const WidthPlusEchartBarMenuKey = "EchartBarWidthPlus";
+
+export const WidthPlusEchartBarMenuConf = {
+  key: WidthPlusEchartBarMenuKey,
+  factory() {
+    return new EchartWidthPlus();
+  },
+};
+
+export const WidthMinusEchartBarMenuKey = "EchartBarWidthMinus";
+
+export const WidthMinusEchartBarMenuConf = {
+  key: WidthMinusEchartBarMenuKey,
+  factory() {
+    return new EchartWidthMinus();
   },
 };

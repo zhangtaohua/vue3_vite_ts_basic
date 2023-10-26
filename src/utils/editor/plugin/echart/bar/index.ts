@@ -17,6 +17,10 @@ import {
   Width50EchartBarMenuConf,
   Width70EchartBarMenuConf,
   Width100EchartBarMenuConf,
+  HeightMinusEchartBarMenuConf,
+  HeightPlusEchartBarMenuConf,
+  WidthMinusEchartBarMenuConf,
+  WidthPlusEchartBarMenuConf,
 } from "./menu/index";
 
 const module: Partial<IModuleConf> = {
@@ -32,6 +36,10 @@ const module: Partial<IModuleConf> = {
     Width50EchartBarMenuConf,
     Width70EchartBarMenuConf,
     Width100EchartBarMenuConf,
+    HeightMinusEchartBarMenuConf,
+    HeightPlusEchartBarMenuConf,
+    WidthMinusEchartBarMenuConf,
+    WidthPlusEchartBarMenuConf,
   ],
 };
 

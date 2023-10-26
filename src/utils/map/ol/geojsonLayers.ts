@@ -228,9 +228,16 @@ export default class OlGeojsonLayers {
     const id = this.__Id(options.id);
     let name = options.name ? options.name : nanoid(10);
     name = this.__Name(name);
+
+    let wrapX = options.wrapX;
+    if (wrapX == undefined) {
+      wrapX = true;
+    }
+
     const source = new VectorSource({
       url: options.url,
       format: new GeoJSON(),
+      wrapX: wrapX,
     });
     source.set("id", id);
     source.set("name", name);

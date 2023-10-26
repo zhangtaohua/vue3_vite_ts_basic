@@ -4,8 +4,9 @@ import { defaults as defaultInteractions, MouseWheelZoom } from "ol/interaction"
 
 import { Geometry } from "ol/geom";
 import { Extent, getCenter } from "ol/extent";
-import { transformLongitudeLatitude, transformExtentTo3857, transformTo4326 } from "./olTools";
+import { transformLongitudeLatitude, transformExtentTo3857, transformTo4326, transformExtentTo4326 } from "./olTools";
 import SimpleGeometry from "ol/geom/SimpleGeometry.js";
+import { calibrateWrapLongitudeLatitude } from "../geoCommon.js";
 
 // import DragZoom from "ol/interaction/DragZoom";
 
@@ -131,12 +132,51 @@ export default class OlBase {
   }
 
   // 获取当前地图层级
-  public getViewZoom() {
+  getViewZoom() {
     if (this.viewHandle) {
       return this.viewHandle.getZoom();
     }
     return this.minLevel;
   }
+
+  getViewExtent() {
+    if (this.viewHandle) {
+      const mapExtent = this.viewHandle.calculateExtent(this.handle.getSize());
+      const arr = transformExtentTo4326(mapExtent);
+      const lngLat1 = calibrateWrapLongitudeLatitude(arr[0], arr[1]);
+      const lngLat2 = calibrateWrapLongitudeLatitude(arr[2], arr[3]);
+      return [lngLat1.longitude, lngLat1.latitude, lngLat2.longitude, lngLat2.latitude];
+    }
+    return [];
+  }
+
+  computedCenter = (arr: any) => {
+    const centerX = arr[0] + (arr[2] - arr[0]) / 2;
+    const centerY = arr[1] + (arr[3] - arr[1]) / 2;
+    return [centerX, centerY];
+  };
+
+  getViewCenter() {
+    if (this.viewHandle) {
+      const extent = this.getViewExtent();
+      if (extent.length) {
+        return this.computedCenter(extent);
+      } else {
+        return [];
+      }
+    }
+
+    return [];
+  }
+
+  getCanvasImage = () => {
+    const mapCanvas = document.getElementById(this.container).querySelector("canvas");
+    if (mapCanvas) {
+      return mapCanvas.toDataURL("image/png");
+    } else {
+      return null;
+    }
+  };
 
   // 获取当前地图层级
   public getResolution() {

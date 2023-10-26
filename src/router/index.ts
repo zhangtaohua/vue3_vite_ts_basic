@@ -40,6 +40,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/ol/geojsonExample.vue"),
       },
       {
+        path: "/openlayers/mvt",
+        name: "MvtExample",
+        component: () => import("@/views/ol/mvtExample.vue"),
+      },
+      {
+        path: "/openlayers/webgl",
+        name: "GeojsonWebGlExample",
+        component: () => import("@/views/ol/geojsonWebglExample.vue"),
+      },
+      {
         path: "/openlayers/dawnline",
         name: "DawnlineExample",
         component: () => import("@/views/ol/dawnLineExample.vue"),
@@ -58,6 +68,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/openlayers/drawlabel",
         name: "DrawLabelExample",
         component: () => import("@/views/ol/drawLabelExample.vue"),
+      },
+      {
+        path: "/openlayers/drawlabelv2",
+        name: "DrawLabelExampleV2",
+        component: () => import("@/views/ol/drawLabelExampleV2.vue"),
       },
       {
         path: "/openlayers/comprehensive",
@@ -125,6 +140,11 @@ const routes: Array<RouteRecordRaw> = [
         path: "/report/wang",
         name: "wangOlExample",
         component: () => import("@/views/report/wangOlExample.vue"),
+      },
+      {
+        path: "/report/onlyoffice",
+        name: "onlyofficeExample",
+        component: () => import("@/views/report/onlyOfficeExample.vue"),
       },
     ],
   },

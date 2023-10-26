@@ -67,6 +67,7 @@ export default class OlXYZLayers {
       wrapX: options.wrapX,
       minZoom: minZoom,
       maxZoom: maxZoom,
+      crossOrigin: "anonymous",
     };
     const source = new XYZ(xyzOptions);
 

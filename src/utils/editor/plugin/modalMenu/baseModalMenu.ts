@@ -3,6 +3,10 @@
  * @author RJ(zthvivid@163.com)
  */
 
+// reference
+// https://github.com/wangeditor-team/wangEditor/issues/4598
+// https://github.com/snabbdom/snabbdom
+
 import { createApp } from "vue";
 import { nanoid } from "nanoid";
 import { IButtonMenu, IDomEditor } from "@wangeditor/editor";

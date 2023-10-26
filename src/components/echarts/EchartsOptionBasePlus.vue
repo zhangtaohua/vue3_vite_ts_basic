@@ -5,33 +5,25 @@
       v-if="isCanDrag"
       className="echart_wraper_dragger left-top"
       draggable="true"
-      @dragstart="mousedownHandle"
-      @drag="mousemoveHandle($event, UL)"
-      @dragend="mouseupHandle"
+      @mousedown="mousedownHandle($event, UL)"
     ></div>
     <div
       v-if="isCanDrag"
       className="echart_wraper_dragger right-top"
       draggable="true"
-      @dragstart="mousedownHandle"
-      @drag="mousemoveHandle($event, UR)"
-      @dragend="mouseupHandle"
+      @mousedown="mousedownHandle($event, UR)"
     ></div>
     <div
       v-if="isCanDrag"
       className="echart_wraper_dragger left-bottom"
       draggable="true"
-      @dragstart="mousedownHandle"
-      @drag="mousemoveHandle($event, BL)"
-      @dragend="mouseupHandle"
+      @mousedown="mousedownHandle($event, BL)"
     ></div>
     <div
       v-if="isCanDrag"
       className="echart_wraper_dragger right-bottom"
       draggable="true"
-      @dragstart="mousedownHandle"
-      @drag="mousemoveHandle($event, BR)"
-      @dragend="mouseupHandle"
+      @mousedown="mousedownHandle($event, BR)"
     ></div>
   </div>
   <div v-show="!isShowEcharts" class="wh_100p_100p">
@@ -192,26 +184,37 @@ const BL = "BL";
 const BR = "BR";
 let maxDomWidth = Math.floor(A4EditorWidthPixel * 0.965);
 let maxDomHeight = Math.floor(A4EditorHeightPixel * 0.96);
+let containerDom = null;
+let containerPDom = null;
+let glWhichDirection = "";
 
-const mousedownHandle = (e: MouseEvent) => {
+const mousedownHandle = (e: MouseEvent, whichDirection: string) => {
   // 这里不能阻止，不然不能实现拖拽
-  // e.preventDefault();
-  // e.stopPropagation();
-  console.log("mousedownHandle", e, echartBoxRef.value.clientHeight);
+  e.preventDefault();
+  e.stopPropagation();
+  console.log("mousedownHandle", e, echartBoxRef.value, echartBoxRef.value.clientHeight);
   isDragging = true;
   startPositionX = e.clientX;
   startPositionY = e.clientY;
   oldDomWidth = echartBoxRef.value.clientWidth;
   oldDomHeight = echartBoxRef.value.clientHeight;
-  return true;
+  containerDom = echartBoxRef.value.parentElement;
+  if (containerDom) {
+    containerPDom = containerDom.parentElement;
+  }
+  glWhichDirection = whichDirection;
+
+  // 注册事件
+  document.body.addEventListener("mousemove", mousemoveHandle);
+  document.body.addEventListener("mouseup", mouseupHandle);
 };
 
-const mousemoveHandle = lodash.throttle((e: MouseEvent, whichDirection: string) => {
+const mousemoveHandle = (e: MouseEvent) => {
   // 感觉这里要尽快阻止默认事件，不然可能导致 echart 图表 destroy hook 会被触发而销毁了。
   e.preventDefault();
   e.stopPropagation();
   if (isDragging === true) {
-    switch (whichDirection) {
+    switch (glWhichDirection) {
       case UL: {
         // 计算拖拽距离
         currentX = startPositionX - e.clientX;
@@ -260,10 +263,35 @@ const mousemoveHandle = lodash.throttle((e: MouseEvent, whichDirection: string) 
     }
     // 更新拖拽元素的位置
     // resizeEcharts();
+    // 进行尺寸变化 测试是不是没有设置这个导致拖动老是被销毁
+    let realWidth = Math.floor(oldDomWidth + currentX);
+    let realHeight = Math.floor(oldDomHeight + currentY);
+    if (realWidth > maxDomWidth) {
+      realWidth = maxDomWidth;
+    } else if (realWidth < 100) {
+      realWidth = 100;
+    }
+
+    if (realHeight > maxDomHeight) {
+      realHeight = maxDomHeight;
+    } else if (realHeight < 100) {
+      realHeight = 100;
+    }
+    // if (containerPDom) {
+    //   // containerPDom.setAttribute("width", realWidth + "px");
+    //   // containerPDom.setAttribute("height", realHeight + "px");
+    //   containerPDom.style.width = realWidth + "px";
+    //   containerPDom.style.height = realHeight + "px";
+    // }
+    if (containerDom) {
+      // containerDom.setAttribute("width", realWidth + "px");
+      // containerDom.setAttribute("height", realHeight + "px");
+      containerDom.style.width = realWidth + "px";
+      containerDom.style.height = realHeight + "px";
+    }
     console.log("mousemoveHandle", currentX, currentY);
   }
-  return true;
-}, 100);
+};
 
 const mouseupHandle = (e: MouseEvent) => {
   e.preventDefault();
@@ -271,6 +299,8 @@ const mouseupHandle = (e: MouseEvent) => {
   console.log("mouseupHandle", e);
   isDragging = false;
   setTimeout(() => {
+    document.body.removeEventListener("mousemove", mousemoveHandle);
+    document.body.removeEventListener("mouseup", mouseupHandle);
     if (props.editor) {
       console.log("propseditor", props, props.editor);
       // 进行尺寸变化
@@ -288,6 +318,7 @@ const mouseupHandle = (e: MouseEvent) => {
         realHeight = 100;
       }
 
+      props.editor.restoreSelection();
       const echartNode = DomEditor.getSelectedNodeByType(props.editor, props.editorEchartType);
       if (echartNode == null) return;
 
@@ -301,7 +332,6 @@ const mouseupHandle = (e: MouseEvent) => {
         },
       };
 
-      props.editor.restoreSelection();
       Transforms.setNodes(props.editor, propsNew, {
         match: (n: any) => DomEditor.checkNodeType(n, props.editorEchartType),
       });

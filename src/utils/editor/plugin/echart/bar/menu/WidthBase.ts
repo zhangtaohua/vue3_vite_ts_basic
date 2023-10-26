@@ -6,6 +6,7 @@
 import { Transforms, Node } from "slate";
 import { IButtonMenu, IDomEditor, DomEditor } from "@wangeditor/core";
 import { wangEditorEchartBarType, EchartBarElement } from "../custom-types";
+import { A4EditorWidthPixel, A4EditorHeightPixel } from "../../../../common/constant";
 
 abstract class EchartWidthBaseClass implements IButtonMenu {
   abstract readonly title: string; // 菜单标题
@@ -48,11 +49,76 @@ abstract class EchartWidthBaseClass implements IButtonMenu {
     if (hoverbar) hoverbar.hideAndClean();
 
     const { style = {} } = echartNode as EchartBarElement;
+    const maxWidth = Math.floor(A4EditorWidthPixel * 0.965);
+    const maxHeight = Math.floor(A4EditorHeightPixel * 0.965);
+    let width = this.value;
+    let height = this.value;
+    if (this.value == "WP") {
+      if (style && style.width && style.height) {
+        let tempWidth = parseFloat(style.width);
+        if (!isNaN(tempWidth)) {
+          tempWidth = tempWidth + 10;
+        }
+        if (tempWidth > maxWidth) {
+          tempWidth = maxWidth;
+        }
+        width = tempWidth + "px";
+        height = style.height;
+      } else {
+        width = maxWidth + "px";
+        height = maxWidth + "px";
+      }
+    } else if (this.value == "HP") {
+      if (style && style.width && style.height) {
+        let tempHeight = parseFloat(style.height);
+        if (!isNaN(tempHeight)) {
+          tempHeight = tempHeight + 10;
+        }
+        if (tempHeight > maxHeight) {
+          tempHeight = maxHeight;
+        }
+        height = tempHeight + "px";
+        width = style.width;
+      } else {
+        width = maxWidth + "px";
+        height = maxWidth + "px";
+      }
+    } else if (this.value == "WM") {
+      if (style && style.width && style.height) {
+        let tempWidth = parseFloat(style.width);
+        if (!isNaN(tempWidth)) {
+          tempWidth = tempWidth - 10;
+        }
+        if (tempWidth <= 100) {
+          tempWidth = 100;
+        }
+        width = tempWidth + "px";
+        height = style.height;
+      } else {
+        width = 100 + "px";
+        height = 100 + "px";
+      }
+    } else if (this.value == "HM") {
+      if (style && style.width && style.height) {
+        let tempHeight = parseFloat(style.height);
+        if (!isNaN(tempHeight)) {
+          tempHeight = tempHeight - 10;
+        }
+        if (tempHeight <= 100) {
+          tempHeight = 100;
+        }
+        height = tempHeight + "px";
+        width = style.width;
+      } else {
+        width = 100 + "px";
+        height = 100 + "px";
+      }
+    }
     const props: Partial<EchartBarElement> = {
       style: {
         ...style,
-        width: this.value, // 修改 width
-        height: this.value, // 清空 height
+        width: width, // 修改 width
+        height: height, // 清空 height
       },
     };
 

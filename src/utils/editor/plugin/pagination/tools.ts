@@ -108,12 +108,13 @@ export function adjustPagePagination(editor: any) {
           children: [{ text: "" }],
         });
 
-        // 再把原元素插入
-        newChildren.push(child);
-
         // 清空高度
         oldPageHeight = 0;
         pageHeight = 0;
+
+        // 回退一下， 处理超过页面的元素
+        // 即要把超过页面的元素 再度插入回到下一页
+        i = i - 1;
       } else {
         newChildren.push(child);
         oldPageHeight = pageHeight;

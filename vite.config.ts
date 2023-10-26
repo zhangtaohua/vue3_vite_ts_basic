@@ -31,7 +31,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/map": {
-        target: "http://192.168.3.42:58787",
+        target: "http://192.168.3.247:58787",
         // target: "http://82.157.180.248:58787",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/map/, ""),
@@ -40,6 +40,11 @@ export default defineConfig({
         target: "http://belt-and-road-1256849727.cos.ap-beijing.myqcloud.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/geojson/, ""),
+      },
+      "/climateTrace": {
+        target: "http://192.168.3.247:31101",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/climateTrace/, ""),
       },
     },
   },

@@ -49,6 +49,10 @@ import {
   Width50EchartMenuKey,
   Width70EchartMenuKey,
   Width100EchartMenuKey,
+  HeightMinusEchartMenuKey,
+  HeightPlusEchartMenuKey,
+  WidthMinusEchartMenuKey,
+  WidthPlusEchartMenuKey,
 } from "@/utils/editor/plugin/echart/line/menu/index";
 import EchartLineModule from "@/utils/editor/plugin/echart/line/index";
 
@@ -62,6 +66,10 @@ import {
   Width50EchartBarMenuKey,
   Width70EchartBarMenuKey,
   Width100EchartBarMenuKey,
+  HeightMinusEchartBarMenuKey,
+  HeightPlusEchartBarMenuKey,
+  WidthPlusEchartBarMenuKey,
+  WidthMinusEchartBarMenuKey,
 } from "@/utils/editor/plugin/echart/bar/menu/index";
 import EchartBarModule from "@/utils/editor/plugin/echart/bar/index";
 
@@ -115,6 +123,10 @@ const editorConfig = {
         Width50EchartMenuKey,
         Width70EchartMenuKey,
         Width100EchartMenuKey,
+        WidthMinusEchartMenuKey,
+        WidthPlusEchartMenuKey,
+        HeightMinusEchartMenuKey,
+        HeightPlusEchartMenuKey,
         EditEchartMenuKey,
         DeleteEchartMenuKey,
       ],
@@ -125,6 +137,10 @@ const editorConfig = {
         Width50EchartBarMenuKey,
         Width70EchartBarMenuKey,
         Width100EchartBarMenuKey,
+        WidthMinusEchartBarMenuKey,
+        WidthPlusEchartBarMenuKey,
+        HeightMinusEchartBarMenuKey,
+        HeightPlusEchartBarMenuKey,
         EditEchartBarMenuKey,
         DeleteEchartBarMenuKey,
       ],
