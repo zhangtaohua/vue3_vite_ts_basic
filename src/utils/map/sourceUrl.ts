@@ -8,7 +8,7 @@ const tiandituKey = starwizMapConfig
   : mapKeys.tiandituKey;
 
 export const mapXYZUrl = {
-  /****
+  /**
    * 高德地图
    * lang可以通过zh_cn设置中文，en设置英文，size基本无作用，scl设置标注还是底图，scl=1代表注记，
    * scl=2代表底图（矢量或者影像），style设置影像和路网，style=6为影像图，
@@ -30,7 +30,7 @@ export const mapXYZUrl = {
   aMap_roadLabel_single: "http://webst01.is.autonavi.com/appmaptile?style=8&x={x}&y={y}&z={z}",
   // url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}'
 
-  /***
+  /**
    * 天地图 要key的
    * _w 球面墨卡托投影 _c 经纬度投影
    * 一般 maximumLevel : 18
@@ -101,7 +101,7 @@ export const mapXYZUrl = {
 
   tiandi_subdomains: ["0", "1", "2", "3", "4", "5", "6", "7"],
 
-  /***
+  /**
    *geoq地图
    * http://cache1.arcgisonline.cn
    * http://map.geoq.cn
@@ -123,7 +123,7 @@ export const mapXYZUrl = {
     "http://thematic.geoq.cn/arcgis/rest/services/ThematicMaps/administrative_division_boundaryandlabel/MapServer/tile/{z}/{y}/{x}", //不稳定
   geoq_Hydro: "http://thematic.geoq.cn/arcgis/rest/services/ThematicMaps/WorldHydroMap/MapServer/tile/{z}/{y}/{x}", //不稳定
   geoq_green: "http://thematic.geoq.cn/arcgis/rest/services/ThematicMaps/vegetation/MapServer/tile/{z}/{y}/{x}", //不稳定
-  /***
+  /**
    * Google
    * m 街道
    * s 影像
@@ -167,7 +167,7 @@ export const mapXYZUrl = {
 
   carto_positron: "https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
 
-  /***
+  /**
    * MapTiler
    */
   mapTiler: "'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=Nnf5WLkCvc7B6d5i5PSw'",

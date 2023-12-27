@@ -25,7 +25,23 @@ import type { PopupOption } from "@/utils/map/ol/popupLayersTypes";
 import { mapXYZUrl, bingmapImagerySet, mapboxLocalStyle } from "@/utils/map/sourceUrl";
 import { defaultMapOptions } from "@/utils/map/geoConstant";
 
-import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue, popupType } from "./MapConst";
+import {
+  gaodeMap,
+  googleMap,
+  bingMap,
+  bingLightMap,
+  mapboxBasic,
+  mapboxAllBlue,
+  popupType,
+  tiandituVec,
+  tiandituVecZhLabel,
+  tiandituVecEnLabel,
+  tiandituImg,
+  tiandituImgZhLabel,
+  tiandituImgEnLable,
+  tiandituTer,
+  tiandituTerLabel,
+} from "./MapConst";
 
 import { nanoid } from "nanoid";
 
@@ -47,6 +63,78 @@ export default class OlMapHelper extends OlBase {
 
   private __popupInsMap: any = null;
   private __vuepopupInsMap: any = null;
+
+  private __tiandituVecXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_vec,
+    id: tiandituVec,
+    name: tiandituVec,
+    zIndex: 1,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituVecZhXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_vec_zh_label,
+    id: tiandituVecZhLabel,
+    name: tiandituVecZhLabel,
+    zIndex: 2,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituVecEnXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_vec_en_label,
+    id: tiandituVecEnLabel,
+    name: tiandituVecEnLabel,
+    zIndex: 2,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituImgXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_img,
+    id: tiandituImg,
+    name: tiandituImg,
+    zIndex: 1,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituImgZhXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_img_zh_label,
+    id: tiandituImgZhLabel,
+    name: tiandituImgZhLabel,
+    zIndex: 2,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituImgEnXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_img_en_label,
+    id: tiandituImgEnLable,
+    name: tiandituImgEnLable,
+    zIndex: 2,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituTerXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_ter,
+    id: tiandituTer,
+    name: tiandituTer,
+    zIndex: 1,
+    extent: [],
+    wrapX: true,
+  };
+
+  private __tiandituTerLabelXYZOptions: XYZOptions = {
+    url: mapXYZUrl.tiandi_lnglat_ter_label,
+    id: tiandituTerLabel,
+    name: tiandituTerLabel,
+    zIndex: 2,
+    extent: [],
+    wrapX: true,
+  };
 
   private __gaodeXYZOptions: XYZOptions = {
     url: mapXYZUrl.aMap_vec,
@@ -137,6 +225,142 @@ export default class OlMapHelper extends OlBase {
     super.destructor();
   }
 
+  public __addTiandituVecXYZLayer() {
+    if (this.__bgLayers.has(tiandituVec)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituVec, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituVecXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituVec, this.__tiandituVecXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituVecXYZLayer() {
+    if (this.__bgLayers.has(tiandituVec)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituVec, false);
+    }
+  }
+
+  public __addTiandituVecZhLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituVecZhLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituVecZhLabel, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituVecZhXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituVecZhLabel, this.__tiandituVecZhXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituVecZhLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituVecZhLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituVecZhLabel, false);
+    }
+  }
+
+  public __addTiandituVecEnLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituVecEnLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituVecEnLabel, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituVecEnXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituVecEnLabel, this.__tiandituVecEnXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituVecEnLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituVecEnLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituVecEnLabel, false);
+    }
+  }
+
+  public __addTiandituImgXYZLayer() {
+    if (this.__bgLayers.has(tiandituImg)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituImg, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituImgXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituImg, this.__tiandituImgXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituImgXYZLayer() {
+    if (this.__bgLayers.has(tiandituImg)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituImg, false);
+    }
+  }
+
+  public __addTiandituImgZhLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituImgZhLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituImgZhLabel, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituImgZhXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituImgZhLabel, this.__tiandituImgZhXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituImgZhLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituImgZhLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituImgZhLabel, false);
+    }
+  }
+
+  public __addTiandituImgEnLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituImgEnLable)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituImgEnLable, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituImgEnXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituImgEnLable, this.__tiandituImgEnXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituImgEnLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituImgEnLable)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituImgEnLable, false);
+    }
+  }
+
+  public __addTiandituTerXYZLayer() {
+    if (this.__bgLayers.has(tiandituTer)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituTer, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituTerXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituTer, this.__tiandituTerXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituTerXYZLayer() {
+    if (this.__bgLayers.has(tiandituTer)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituTer, false);
+    }
+  }
+
+  public __addTiandituTerLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituTerLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituTerLabel, true);
+    } else {
+      const isAdded = this.XYZIns!.addLayer(this.__tiandituTerLabelXYZOptions);
+      if (isAdded) {
+        this.__bgLayers.set(tiandituTerLabel, this.__tiandituTerLabelXYZOptions);
+      }
+    }
+  }
+
+  public __hiddenTiandituTerLabelXYZLayer() {
+    if (this.__bgLayers.has(tiandituTerLabel)) {
+      this.XYZIns!.showHiddenLayerByID(tiandituTerLabel, false);
+    }
+  }
+
   public __addGaodeXYZLayer() {
     if (this.__bgLayers.has(gaodeMap)) {
       this.XYZIns!.showHiddenLayerByID(gaodeMap, true);
@@ -200,12 +424,52 @@ export default class OlMapHelper extends OlBase {
 
   public addBgLayer(id: string) {
     // 先隐藏map
+    this.__hiddenTiandituVecXYZLayer();
+    this.__hiddenTiandituVecZhLabelXYZLayer();
+    this.__hiddenTiandituVecEnLabelXYZLayer();
+
+    this.__hiddenTiandituImgXYZLayer();
+    this.__hiddenTiandituImgZhLabelXYZLayer();
+    this.__hiddenTiandituImgEnLabelXYZLayer();
+
+    this.__hiddenTiandituTerXYZLayer();
+    this.__hiddenTiandituTerLabelXYZLayer();
+
     this.__hiddenGaodeXYZLayer();
     this.__hiddenGoogleXYZLayer();
     this.__hiddenBingmapLayer(bingMap);
     this.__hiddenBingmapLayer(bingLightMap);
     this.__hiddenMapboxStyleLayer();
     switch (id) {
+      case tiandituVecZhLabel: {
+        this.__addTiandituVecXYZLayer();
+        this.__addTiandituVecZhLabelXYZLayer();
+        break;
+      }
+      case tiandituVecEnLabel: {
+        this.__addTiandituVecXYZLayer();
+        this.__addTiandituVecEnLabelXYZLayer();
+        break;
+      }
+      case tiandituImgZhLabel: {
+        this.__addTiandituImgXYZLayer();
+        this.__addTiandituImgZhLabelXYZLayer();
+        break;
+      }
+      case tiandituImgEnLable: {
+        this.__addTiandituImgXYZLayer();
+        this.__addTiandituImgEnLabelXYZLayer();
+        break;
+      }
+      case tiandituTerLabel: {
+        this.__addTiandituTerXYZLayer();
+        this.__addTiandituTerLabelXYZLayer();
+
+        // 下面的测试从图上显示看也可以，
+        // 不知道官网为什么有个单独 terrain 的Label 但又不分中英文。
+        // this.__addTiandituVecEnLabelXYZLayer();
+        break;
+      }
       case gaodeMap: {
         this.__addGaodeXYZLayer();
         break;

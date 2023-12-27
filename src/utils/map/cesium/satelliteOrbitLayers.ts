@@ -619,7 +619,8 @@ export default class CsSatelliteOrbitLayers {
     return polyCzml;
   }
 
-  public getModelMatrix(pointA: any, pointB: any) {
+  // 不要使用，放在这里供参考
+  private getModelMatrix(pointA: any, pointB: any) {
     const vector2 = Cesium.Cartesian3.subtract(pointB, pointA, new Cesium.Cartesian3());
     const normal = Cesium.Cartesian3.normalize(vector2, new Cesium.Cartesian3());
 
@@ -639,7 +640,8 @@ export default class CsSatelliteOrbitLayers {
     };
   }
 
-  public getHeadingPitchRoll(m: any) {
+  // 不要使用，放在这里供参考
+  private getHeadingPitchRoll(m: any) {
     const m1 = Cesium.Transforms.eastNorthUpToFixedFrame(
       Cesium.Matrix4.getTranslation(m, new Cesium.Cartesian3()),
       Cesium.Ellipsoid.WGS84,
@@ -736,14 +738,14 @@ export default class CsSatelliteOrbitLayers {
         statelliteCZML!.czml = statelliteCZML!.czml!.concat(scanShapeCzml);
       } else if (options.scan.shape === "wedge") {
         const lnglatDatasNew = [];
-        const lnglatDatasNew2 = [];
+        // const lnglatDatasNew2 = [];
         const lnglatDatasTemp = statelliteCZML.lnglatDatas;
 
-        const pitch90 = new Cesium.HeadingPitchRoll(
-          Cesium.Math.toRadians(0),
-          Cesium.Math.toRadians(-90),
-          Cesium.Math.toRadians(0),
-        );
+        // const pitch90 = new Cesium.HeadingPitchRoll(
+        //   Cesium.Math.toRadians(0),
+        //   Cesium.Math.toRadians(-90),
+        //   Cesium.Math.toRadians(0),
+        // );
         // const testQuat = Cesium.Quaternion.fromHeadingPitchRoll(testH);
 
         for (let i = 0; i <= lnglatDatasTemp.length - 4; i = i + 4) {
@@ -752,52 +754,71 @@ export default class CsSatelliteOrbitLayers {
           const l3 = lnglatDatasTemp[i + 3] / 1.05;
           lnglatDatasNew.push(lnglatDatasTemp[i], l1, l2, l3);
 
-          const newCartesian = new Cesium.Cartesian3(l1, l2, l3);
+          // const newCartesian = new Cesium.Cartesian3(l1, l2, l3);
 
-          // const l4 = lnglatDatasTemp[i + 5] / 1.05;
-          // const l5 = lnglatDatasTemp[i + 6] / 1.05;
-          // const l6 = lnglatDatasTemp[i + 7] / 1.05;
-          // // const l4 = lnglatDatasTemp[i + 1] / 2;
-          // // const l5 = lnglatDatasTemp[i + 2] / 2;
-          // // const l6 = lnglatDatasTemp[i + 3] / 2;
-          // const newCartesian2 = new Cesium.Cartesian3(0, 0, 0);
+          // // const l4 = lnglatDatasTemp[i + 5] / 1.05;
+          // // const l5 = lnglatDatasTemp[i + 6] / 1.05;
+          // // const l6 = lnglatDatasTemp[i + 7] / 1.05;
+          // // // const l4 = lnglatDatasTemp[i + 1] / 2;
+          // // // const l5 = lnglatDatasTemp[i + 2] / 2;
+          // // // const l6 = lnglatDatasTemp[i + 3] / 2;
+          // // const newCartesian2 = new Cesium.Cartesian3(0, 0, 0);
 
-          // not work!!
-          // const hpRoll = new Cesium.HeadingPitchRoll(0, Cesium.Math.toRadians(-90), 0);
-          // const hpRoll = new Cesium.HeadingPitchRoll(0, 0, 0);
-          // const orientation = Cesium.Transforms.headingPitchRollQuaternion(newCartesian, hpRoll);
+          // // not work!!
+          // // const hpRoll = new Cesium.HeadingPitchRoll(0, Cesium.Math.toRadians(-90), 0);
+          // // const hpRoll = new Cesium.HeadingPitchRoll(0, 0, 0);
+          // // const orientation = Cesium.Transforms.headingPitchRollQuaternion(newCartesian, hpRoll);
 
-          // now work!!
-          // const orientation = Cesium.Quaternion.fromAxisAngle(newCartesian, Cesium.Math.toRadians(-90));
+          // // now work!!
+          // // const orientation = Cesium.Quaternion.fromAxisAngle(newCartesian, Cesium.Math.toRadians(-90));
 
-          // const hpr = this.getModelMatrix(newCartesian, newCartesian2);
-          // const { hpr, quaternion } = this.getHeadingPitchRoll(m);
-          // hpr.heading = hpr.heading + 3.14 / 2 + 3.14;
-          // hpr.roll = hpr.roll + Cesium.Math.toRadians(-90);
-          // console.log("hpr", hpr);
-          // const orientation = Cesium.Transforms.headingPitchRollQuaternion(newCartesian, hpr);
-          // lnglatDatasNew2.push(lnglatDatasTemp[i], quaternion.x, quaternion.y, quaternion.z, quaternion.w);
-          // lnglatDatasNew2.push(lnglatDatasTemp[i], orientation.x, orientation.y, orientation.z, orientation.w);
+          // // const hpr = this.getModelMatrix(newCartesian, newCartesian2);
+          // // const { hpr, quaternion } = this.getHeadingPitchRoll(m);
+          // // hpr.heading = hpr.heading + 3.14 / 2 + 3.14;
+          // // hpr.roll = hpr.roll + Cesium.Math.toRadians(-90);
+          // // console.log("hpr", hpr);
+          // // const orientation = Cesium.Transforms.headingPitchRollQuaternion(newCartesian, hpr);
+          // // lnglatDatasNew2.push(lnglatDatasTemp[i], quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+          // // lnglatDatasNew2.push(lnglatDatasTemp[i], orientation.x, orientation.y, orientation.z, orientation.w);
 
-          // const quaternion2 = Cesium.Quaternion.fromRotationMatrix(m);
+          // // const quaternion2 = Cesium.Quaternion.fromRotationMatrix(m);
+          // // lnglatDatasNew2.push(lnglatDatasTemp[i], quaternion2.x, quaternion2.y, quaternion2.z, quaternion2.w);
+
+          // // const modelMatrix4 = this.getModelMatrix(newCartesian, newCartesian2);
+          // // const hpr2 = modelMatrix4.hpr;
+          // // hpr2.roll = hpr2.roll + Cesium.Math.toRadians(-90);
+          // // const quaternion2 = Cesium.Quaternion.fromHeadingPitchRoll(hpr2);
+          // const quaternion2 = Cesium.Transforms.headingPitchRollQuaternion(newCartesian, pitch90);
+
+          // // 将本地坐标系转换为固定地心坐标系
+          // // const fixedFrameTransform = Cesium.Transforms.eastNorthUpToFixedFrame(newCartesian);
+          // // const arrowMatrix3 = Cesium.Matrix3.fromQuaternion(quaternion2);
+          // // const rotatedMatrix = Cesium.Matrix3.multiply(fixedFrameTransform, arrowMatrix3, new Cesium.Matrix3());
+
+          // // 将旋转矩阵应用到箭头的朝向
+          // // const finalOrientation = Cesium.Quaternion.fromRotationMatrix(rotatedMatrix);
+
           // lnglatDatasNew2.push(lnglatDatasTemp[i], quaternion2.x, quaternion2.y, quaternion2.z, quaternion2.w);
-
-          // const modelMatrix4 = this.getModelMatrix(newCartesian, newCartesian2);
-          // const hpr2 = modelMatrix4.hpr;
-          // hpr2.roll = hpr2.roll + Cesium.Math.toRadians(-90);
-          // const quaternion2 = Cesium.Quaternion.fromHeadingPitchRoll(hpr2);
-          const quaternion2 = Cesium.Transforms.headingPitchRollQuaternion(newCartesian, pitch90);
-
-          // 将本地坐标系转换为固定地心坐标系
-          // const fixedFrameTransform = Cesium.Transforms.eastNorthUpToFixedFrame(newCartesian);
-          // const arrowMatrix3 = Cesium.Matrix3.fromQuaternion(quaternion2);
-          // const rotatedMatrix = Cesium.Matrix3.multiply(fixedFrameTransform, arrowMatrix3, new Cesium.Matrix3());
-
-          // 将旋转矩阵应用到箭头的朝向
-          // const finalOrientation = Cesium.Quaternion.fromRotationMatrix(rotatedMatrix);
-
-          lnglatDatasNew2.push(lnglatDatasTemp[i], quaternion2.x, quaternion2.y, quaternion2.z, quaternion2.w);
         }
+
+        // const rotateX = 0;
+        // const rotateY = -90;
+        // const rotateZ = 0;
+
+        // for (let i = 0; i <= lnglatDatasTemp.length - 4; i = i + 4) {
+        //   const l1 = lnglatDatasTemp[i + 1] / 1.05;
+        //   const l2 = lnglatDatasTemp[i + 2] / 1.05;
+        //   const l3 = lnglatDatasTemp[i + 3] / 1.05;
+        //   lnglatDatasNew.push(lnglatDatasTemp[i], l1, l2, l3);
+
+        //   const velocityVector = new Cesium.VelocityVectorProperty(Cesium.position, true);
+        //   const curVelocityVector = velocityVector.getValue(lnglatDatasTemp[i], new Cesium.Cartesian3());
+        //   console.log("curVelocityVector", velocityVector, curVelocityVector);
+        //   const newCartesian = new Cesium.Cartesian3(l1, l2, l3);
+
+        //   const quaternion2 = this.getQuaternion(newCartesian, curVelocityVector, rotateX, rotateY, rotateZ);
+        //   lnglatDatasNew2.push(lnglatDatasTemp[i], quaternion2.x, quaternion2.y, quaternion2.z, quaternion2.w);
+        // }
 
         // const newCartesian = new Cesium.Cartesian3.fromDegrees(0.001, 90, 400000.0);
         // const newCartesian2 = new Cesium.Cartesian3(0, 0, 0);
@@ -838,7 +859,7 @@ export default class CsSatelliteOrbitLayers {
           //   // unitQuaternion: [testQuat.x, testQuat.y, testQuat.z, testQuat.w],
           //   // velocityReference: statelliteCZMLId,
           //   velocityReference: "#position",
-          //   unitQuaternion: [Cesium.JulianDate.toIso8601(Cesium.JulianDate.now()), 0.0, 1.0, 0.0, 1.0],
+          //   // unitQuaternion: [Cesium.JulianDate.toIso8601(Cesium.JulianDate.now()), 0.0, 1.0, 0.0, 1.0],
           //   // reference: "#position", // not work!!
           // },
 
@@ -846,14 +867,14 @@ export default class CsSatelliteOrbitLayers {
           //   unitQuaternion: quaternionnew,
           // },
 
-          orientation: {
-            interpolationAlgorithm: "LINEAR",
-            interpolationDegree: 1,
-            referenceFrame: "INERTIAL",
-            epoch: statelliteCZML.startISOstring,
-            unitQuaternion: lnglatDatasNew2,
-            velocityReference: "#position",
-          },
+          // orientation: {
+          //   interpolationAlgorithm: "LINEAR",
+          //   interpolationDegree: 1,
+          //   referenceFrame: "INERTIAL",
+          //   epoch: statelliteCZML.startISOstring,
+          //   unitQuaternion: lnglatDatasNew2,
+          //   velocityReference: "#position",
+          // },
 
           // rotation: {
           //   // unitQuaternion: [testQuat.x, testQuat.y, testQuat.z, testQuat.w],
@@ -866,7 +887,7 @@ export default class CsSatelliteOrbitLayers {
               cartesian: [1000000.0, 1000000.0, 1000000.0],
             },
             innerRadii: {
-              cartesian: [100000.0, 100000.0, 100000.0],
+              cartesian: [100000.0, 100000.0, 50000.0],
             },
             minimumClock: Cesium.Math.toRadians(-15), // -15
             maximumClock: Cesium.Math.toRadians(15), // 15
@@ -936,11 +957,12 @@ export default class CsSatelliteOrbitLayers {
       orbitCZML: documentCZML,
     };
 
-    console.log("layerObj", layerObj);
+    // console.log("layerObj", layerObj);
     return layerObj;
   }
 
   // 测试结果不正确.
+  // 不要使用，放在这里供参考
   public resetOrientation(dataSource: any) {
     const scanEntity = dataSource.entities.values[3];
     const orientationOld = scanEntity.orientation;
@@ -956,6 +978,113 @@ export default class CsSatelliteOrbitLayers {
     scanEntity.orientation = oq;
   }
 
+  /**
+   * 计算朝向四元数
+   * X轴正向指向运动方向；Y轴在水平面内垂直于X轴，正向指向右侧；Z轴通过右手法则确定
+   * @param {Cartesian3} positionEcf 位置
+   * @param {Cartesian3} velocityEcf 速度向量
+   * @param {*} rotateX 绕X轴旋转的角度（roll）
+   * @param {*} rotateY 绕Y轴旋转的角度（pitch）
+   * @param {*} rotateZ 绕Z轴旋转的角度（heading）
+   * @returns
+   */
+  public getQuaternion(positionEcf: any, velocityEcf: any, rotateX: any = 0, rotateY: any = 0, rotateZ: any = 0) {
+    // 1、计算站心到模型坐标系的旋转平移矩阵
+    // 速度归一化
+    const normal = Cesium.Cartesian3.normalize(velocityEcf, new Cesium.Cartesian3());
+    // 计算模型坐标系的旋转矩阵
+    // 简单说就是根据给定的位置和向量建立一个旋转矩阵，这个旋转矩阵以给定位置Position为坐标系原点，给定向量Velocity为坐标轴X。
+    // 这个旋转矩阵的含义是从地固坐标系转到模型坐标系
+    const satRotationMatrix = Cesium.Transforms.rotationMatrixFromPositionVelocity(
+      positionEcf,
+      normal,
+      Cesium.Ellipsoid.WGS84,
+    );
+    // 模型坐标系到地固坐标系旋转平移矩阵
+    const m = Cesium.Matrix4.fromRotationTranslation(satRotationMatrix, positionEcf);
+    // 站心坐标系（东北天坐标系）到地固坐标系旋转平移矩阵
+    const m1 = Cesium.Transforms.eastNorthUpToFixedFrame(positionEcf, Cesium.Ellipsoid.WGS84, new Cesium.Matrix4());
+    // 站心到模型坐标系的旋转平移矩阵
+    const m3 = Cesium.Matrix4.multiply(Cesium.Matrix4.inverse(m1, new Cesium.Matrix4()), m, new Cesium.Matrix4());
+
+    // 2、模型姿态旋转矩阵
+    rotateX = rotateX || 0;
+    rotateY = rotateY || 0;
+    rotateZ = rotateZ || 0;
+    const heading = rotateZ,
+      pitch = rotateY,
+      roll = rotateX;
+    const postureHpr = new Cesium.HeadingPitchRoll(
+      Cesium.Math.toRadians(heading),
+      Cesium.Math.toRadians(pitch),
+      Cesium.Math.toRadians(roll),
+    );
+    const postureMatrix = Cesium.Matrix3.fromHeadingPitchRoll(postureHpr);
+
+    // 3、最终的旋转矩阵
+    const mat3 = Cesium.Matrix4.getMatrix3(m3, new Cesium.Matrix3());
+    const finalMatrix = Cesium.Matrix3.multiply(mat3, postureMatrix, new Cesium.Matrix3());
+    const quaternion1 = Cesium.Quaternion.fromRotationMatrix(finalMatrix);
+    const hpr = Cesium.HeadingPitchRoll.fromQuaternion(quaternion1);
+    const q2 = Cesium.Transforms.headingPitchRollQuaternion(positionEcf, hpr);
+    return q2;
+  }
+
+  public howToUseGetQuaternion(entity: any) {
+    // 当前时刻速度向量、位置
+    const curVelocityVector = entity.velocityVector.getValue(this.viewer.clock.currentTime, new Cesium.Cartesian3());
+    const curPosition = entity.position.getValue(this.viewer.clock.currentTime, new Cesium.Cartesian3());
+    // 计算朝向四元数
+    const quaternion = this.getQuaternion(curPosition, curVelocityVector);
+    // 设置实体朝向，验证是否指向速度矢量方向
+    entity.orientation = quaternion;
+  }
+
+  public resetOrientation2(dataSource: any) {
+    const scanEntity = dataSource.entities.values[3];
+    //  heading = rotateZ, pitch = rotateY, roll = rotateX;
+    const rotateX = 0;
+    const rotateY = -90;
+    const rotateZ = 0;
+    const property = new Cesium.SampledProperty(Cesium.Quaternion);
+
+    if (scanEntity.position instanceof Cesium.SampledPositionProperty) {
+      scanEntity.velocityVector = new Cesium.VelocityVectorProperty(scanEntity.position, true);
+
+      let times: any = [];
+      if (scanEntity.position && scanEntity.position._property && scanEntity.position._property._times) {
+        times = scanEntity.position._property._times;
+      }
+      if (times.length) {
+        times.forEach((time: any, index: any) => {
+          const curVelocityVector = scanEntity.velocityVector.getValue(time, new Cesium.Cartesian3());
+          const curPosition = scanEntity.position.getValue(time, new Cesium.Cartesian3());
+          // 计算朝向四元数
+          const quaternion = this.getQuaternion(curPosition, curVelocityVector, rotateX, rotateY, rotateZ);
+          // 添加采样值
+          property.addSample(time, quaternion);
+        });
+      }
+    } else if (scanEntity.position instanceof Cesium.CompositePositionProperty) {
+      // 此分支没有调试过
+      const intervals = scanEntity.position.intervals;
+      for (let i = 0; i < intervals.length; i++) {
+        const interval = intervals.get(i);
+        // const positions = interval.data._property._values;
+        interval.data._property._times.forEach((time: any, index: any) => {
+          const curVelocityVector = scanEntity.velocityVector.getValue(time, new Cesium.Cartesian3());
+          const curPosition = scanEntity.position.getValue(time, new Cesium.Cartesian3());
+          // 计算朝向四元数
+          const quaternion = this.getQuaternion(curPosition, curVelocityVector, rotateX, rotateY, rotateZ);
+          // 添加采样值
+          property.addSample(time, quaternion);
+        });
+      }
+    }
+
+    scanEntity.orientation = property;
+  }
+
   public addLayer(options: SatelliteOrbitOptions) {
     if (this.csBaseHandle) {
       const layerObj = this.createLayer(options);
@@ -965,7 +1094,11 @@ export default class CsSatelliteOrbitLayers {
         promise.then((dataSource: any) => {
           this.dataSources && this.dataSources.add(dataSource);
           layerObj.dataSource = dataSource;
-          // this.resetOrientation(dataSource);
+          if (options.scan) {
+            if (options.scan.shape === "wedge") {
+              this.resetOrientation2(dataSource);
+            }
+          }
 
           // 10s后时间轴跳转至指定时间并自动运行
           setTimeout(() => {

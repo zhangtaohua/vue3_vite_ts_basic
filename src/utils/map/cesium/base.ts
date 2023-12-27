@@ -132,6 +132,15 @@ export default class CesiumBase {
 
     // 设置球的背景色为 透明
     this.setSphereBgColor(new Cesium.Color(1.0, 1.0, 1.0, 1));
+
+    // for debug
+    window.Cesium = Cesium;
+
+    // Cesium查看器
+    // this.viewer.extend(Cesium.viewerCesiumInspectorMixin);
+
+    // this.viewer.scene.sun.show = false; //隐藏太阳和月亮
+    // this.viewer.scene.moon.show = false;
   }
 
   public destructor() {
@@ -228,7 +237,7 @@ export default class CesiumBase {
     }
   }
 
-  public resetSkybox(skyboxOpitons: PskyboxSource) {
+  public setSkybox(skyboxOpitons: PskyboxSource) {
     if (this.viewer) {
       this.scene.skyBox = new Cesium.SkyBox({
         sources: skyboxOpitons,
@@ -328,8 +337,8 @@ export default class CesiumBase {
   public formatPosition(position: any) {
     const carto = Cesium.Cartographic.fromCartesian(position);
     const result: any = {};
-    result.y = this.formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
     result.x = this.formatNum(Cesium.Math.toDegrees(carto.longitude), 6);
+    result.y = this.formatNum(Cesium.Math.toDegrees(carto.latitude), 6);
     result.z = this.formatNum(carto.height, 2);
     return result;
   }
@@ -350,9 +359,12 @@ export default class CesiumBase {
     );
 
     const curPosition = Cesium.Ellipsoid.WGS84.cartesianToCartographic(result);
-    const lon = (curPosition.longitude * 180) / Math.PI;
-    const lat = (curPosition.latitude * 180) / Math.PI;
-    const height = curPosition.height;
+    // const lon = (curPosition.longitude * 180) / Math.PI;
+    // const lat = (curPosition.latitude * 180) / Math.PI;
+    // const height = curPosition.height;
+    const lon = this.formatNum(Cesium.Math.toDegrees(curPosition.longitude), 6);
+    const lat = this.formatNum(Cesium.Math.toDegrees(curPosition.latitude), 6);
+    const height = this.formatNum(curPosition.height, 2);
     return {
       x: lon,
       y: lat,
@@ -861,5 +873,57 @@ export default class CesiumBase {
     } else if (this.scene.mode == Cesium.SceneMode.SCENE3D) {
       this.viewer.clock.onTick.removeEventListener(this.earthRotation3D);
     }
+  }
+
+  // 局部坐标系的局部坐标轴 ---核心代码
+  public addAuxLocalAxis(parentMatrix: any, color: any) {
+    const parentPosition = Cesium.Matrix4.getTranslation(parentMatrix, new Cesium.Cartesian3());
+    this.addAuxEntity(parentPosition, Cesium.Color.RED);
+    // 求矩阵的x轴基向量
+    // Cesium.Cartesian3.UNIT_X <=> new Cesium.Cartesian3(1, 0, 0)
+    const localAxisX = Cesium.Matrix4.multiplyByPointAsVector(
+      parentMatrix,
+      new Cesium.Cartesian3(1, 0, 0),
+      new Cesium.Cartesian3(),
+    );
+    // 求矩阵的y轴基向量
+    // Cesium.Cartesian3.UNIT_Y <=> new Cesium.Cartesian3(0, 1, 0)
+    const localAxisY = Cesium.Matrix4.multiplyByPointAsVector(
+      parentMatrix,
+      new Cesium.Cartesian3(0, 1, 0),
+      new Cesium.Cartesian3(),
+    );
+    // 求矩阵的z轴基向量
+    // Cesium.Cartesian3.UNIT_Z <=> new Cesium.Cartesian3(0, 0, 1)
+    const localAxisZ = Cesium.Matrix4.multiplyByPointAsVector(
+      parentMatrix,
+      new Cesium.Cartesian3(0, 0, 1),
+      new Cesium.Cartesian3(),
+    );
+
+    this.addAuxPolyline(parentPosition, localAxisX, color);
+    this.addAuxPolyline(parentPosition, localAxisY, color);
+    this.addAuxPolyline(parentPosition, localAxisZ, color);
+  }
+
+  public addAuxPolyline(position: any, vector: any, color: any) {
+    return this.viewer.entities.add({
+      polyline: {
+        width: 10,
+        positions: [position, Cesium.Cartesian3.add(position, vector, new Cesium.Cartesian3())],
+        material: new Cesium.PolylineArrowMaterialProperty(color),
+      },
+    });
+  }
+
+  // 添加entity点
+  public addAuxEntity(position: any, color: any) {
+    return this.viewer.entities.add({
+      position: position,
+      point: {
+        color: color,
+        pixelSize: 10,
+      },
+    });
   }
 }

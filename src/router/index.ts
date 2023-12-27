@@ -148,6 +148,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/maplibregl",
+    name: "maplibreglExample",
+    children: [
+      {
+        path: "/maplibregl/base",
+        name: "maplibreglBaseExample",
+        component: () => import("@/views/maplibregl/baseExample.vue"),
+      },
+    ],
+  },
   // pathMatch is the name of the param, e.g., going to /not/found yields
   // { params: { pathMatch: ['not', 'found'] }}
   // this is thanks to the last *, meaning repeated params and it is necessary if you

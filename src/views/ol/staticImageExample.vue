@@ -8,7 +8,23 @@ import { onMounted, onUnmounted } from "vue";
 import staticImageExample from "./staticImageExample";
 import type { StaticImageOptions } from "@/utils/map/ol/imageLayersTypes";
 
-import { gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue, popupType } from "./MapConst";
+import {
+  gaodeMap,
+  googleMap,
+  bingMap,
+  bingLightMap,
+  mapboxBasic,
+  mapboxAllBlue,
+  popupType,
+  tiandituVec,
+  tiandituVecZhLabel,
+  tiandituVecEnLabel,
+  tiandituImg,
+  tiandituImgZhLabel,
+  tiandituImgEnLable,
+  tiandituTer,
+  tiandituTerLabel,
+} from "./MapConst";
 import GUI from "lil-gui";
 import { nanoid } from "nanoid";
 
@@ -65,7 +81,19 @@ function initGUI() {
   GUIIns = new GUI();
   GUIIns.title("全局控制");
 
-  GUIIns.add(mapContrl, "bgLayer", [gaodeMap, googleMap, bingMap, bingLightMap, mapboxBasic, mapboxAllBlue])
+  GUIIns.add(mapContrl, "bgLayer", [
+    gaodeMap,
+    googleMap,
+    bingMap,
+    bingLightMap,
+    mapboxBasic,
+    mapboxAllBlue,
+    tiandituVecZhLabel,
+    tiandituVecEnLabel,
+    tiandituImgZhLabel,
+    tiandituImgEnLable,
+    tiandituTerLabel,
+  ])
     .name("底图图层")
     .onChange((value: any) => {
       mapIns!.addBgLayer(value);

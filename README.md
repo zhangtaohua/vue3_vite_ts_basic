@@ -55,3 +55,43 @@ revert: 回退
 5、安装 Prettier for VS Code 插件
 
 6、安装 Stylelint for VS Code 插件
+
+# 参考文档
+
+## 1、onlyoffice 修改地方
+
+1、 docker run -i -t -d -p 8701:80 -e JWT_ENABLED=false onlyoffice/documentserver 2、 docker exec -it 6d9cf07ee0e621a3ba916a881bf75936ebf51d17384a53e7e640005d315862a7 /bin/bash 3、 进入后执行 supervisorctl restart all
+
+4、 为了加载本地文件修改 /etc/onlyoffice/documentserver/default.json 中的字段为 “rejectUnauthorized”: false
+
+5、 为了 解决 It is private IP address 错误 修改
+
+/etc/onlyoffice/documentserver/local.json
+
+```
+{
+  "services": {
+    "CoAuthoring": {
+      "request-filtering-agent": {
+        "allowPrivateIPAddress": true,
+        "allowMetaIPAddress": true
+      },
+```
+
+## 2、 其它
+
+https://github.com/shashwatak/satellite-js https://openlayers.org/workshop/en/webgl/points.html https://lil-gui.georgealways.com/ https://www.mycurvefit.com/
+
+## 3 cesium
+
+https://github.com/alberto-acevedo/cesium-navigation https://github.com/zhangti0708/cesium-measure https://github.com/hongfaqiu/cesium-extends https://github.com/xtfge/cesium-measure https://github.com/mokrayaGISka/cesium_measurementTool.git https://github.com/alberto-acevedo/cesium-navigation.git
+
+https://deep-time.org/
+
+https://help.agi.com/STKWebVisualizationLibrary/Measure.html
+
+https://maplibre.org/maplibre-gl-js/docs/
+
+https://github.com/mbloch/mapshaper
+
+https://juejin.cn/post/7196614877309370427 对 GeoJSON 的重投影 pnpm add reproj-helper pnpm add reproject
