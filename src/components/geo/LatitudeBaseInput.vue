@@ -539,7 +539,7 @@ function sliderHandle() {
 }
 
 .lat_dms {
-  width: calc(33.33333% - 1.5rem);
+  width: calc(33.3333% - 1.5rem);
   height: 100%;
   color: #333;
   font-size: 1rem;
