@@ -14,80 +14,45 @@
       @mouseup="mouseDownupHandle(false)"
     ></div>
     <div class="col_nw_center_center show_box">
-      <div
-        class="row_nw_center_center pass_box"
-        :class="{ pass_box_act: dateOptions.isCanPast }"
-        @click="toggleDateCanPast()"
-        >PAST</div
-      >
       <div class="row_nw_center_center action_box">
         <div class="row_nw_center_center add_box" @click="setDateByClick(true)">+</div>
         <div class="row_nw_center_center add_box" @click="resetDateNow()">•</div>
         <div class="row_nw_center_center minu_box" @click="setDateByClick(false)">-</div>
       </div>
       <div class="row_nw_center_center ymd_box">
-        <div class="row_nw_center_center yy_box">{{ current.YY }}</div>
-        <div class="row_nw_center_center split_box">-</div>
-        <div class="row_nw_center_center mm_box">{{ current.MM }}</div>
-        <div class="row_nw_center_center split_box">-</div>
-        <div
-          class="row_nw_center_center dd_box"
-          :class="{ pass_box_act: dateOptions.pos == 'DD' }"
-          @click="setDateStepPos('DD')"
-          >{{ current.DD }}</div
-        >
-      </div>
-      <div class="row_nw_center_center hms_box">
-        <div
-          class="row_nw_center_center hh_box"
-          :class="{ pass_box_act: dateOptions.pos == 'hh' }"
-          @click="setDateStepPos('hh')"
-          >{{ current.hh }}</div
-        >
-        <div class="row_nw_center_center split_box">:</div>
-        <div
-          class="row_nw_center_center mi_box"
-          :class="{ pass_box_act: dateOptions.pos == 'mm' }"
-          @click="setDateStepPos('mm')"
-          >{{ current.mm }}</div
-        >
-        <div class="row_nw_center_center split_box">:</div>
-        <div
-          class="row_nw_center_center ss_box"
-          :class="{ pass_box_act: dateOptions.pos == 'ss' }"
-          @click="setDateStepPos('ss')"
-          >{{ current.ss }}</div
-        >
+        <div class="row_nw_center_center yy_box">{{ current }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { watch, ref, reactive, computed, onMounted } from "vue";
+import { defineProps, defineEmits, ref, reactive, computed, onMounted } from "vue";
+
+const props = defineProps({
+  min: {
+    type: Number,
+    default: 0,
+  },
+  max: {
+    type: Number,
+    default: 100,
+  },
+  step: {
+    type: Number,
+    default: 0.000001,
+  },
+  modelValue: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const emit = defineEmits(["update:modelValue", "onChange"]);
+
+const current = ref(props.modelValue);
 
 const isShowWindowMask = ref(false);
-const dateOptions = reactive({
-  isCanPast: false,
-  pos: "hh",
-  timestamp: 0,
-  YY: 24 * 60 * 60 * 1000,
-  MM: 24 * 60 * 60 * 1000,
-  DD: 24 * 60 * 60 * 1000,
-  hh: 60 * 60 * 1000,
-  mm: 60 * 1000,
-  ss: 10 * 1000,
-});
-
-const current = reactive({
-  timestamp: 0,
-  YY: "",
-  MM: "",
-  DD: "",
-  hh: "",
-  mm: "",
-  ss: "",
-});
 
 const pointMaskStyle = reactive({
   top: 0 + "px",
@@ -117,102 +82,34 @@ let currentAngle = 0;
 let oldAngle = 0;
 const perDegreeToRadian = (1 / 180) * Math.PI;
 const perDegreeToY = (canvasSize * 0.85) / 180;
+const stepValue = props.step ? props.step : 1;
+const perStepToDegree = (360 * stepValue) / (props.max - props.min);
 
-watch(
-  () => current.timestamp,
-  () => {
-    return current.timestamp;
-  },
-  {
-    immediate: false,
-    deep: true,
-  },
-);
+let decimalLength = 0;
 
 onMounted(() => {
   init();
 });
 
-function datePad(date) {
-  return ("" + date).padStart(2, "0");
+function mouseDownupHandle(isDown) {
+  isMouseDown = isDown;
+  isShowWindowMask.value = isDown;
 }
 
-function getYMDHMS(time = null, ymdSplit = "-", hmsSplit = ":") {
-  let now = null;
-  if (time) {
-    now = new Date(time);
-  } else {
-    now = new Date();
+function mouseMoveHandle(e) {
+  if (isMouseDown) {
+    countAngleBetweenPointAndStart(e.clientX, e.clientY);
   }
-  const timestamp = now.getTime();
-
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-  const date = now.getDate();
-
-  const hour = now.getHours();
-  const minutes = now.getMinutes();
-  const seconds = now.getSeconds();
-
-  const YY = "" + now.getFullYear();
-  const MM = datePad(month);
-  const DD = datePad(date);
-
-  const hh = datePad(hour);
-  const mm = datePad(minutes);
-  const ss = datePad(seconds);
-
-  const YM = `${YY}${ymdSplit}${MM}`;
-  const YMD = `${YY}${ymdSplit}${MM}${ymdSplit}${DD}`;
-  const HM = `${hh}${hmsSplit}${mm}`;
-  const HMS = `${hh}${hmsSplit}${mm}${hmsSplit}${ss}`;
-  const YMDHMS = `${YMD} ${HMS}`;
-
-  return {
-    timestamp,
-    year,
-    month,
-    date,
-
-    hour,
-    minutes,
-    seconds,
-
-    YM,
-    YMD,
-    HM,
-    HMS,
-    YMDHMS,
-
-    YY,
-    MM,
-    DD,
-    hh,
-    mm,
-    ss,
-  };
 }
 
-function resetDateOptionsCurrent() {
-  const { timestamp, year, month, date, hour, minutes, seconds, YY, MM, DD, hh, mm, ss } = getYMDHMS();
-  dateOptions.isCanPast = false;
-  dateOptions.pos = "hh";
-  dateOptions.timestamp = timestamp;
-
-  current.timestamp = timestamp;
-  current.YY = YY;
-  current.MM = MM;
-  current.DD = DD;
-  current.hh = hh;
-  current.mm = mm;
-  current.ss = ss;
+function init() {
+  let stepValueArray = stepValue.toString().split(".");
+  if (stepValueArray.length >= 2) {
+    decimalLength = stepValueArray[1].length;
+  }
 
   oldAngle = 0;
   currentAngle = 0;
-}
-resetDateOptionsCurrent();
-
-function init() {
   canvas = rangeCanvasDom.value;
   canvasCtx = canvas.getContext("2d");
   rect = canvas.getBoundingClientRect();
@@ -221,81 +118,41 @@ function init() {
   pointOld.ox = pointOld.x = centerX;
   pointOld.oy = pointOld.y = centerY - radius;
   canvasCtx.save();
-  updateView(0, 0);
+  updateView(Math.PI / 6, 0);
 }
 
-function setCurrent(time) {
-  const { timestamp, year, month, date, hour, minutes, seconds, YY, MM, DD, hh, mm, ss } = getYMDHMS(time);
-
-  current.timestamp = timestamp;
-  current.YY = YY;
-  current.MM = MM;
-  current.DD = DD;
-  current.hh = hh;
-  current.mm = mm;
-  current.ss = ss;
-}
-
+/**
+ * @description 通过点的位置 来调整 数据 和 视图。
+ */
 function countAngleBetweenPointAndStart(pointX, pointY, isUpdateCircleOnly = false) {
   // 得到弧度值
+  console.log("countAngle", pointX, pointY);
   const cursorAngleRadians = countRealAngel(pointX, pointY);
   pointOld.x = pointX;
   pointOld.y = pointY;
-  let isCanUpdateView = true;
   if (!isUpdateCircleOnly) {
-    isCanUpdateView = updateDate(cursorAngleRadians);
+    updateData(cursorAngleRadians);
   }
-  isCanUpdateView && updateView(cursorAngleRadians, pointY);
+  updateView(cursorAngleRadians, pointY);
 }
 
 function updateView(cursorAngleRadians, pointY) {
   canvasCtx.clearRect(0, 0, 300, 300);
-  drawCircleRange();
+  drawCircleRange(-Math.PI / 3, Math.PI / 3);
   drawGrabButton(cursorAngleRadians, pointY);
 }
 
-function updateDate(cursorAngleRadians) {
-  const diffAngle = getDiffAngle(cursorAngleRadians);
-  return getDateByAngle(diffAngle);
-}
-
-function getDiffAngle(cursorAngleRadians) {
-  // 得到角度值
+function updateData(cursorAngleRadians) {
   const cursorAngle = (cursorAngleRadians * 180) / Math.PI;
-  currentAngle = parseInt(cursorAngle);
-  let diffAngle = currentAngle - oldAngle;
-  if (diffAngle > 180) {
-    diffAngle = diffAngle - 360;
-  } else if (diffAngle < -180) {
-    diffAngle = diffAngle + 360;
-  }
-  // console.log('old', oldAngle, cursorAngle)
-  oldAngle = currentAngle;
-  return diffAngle;
+  console.log("cursorAngleRadians", cursorAngleRadians, cursorAngle);
+  const steps = Math.floor(cursorAngle / perStepToDegree);
+  let valueTemp = (steps * stepValue).toFixed(decimalLength);
+  current.value = +valueTemp;
 }
 
-function getDateByAngle(angle) {
-  const pos = dateOptions.pos; // 'ss'
-  // console.log("angle", angle)
-  current.timestamp = current.timestamp + angle * dateOptions[pos];
-  let isNeedUpdateView = true;
-  if (angle < 0) {
-    if (!dateOptions.isCanPast) {
-      if (current.timestamp <= dateOptions.timestamp) {
-        current.timestamp = dateOptions.timestamp;
-        pointOld.x = pointOld.ox;
-        pointOld.y = pointOld.oy;
-        oldAngle = 0;
-        updateView(0, 0);
-        isNeedUpdateView = false;
-      }
-    }
-  }
-  setCurrent(current.timestamp);
-  return isNeedUpdateView;
-}
-
-// 计算 点的弧度
+/**
+ * @description 通过点的位置，计算当前点的弧度。
+ */
 function countRealAngel(pointX, pointY) {
   const angleBetweenXAndCursor = Math.abs(Math.atan((pointY - centerY) / (pointX - centerX)));
   if (pointX > centerX && pointY <= centerY) return Math.PI / 2 - angleBetweenXAndCursor;
@@ -304,12 +161,12 @@ function countRealAngel(pointX, pointY) {
   else return (3 / 2) * Math.PI + angleBetweenXAndCursor;
 }
 
-function drawCircleRange(angle = 2 * Math.PI) {
+function drawCircleRange(start, end = 2 * Math.PI) {
   canvasCtx.restore();
   canvasCtx.lineWidth = 8;
   canvasCtx.strokeStyle = "#1976D2";
   canvasCtx.beginPath();
-  canvasCtx.arc(center, center, radius, 0, angle);
+  canvasCtx.arc(center, center, radius, start, end);
   canvasCtx.stroke();
 }
 
@@ -332,29 +189,13 @@ function countButtonPosition(angle, pointY) {
   const temp = Math.sqrt(Math.pow(radius, 2) - Math.pow(x - center, 2));
   const y = center + temp;
   const y2 = center - temp;
-  // console.log(y, y2);
+  console.log("count", x, y, y2);
   return { x: x, y: pointY >= centerY ? y : y2 };
 }
 
-function mouseDownupHandle(isDown) {
-  isMouseDown = isDown;
-  isShowWindowMask.value = isDown;
-}
-
-function mouseMoveHandle(e) {
-  if (isMouseDown) {
-    countAngleBetweenPointAndStart(e.clientX, e.clientY);
-  }
-}
-
-function setDateStepPos(posstr) {
-  if (posstr) {
-    dateOptions.pos = posstr;
-  } else {
-    dateOptions.pos = "ss";
-  }
-}
-
+/**
+ * @description: 从度数获取得到相应的弧度值 和 坐标 x, y
+ */
 function getRadiansPosFromDegree(degree) {
   const stepTemp = Math.abs(degree) * perDegreeToY;
   if (degree > 0) {
@@ -394,23 +235,21 @@ function getRadiansPosFromDegree(degree) {
 
 function setDateByClick(isAdd) {
   if (isAdd) {
-    getRadiansPosFromDegree(1);
+    getRadiansPosFromDegree(perStepToDegree);
   } else {
-    getRadiansPosFromDegree(-1);
+    getRadiansPosFromDegree(-perStepToDegree);
   }
   countAngleBetweenPointAndStart(pointOld.x, pointOld.y);
 }
 
 function resetDateNow() {
-  resetDateOptionsCurrent();
+  oldAngle = 0;
+  currentAngle = 0;
+  current.value = 0;
   canvasCtx.save();
   updateView(0, 0);
   pointOld.x = pointOld.ox;
   pointOld.y = pointOld.oy;
-}
-
-function toggleDateCanPast() {
-  dateOptions.isCanPast = !dateOptions.isCanPast;
 }
 </script>
 
@@ -436,7 +275,7 @@ function toggleDateCanPast() {
   z-index: 98;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(255 0 0 / 0%);
+  background-color: rgb(255 0 0 / 20%);
 }
 
 .point_mask {
@@ -446,7 +285,7 @@ function toggleDateCanPast() {
   z-index: 2;
   width: 20px;
   height: 20px;
-  background-color: rgba($color: #000, $alpha: 0%);
+  background-color: rgba($color: #000, $alpha: 20%);
   cursor: pointer;
 }
 

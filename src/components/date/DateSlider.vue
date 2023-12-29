@@ -156,35 +156,35 @@ function showTimeHandle() {
 <style lang="scss">
 .date_slider_container {
   position: fixed;
+  bottom: 0;
+  left: 20px;
+  z-index: 100;
   width: calc(100% - 220px);
   height: 30px;
-  bottom: 0px;
-  left: 20px;
   margin: auto;
-  font-family: "Share Tech", sans-serif;
   color: #444;
-  z-index: 100;
+  font-family: "Share Tech", sans-serif;
 }
 
 .input_range {
   position: absolute;
-  -webkit-appearance: none;
+  top: 0;
+  left: 0;
+  z-index: 101;
   // -moz-appearance: none;
   // appearance: none;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  background-color: rgb(255 255 255 / 20%);
   border: 0;
-  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 2px;
-  z-index: 101;
+  appearance: none;
 }
 
 .input_range:active {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgb(255 255 255 / 30%);
   border: 0;
   border-radius: 2px;
 }
@@ -194,26 +194,26 @@ function showTimeHandle() {
 }
 
 .input_range::-webkit-slider-runnable-track {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgb(255 255 255 / 20%);
   border: 0;
   border-radius: 2px;
 }
 
 .input_range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  box-sizing: border-box;
+  box-sizing: border-box;
+  box-sizing: border-box;
   width: 30px;
   height: 30px;
   background-color: #fff;
-  border-radius: 15px;
-  cursor: pointer;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0 2px 2px rgba(51, 51, 51, 0.7);
-  box-shadow: 0 2px 2px rgba(51, 51, 51, 0.7);
   border: 0;
+  border-radius: 15px;
+  box-shadow: 0 2px 2px rgb(51 51 51 / 70%);
+  box-shadow: 0 2px 2px rgb(51 51 51 / 70%);
+  cursor: pointer;
+  appearance: none;
+  appearance: none;
+  appearance: none;
 }
 
 .input_range::-webkit-slider-thumb:hover {
@@ -221,17 +221,17 @@ function showTimeHandle() {
 }
 
 .input_range::-moz-range-thumb {
+  box-sizing: border-box;
+  box-sizing: border-box;
+  box-sizing: border-box;
   width: 30px;
   height: 30px;
   background-color: #fff;
-  border-radius: 15px;
-  cursor: pointer;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0 2px 2px rgba(51, 51, 51, 0.7);
-  box-shadow: 0 2px 2px rgba(51, 51, 51, 0.7);
   border: 0;
+  border-radius: 15px;
+  box-shadow: 0 2px 2px rgb(51 51 51 / 70%);
+  box-shadow: 0 2px 2px rgb(51 51 51 / 70%);
+  cursor: pointer;
 }
 
 .input_range::-moz-range-thumb:hover {
@@ -241,55 +241,55 @@ function showTimeHandle() {
 .input_range:active::-webkit-slider-thumb,
 .input_range:active::-moz-range-thumb {
   background-color: #409eff;
-  -webkit-box-shadow: 0 3px 3px rgba(51, 51, 51, 0.4);
-  box-shadow: 0 3px 3px rgba(51, 51, 51, 0.4);
+  box-shadow: 0 3px 3px rgb(51 51 51 / 40%);
+  box-shadow: 0 3px 3px rgb(51 51 51 / 40%);
 }
 
 .input_range::-moz-focus-inner,
 .input_range::-moz-focus-outer,
 .input_range::-moz-range-track {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgb(255 255 255 / 20%);
   border: 0;
   border-radius: 2px;
 }
 
 .bgtime_box {
   position: absolute;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  z-index: 1;
 }
 
 .bgtime_show {
-  font-size: 16px;
   color: #333;
+  font-size: 16px;
 }
 
 .it_time_box {
   position: absolute;
-  width: 110px;
-  height: 30px;
   top: -40px;
   left: -55px;
+  width: 110px;
+  height: 30px;
 }
 
 .it_time_show {
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  font-size: 16px;
   color: #333;
+  font-size: 16px;
+  background: rgb(255 255 255 / 50%);
+  border-radius: 12px;
 }
 
 .it_time_arrow {
   position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid rgba(255, 255, 255, 0.5);
   top: 30px;
   left: 45px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid rgb(255 255 255 / 50%);
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
 }
 </style>

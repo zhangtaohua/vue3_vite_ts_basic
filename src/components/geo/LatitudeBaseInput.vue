@@ -491,69 +491,68 @@ function sliderHandle() {
 .lat_number {
   width: 100%;
   height: 100%;
-  color: #333333;
   padding: 0 8px;
+  color: #333;
   font-size: 1rem;
   background-color: transparent;
-  outline: none;
   border: none;
+  outline: none;
 }
 
 .lat_number::placeholder {
-  color: #444444;
-  font-size: 0.875rem;
-  padding: 0px;
   display: flex;
   flex-direction: row;
-  justify-items: flex-start;
   align-items: center;
+  justify-items: flex-start;
+  padding: 0;
+  color: #444;
+  font-size: 0.875rem;
 }
 
 .lat_human {
   width: calc(100% - 1.5rem);
   height: 100%;
-  color: #333333;
   padding: 0 8px;
+  color: #333;
   font-size: 1rem;
   background-color: transparent;
-  outline: none;
-  outline: none;
   border: none;
+  outline: none;
 }
 
 .lat_human::placeholder {
-  color: #444444;
-  font-size: 0.875rem;
-  padding: 0px;
   display: flex;
   flex-direction: row;
-  justify-items: flex-start;
   align-items: center;
+  justify-items: flex-start;
+  padding: 0;
+  color: #444;
+  font-size: 0.875rem;
 }
 
 .lat_label {
   width: 1.5rem;
   height: 100%;
+  color: #333;
   font-size: 1rem;
-  color: #333333;
   cursor: pointer;
 }
 
 .lat_dms {
   width: calc(33.33333% - 1.5rem);
   height: 100%;
+  color: #333;
   font-size: 1rem;
-  color: #333333;
   text-align: right;
-  outline: none;
   border: none;
+  outline: none;
 }
 
 .lat_unit {
   width: 1rem;
   height: 100%;
+  color: #333;
   font-size: 1rem;
-  color: #333333;
   cursor: pointer;
 }
 
@@ -568,7 +567,7 @@ function sliderHandle() {
   margin-bottom: 0.25rem;
   border-radius: 0.25rem;
   appearance: auto;
-  accent-color: rgba(26, 32, 44, 0.7);
+  accent-color: rgb(26 32 44 / 70%);
 }
 
 /* .lat_range_input::-webkit-slider-runnable-track {
@@ -603,10 +602,10 @@ function sliderHandle() {
 .lat_range_label {
   width: 100%;
   height: 1rem;
-  font-size: 0.75rem;
-  font-family: Source Han Sans CN;
-  font-weight: 400;
   padding-left: 0.25rem;
-  color: rgba(26, 32, 44, 0.7);
+  color: rgb(26 32 44 / 70%);
+  font-weight: 400;
+  font-size: 0.75rem;
+  font-family: "Source Han Sans CN";
 }
 </style>

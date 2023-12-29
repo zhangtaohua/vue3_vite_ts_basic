@@ -23,6 +23,7 @@ onMounted(() => {
 });
 const pitchSatelliteAngle = ref([-30, 30]);
 
+// 右边的
 const initPitchSlider = () => {
   $("#pitchSlider").roundSlider("destroy");
   $("#pitchSlider").roundSlider({
@@ -39,6 +40,27 @@ const initPitchSlider = () => {
     handleSize: "15,2",
     showTooltip: !1,
     update: (t) => {
+      pitchSatelliteAngle.value = t.value.split(",");
+    },
+  });
+};
+
+// 左边的
+const initSideSlider = () => {
+  $("#sideSlider").roundSlider("destroy");
+  $("#sideSlider").roundSlider({
+    value: pitchSatelliteAngle.value[0] + "," + pitchSatelliteAngle.value[1],
+    min: "-45",
+    max: "45",
+    startAngle: -45,
+    circleShape: "custom-quarter",
+    radius: 50,
+    width: 6,
+    sliderType: "range",
+    handleShape: "square",
+    handleSize: "12,2",
+    showTooltip: !1,
+    update: function (t) {
       pitchSatelliteAngle.value = t.value.split(",");
     },
   });
