@@ -65,7 +65,7 @@ export default class OlMapHelper extends OlBase {
   private __vuepopupInsMap: any = null;
 
   private __tiandituVecXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_vec,
+    url: mapXYZUrl.tiandi_spm_vec,
     id: tiandituVec,
     name: tiandituVec,
     zIndex: 1,
@@ -74,7 +74,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituVecZhXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_vec_zh_label,
+    url: mapXYZUrl.tiandi_spm_vec_zh_label,
     id: tiandituVecZhLabel,
     name: tiandituVecZhLabel,
     zIndex: 2,
@@ -83,7 +83,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituVecEnXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_vec_en_label,
+    url: mapXYZUrl.tiandi_spm_vec_en_label,
     id: tiandituVecEnLabel,
     name: tiandituVecEnLabel,
     zIndex: 2,
@@ -92,7 +92,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituImgXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_img,
+    url: mapXYZUrl.tiandi_spm_img,
     id: tiandituImg,
     name: tiandituImg,
     zIndex: 1,
@@ -101,7 +101,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituImgZhXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_img_zh_label,
+    url: mapXYZUrl.tiandi_spm_img_zh_label,
     id: tiandituImgZhLabel,
     name: tiandituImgZhLabel,
     zIndex: 2,
@@ -110,7 +110,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituImgEnXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_img_en_label,
+    url: mapXYZUrl.tiandi_spm_img_en_label,
     id: tiandituImgEnLable,
     name: tiandituImgEnLable,
     zIndex: 2,
@@ -119,7 +119,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituTerXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_ter,
+    url: mapXYZUrl.tiandi_spm_ter,
     id: tiandituTer,
     name: tiandituTer,
     zIndex: 1,
@@ -128,7 +128,7 @@ export default class OlMapHelper extends OlBase {
   };
 
   private __tiandituTerLabelXYZOptions: XYZOptions = {
-    url: mapXYZUrl.tiandi_lnglat_ter_label,
+    url: mapXYZUrl.tiandi_spm_ter_label,
     id: tiandituTerLabel,
     name: tiandituTerLabel,
     zIndex: 2,

@@ -26,7 +26,7 @@
       <div id="editor-text-area">
         <Editor
           v-model="htmlValue"
-          style="height: auto; min-height: 29.7cm; outline-width: 1px; outline-color: red"
+          style="height: auto; min-height: 29.7cm; outline-width: 1px; outline-color: red;"
           :defaultConfig="editorConfig"
           :mode="mode"
           @onCreated="handleCreated"
