@@ -95,3 +95,5 @@ https://maplibre.org/maplibre-gl-js/docs/
 https://github.com/mbloch/mapshaper
 
 https://juejin.cn/post/7196614877309370427 对 GeoJSON 的重投影 pnpm add reproj-helper pnpm add reproject
+
+https://github.com/missive/emoji-mart https://github.com/delowardev/vue3-emoji-picker

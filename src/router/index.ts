@@ -159,6 +159,17 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  {
+    path: "/felt",
+    name: "felt",
+    children: [
+      {
+        path: "/felt/base",
+        name: "feltBase",
+        component: () => import("@/views/felt/baseExample.vue"),
+      },
+    ],
+  },
   // pathMatch is the name of the param, e.g., going to /not/found yields
   // { params: { pathMatch: ['not', 'found'] }}
   // this is thanks to the last *, meaning repeated params and it is necessary if you

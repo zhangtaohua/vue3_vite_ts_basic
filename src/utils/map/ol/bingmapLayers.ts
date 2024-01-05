@@ -92,6 +92,7 @@ export default class OlXYZLayers {
       // 这里设置 是用来控制图层显示的层级范围
       minZoom: minZoom,
       maxZoom: maxZoom,
+      placeholderTiles: false,
     });
 
     const name = options.name ? options.name : nanoid(10);
