@@ -32,12 +32,12 @@ function disposeMap() {}
 
 <style lang="scss" scoped>
 .header_menu {
-  width: 100vw;
-  height: 3rem;
   position: fixed;
   top: 0;
   left: 0;
-  background: rgba(255, 255, 0, 0.2);
   z-index: 100;
+  width: 100vw;
+  height: 3rem;
+  background: rgb(255 255 0 / 20%);
 }
 </style>

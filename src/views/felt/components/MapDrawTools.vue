@@ -453,36 +453,36 @@ function sendActionHandle(whichTools: string, action: string, index = -1) {
 
 .tools_mask {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
   top: 0;
   left: 0;
   z-index: 1;
-  background: rgba(255, 0, 0, 0.25);
+  width: 100vw;
+  height: 100vh;
+  background: rgb(255 0 0 / 25%);
 }
 
 .shape_wrapper {
   position: relative;
+  z-index: 2;
   width: auto;
   height: 2.5rem;
-  z-index: 2;
   border-radius: 0.25rem;
 }
 
 .shape_wrapper:hover {
-  background: rgba(229, 229, 229, 1);
+  background: rgb(229 229 229 / 100%);
 }
 
 .shape_wrapper_halfactive {
-  background: rgba(229, 229, 229, 1);
+  background: rgb(229 229 229 / 100%);
 }
 
 .shape_wrapper_active {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 }
 
 .shape_wrapper_active:hover {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 }
 
 .shape_dbox {
@@ -498,44 +498,44 @@ function sendActionHandle(whichTools: string, action: string, index = -1) {
 }
 
 .shape_svg_active {
-  filter: drop-shadow(2000vw 0 0 #ffffff);
   transform: translate(-2000vw);
+  filter: drop-shadow(2000vw 0 0 #fff);
 }
 
 .shape_dtip {
   position: absolute;
+  top: 3.25rem;
+  left: 0;
+  z-index: 4;
   width: auto;
   height: 2rem;
-  background: rgba(0, 0, 0, 255);
-  top: 3.25rem;
-  left: 0rem;
-  border-radius: 0.25rem;
   padding: 0.5rem;
-  z-index: 4;
+  background: rgb(0 0 0 / 25500%);
+  border-radius: 0.25rem;
 }
 
 .shape_dtip_title {
   width: max-content;
   height: 100%;
-  font-size: 0.875rem;
-  color: #ffffff;
   margin-right: 0.75rem;
+  color: #fff;
+  font-size: 0.875rem;
 }
 
 .shape_dtip_hotkey {
   width: max-content;
   height: 100%;
+  color: rgb(255 255 255 / 50%);
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.5);
 }
 
 .shape_mbox {
   width: 1rem;
   height: 1rem;
   margin-left: 0.125rem;
-  cursor: pointer;
-  outline: none;
   border: none;
+  outline: none;
+  cursor: pointer;
   user-select: none;
 }
 
@@ -578,34 +578,34 @@ function sendActionHandle(whichTools: string, action: string, index = -1) {
 
 .shape_mtip {
   position: absolute;
-  width: auto;
-  height: 2rem;
-  background: rgba(0, 0, 0, 1);
   top: 3.25rem;
   left: 2rem;
-  border-radius: 0.25rem;
-  padding: 0.5rem;
   z-index: 4;
+  width: auto;
+  height: 2rem;
+  padding: 0.5rem;
+  background: rgb(0 0 0 / 100%);
+  border-radius: 0.25rem;
 }
 
 .shape_mtip_title {
   width: max-content;
   height: 100%;
+  color: #fff;
   font-size: 0.875rem;
-  color: #ffffff;
 }
 
 .shape_menus {
   position: absolute;
+  top: 3.25rem;
+  left: 0;
+  z-index: 3;
   width: auto;
   height: auto;
-  background: rgba(255, 255, 255, 1);
-  top: 3.25rem;
-  left: 0rem;
+  padding: 0.5rem 0;
+  background: rgb(255 255 255 / 100%);
   border-radius: 0.5rem;
-  padding: 0.5rem 0px;
-  z-index: 3;
-  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px 3px rgb(0 0 0 / 15%);
 }
 
 .shapes_menu {
@@ -615,27 +615,27 @@ function sendActionHandle(whichTools: string, action: string, index = -1) {
 }
 
 .shapes_menu:hover {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 
   .shapes_menu_show {
-    filter: drop-shadow(2000vw 0 0 #ffffff);
     transform: translate(-2000vw);
+    filter: drop-shadow(2000vw 0 0 #fff);
   }
 
   .shapes_menu_title {
-    color: #ffffff;
+    color: #fff;
   }
 
   .shapes_menu_hotkey {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgb(255 255 255 / 50%);
   }
 }
 
 .shapes_menu_image {
   width: 1.5rem;
   height: 2rem;
-  margin-left: 0.5rem;
   margin-right: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .shapes_menu_show {
@@ -644,18 +644,18 @@ function sendActionHandle(whichTools: string, action: string, index = -1) {
 }
 
 .shapes_menu_title {
+  flex-grow: 1;
   width: auto;
   height: 100%;
-  flex-grow: 1;
   font-size: 0.875rem;
 }
 
 .shapes_menu_hotkey {
   width: 1rem;
   height: 100%;
-  font-size: 0.875rem;
   margin-right: 0.75rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgb(0 0 0 / 50%);
+  font-size: 0.875rem;
 }
 
 .search_dbox {

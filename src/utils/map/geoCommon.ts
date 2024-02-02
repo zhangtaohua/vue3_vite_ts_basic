@@ -406,7 +406,7 @@ export function getGeoPolygonFromLDRU(
         [ru_longitude, ld_latitude],
         [ru_longitude, ru_latitude],
         [ld_longitude, ru_latitude],
-        [ld_latitude, ld_latitude],
+        [ld_longitude, ld_latitude],
       ],
     ],
     ...props,

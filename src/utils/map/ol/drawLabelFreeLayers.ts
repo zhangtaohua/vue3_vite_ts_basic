@@ -1690,7 +1690,7 @@ export default class OlDrawBasic {
               ...customMetaData,
             };
           }
-          console.log("modifyend", oldOptions, options);
+          console.log("modifyend2", features, customMetaData, oldOptions, options);
           if (oldOptions) {
             this.__currentOptions = oldOptions;
             this.getDrawData(oldOptions)(event);
@@ -1942,6 +1942,9 @@ export default class OlDrawBasic {
   }
 
   public clearAllDrawShape() {
+    if (this.dcPopupOptions && this.dcPopupOptions.id) {
+      this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
+    }
     this.interactionSource && this.interactionSource.clear();
   }
 

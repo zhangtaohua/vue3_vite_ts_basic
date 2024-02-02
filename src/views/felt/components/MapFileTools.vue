@@ -591,36 +591,36 @@ function sendActionHandle(action: string, children: any) {
 
 .tools_mask {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
   top: 0;
   left: 0;
   z-index: 1;
-  background: rgba(255, 0, 0, 0.25);
+  width: 100vw;
+  height: 100vh;
+  background: rgb(255 0 0 / 25%);
 }
 
 .first_wrapper {
   position: relative;
+  z-index: 2;
   width: auto;
   height: 2.5rem;
-  z-index: 2;
   border-radius: 0.25rem;
 }
 
 .first_wrapper:hover {
-  background: rgba(229, 229, 229, 1);
+  background: rgb(229 229 229 / 100%);
 }
 
 .first_wrapper_halfactive {
-  background: rgba(229, 229, 229, 1);
+  background: rgb(229 229 229 / 100%);
 }
 
 .first_wrapper_active {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 }
 
 .first_wrapper_active:hover {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 }
 
 .first_dbox {
@@ -636,17 +636,17 @@ function sendActionHandle(action: string, children: any) {
 }
 
 .shape_svg_active {
-  filter: drop-shadow(2000vw 0 0 #ffffff);
   transform: translate(-2000vw);
+  filter: drop-shadow(2000vw 0 0 #fff);
 }
 
 .first_mbox {
   width: 1rem;
   height: 1rem;
   margin-left: 0.125rem;
-  cursor: pointer;
-  outline: none;
   border: none;
+  outline: none;
+  cursor: pointer;
   user-select: none;
 }
 
@@ -661,15 +661,15 @@ function sendActionHandle(action: string, children: any) {
 
 .first_menus {
   position: absolute;
+  top: 3.25rem;
+  left: 0;
+  z-index: 3;
   width: auto;
   height: auto;
-  background: rgba(255, 255, 255, 1);
-  top: 3.25rem;
-  left: 0rem;
+  padding: 0.5rem 0;
+  background: rgb(255 255 255 / 100%);
   border-radius: 0.5rem;
-  padding: 0.5rem 0px;
-  z-index: 3;
-  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px 3px rgb(0 0 0 / 15%);
 }
 
 .first_big_menu {
@@ -685,36 +685,36 @@ function sendActionHandle(action: string, children: any) {
 }
 
 .first_menu:hover {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 
   .first_menu_show {
-    filter: drop-shadow(2000vw 0 0 #ffffff);
     transform: translate(-2000vw);
+    filter: drop-shadow(2000vw 0 0 #fff);
   }
 
   .first_menu_title {
-    color: #ffffff;
+    color: #fff;
   }
 
   .first_menu_hotkey {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgb(255 255 255 / 50%);
   }
 }
 
 .first_menu_title {
+  flex-grow: 1;
   width: max-content;
   height: 100%;
-  flex-grow: 1;
-  font-size: 0.875rem;
   margin-left: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .first_menu_hotkey {
   width: max-content;
   height: 100%;
-  font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.7);
   margin-right: 0.5rem;
+  color: rgb(0 0 0 / 70%);
+  font-size: 0.875rem;
 }
 
 .first_menu_image {
@@ -735,20 +735,20 @@ function sendActionHandle(action: string, children: any) {
 
 .first_menu_gap {
   width: calc(100% - 1rem);
-  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 1px rgb(0 0 0 / 10%);
 }
 
 .second_menus {
   position: absolute;
+  top: 0;
+  left: 11rem;
+  z-index: 3;
   width: auto;
   height: auto;
-  background: rgba(255, 255, 255, 1);
-  top: 0rem;
-  left: 11rem;
+  padding: 0.5rem 0;
+  background: rgb(255 255 255 / 100%);
   border-radius: 0.5rem;
-  padding: 0.5rem 0px;
-  z-index: 3;
-  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px 3px rgb(0 0 0 / 15%);
 }
 
 .second_big_menu {
@@ -764,36 +764,36 @@ function sendActionHandle(action: string, children: any) {
 }
 
 .second_menu:hover {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 
   .second_menu_show {
-    filter: drop-shadow(2000vw 0 0 #ffffff);
     transform: translate(-2000vw);
+    filter: drop-shadow(2000vw 0 0 #fff);
   }
 
   .second_menu_title {
-    color: #ffffff;
+    color: #fff;
   }
 
   .second_menu_hotkey {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgb(255 255 255 / 50%);
   }
 }
 
 .second_menu_title {
+  flex-grow: 1;
   width: max-content;
   height: 100%;
-  flex-grow: 1;
-  font-size: 0.875rem;
   margin-left: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .second_menu_hotkey {
   width: max-content;
   height: 100%;
-  font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.7);
   margin-right: 0.5rem;
+  color: rgb(0 0 0 / 70%);
+  font-size: 0.875rem;
 }
 
 .second_menu_image {
@@ -814,20 +814,20 @@ function sendActionHandle(action: string, children: any) {
 
 .second_menu_gap {
   width: calc(100% - 1rem);
-  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 1px rgb(0 0 0 / 10%);
 }
 
 .third_menus {
   position: absolute;
+  top: 0;
+  left: 12rem;
+  z-index: 3;
   width: auto;
   height: auto;
-  background: rgba(255, 255, 255, 1);
-  top: 0rem;
-  left: 12rem;
+  padding: 0.5rem 0;
+  background: rgb(255 255 255 / 100%);
   border-radius: 0.5rem;
-  padding: 0.5rem 0px;
-  z-index: 3;
-  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px 3px rgb(0 0 0 / 15%);
 }
 
 .third_menu {
@@ -837,30 +837,30 @@ function sendActionHandle(action: string, children: any) {
 }
 
 .third_menu:hover {
-  background: rgba(243, 63, 117, 1);
+  background: rgb(243 63 117 / 100%);
 
   .third_menu_title {
-    color: #ffffff;
+    color: #fff;
   }
 
   .third_menu_hotkey {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgb(255 255 255 / 50%);
   }
 }
 
 .third_menu_title {
+  flex-grow: 1;
   width: max-content;
   height: 100%;
-  flex-grow: 1;
-  font-size: 0.875rem;
   margin-left: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .third_menu_hotkey {
   width: max-content;
   height: 100%;
-  font-size: 0.875rem;
-  color: rgba(0, 0, 0, 0.7);
   margin-right: 0.5rem;
+  color: rgb(0 0 0 / 70%);
+  font-size: 0.875rem;
 }
 </style>

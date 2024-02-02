@@ -1,0 +1,211 @@
+@charset "UTF-8";
+
+/* :root -> 获取根元素html */
+:root {
+  --s-1: 1px;
+  --s-2: 2px;
+  --s-3: 3px;
+  --s-4: 4px;
+  --s-5: 5px;
+  --s-6: 6px;
+  --s-7: 7px;
+  --s-8: 8px;
+  --s-9: 9px;
+  --s-10: 10px;
+  --s-12: 12px;
+  --s-14: 14px;
+  --s-16: 16px;
+  --s-18: 18px;
+  --s-20: 20px;
+  --s-22: 22px;
+  --s-24: 24px;
+  --s-26: 26px;
+  --s-28: 28px;
+  --s-30: 30px;
+  --s-32: 32px;
+  --s-34: 34px;
+  --s-36: 36px;
+  --s-38: 38px;
+  --s-40: 40px;
+  --s-42: 42px;
+  --s-44: 44px;
+  --s-46: 46px;
+  --s-48: 48px;
+  --s-50: 50px;
+  --s-52: 52px;
+  --s-54: 54px;
+  --s-56: 56px;
+  --s-58: 58px;
+  --s-60: 60px;
+  --s-62: 62px;
+  --s-64: 64px;
+  --s-66: 66px;
+  --s-68: 68px;
+  --s-1r: 1rem;
+  --s-2r: 2rem;
+  --s-3r: 3rem;
+  --s-4r: 4rem;
+  --s-5r: 5rem;
+  --s-6r: 6rem;
+  --s-7r: 7rem;
+  --s-8r: 8rem;
+  --s-9r: 9rem;
+  --s-10r: 10rem;
+  --s-12r: 12rem;
+  --s-14r: 14rem;
+  --s-16r: 16rem;
+  --s-18r: 18rem;
+  --s-20r: 20rem;
+  --s-22r: 22rem;
+  --s-24r: 24rem;
+  --s-26r: 26rem;
+  --s-28r: 28rem;
+  --s-30r: 30rem;
+  --s-32r: 32rem;
+  --s-34r: 34rem;
+  --s-36r: 36rem;
+  --s-38r: 38rem;
+  --s-40r: 40rem;
+  --s-42r: 42rem;
+  --s-44r: 44rem;
+  --s-46r: 46rem;
+  --s-48r: 48rem;
+  --s-50r: 50rem;
+  --s-52r: 52rem;
+  --s-54r: 54rem;
+  --s-56r: 56rem;
+  --s-58r: 58rem;
+  --s-60r: 60rem;
+  --s-62r: 62rem;
+  --s-64r: 64rem;
+  --s-66r: 66rem;
+  --s-68r: 68rem;
+  --fs-h1: 28px;
+  --fs-h2: 24px;
+  --fs-h3: 20px;
+  --fs-h4: 18px;
+  --fs-h5: 16px;
+  --fs-h6: 14px;
+  --fs-h7: 12px;
+  --fs-h1r: 1.75rem;
+  --fs-h2r: 1.5rem;
+  --fs-h3r: 1.25rem;
+  --fs-h4r: 1.125rem;
+  --fs-h5r: 1rem;
+  --fs-h6r: 0.875rem;
+  --fs-h7r: 0.75rem;
+  --fc-black: rgb(0 0 0 / 100%);
+  --fc-appname: rgb(34 56 81 / 100%);
+  --fc-appname-s: rgb(34 56 81 / 44%);
+  --fc-appname-en: rgb(103 103 103 / 100%);
+  --fc-title: rgb(48 49 51 / 100%);
+  --fc-content: rgb(74 74 74 / 100%);
+  --fc-label: rgb(168 171 178 / 100%);
+  --fc-active: rgb(64 158 255 / 100%);
+  --fc-hover: rgb(100 158 255 / 100%);
+  --fc-white: rgb(255 255 255 / 100%);
+  --fc-gwhite: rgb(232 234 237 / 100%);
+  --fc-waring: rgb(255 127 0);
+  --fc-error: rgb(241 51 13 / 100%);
+  --fc-success: rgb(0 223 2 / 100%);
+  --fc-failed: rgb(241 51 13 / 100%);
+  --icon-active: rgb(64 158 255 / 100%);
+  --icon-hover: rgb(100 158 255 / 100%);
+  --icon-search: rgb(74 74 74 / 88%);
+  --icon-dis: rgb(180 180 180 / 100%);
+  --header-bg: rgb(26 30 39 / 100%);
+  --header-abg: rgb(0 0 0 / 100%);
+  --header-border: rgb(43 46 51 / 100%);
+  --map-level-border: rgb(255 255 255 / 70%);
+  --panel-ls-bg: rgb(255 255 255 / 100%);
+  --panel-ls-area-bg: rgb(240 242 245 / 100%);
+  --panel-ls-ctx-bg: rgb(240 242 245 / 100%);
+  --panel-ls-item-bg: rgb(255 255 255 / 100%);
+  --panel-ls-modal-bg: rgb(255 255 255 / 85%);
+  --panel-ls-modal-border: rgb(220 223 230 / 100%);
+  --panel-line-gap: rgb(65 72 83 / 100%);
+  --panel-shasow: rgb(26 30 39 / 100%);
+  --panel-item-active: rgb(64 158 255 / 100%);
+  --panel-shadow: rgb(206 211 219 / 68%);
+  --panel-inputarea-bg: rgb(243 243 243 / 100%);
+  --options-bg: rgb(230 232 235 / 100%);
+  --options-abg: rgb(220 220 220 / 100%);
+  --search-tab-bg: rgb(236 245 255 / 100%);
+  --search-tab-active: rgb(64 158 255 / 100%);
+  --tips-modal-bg: rgb(0 0 0 / 100%);
+  --info-modal-bg: rgb(54 60 69 / 100%);
+  --info-modal-cbg: rgb(65 72 83 / 100%);
+  --info-modal-hover: rgb(38 42 49 / 100%);
+  --hgap-line-border: rgb(65 72 83 / 100%);
+  --hgap-line-light-border: rgb(77 87 101 / 100%);
+  --login-panel-bg: rgb(255 255 255 / 100%);
+  --login-panel-rbg: rgb(241 241 241 / 100%);
+  --login-mask-bg: rgb(26 30 39 / 40%);
+  --login-border: rgb(220 223 230 / 100%);
+  --login-gcode-bg: rgb(180 201 225 / 100%);
+  --login-gcode-dbg: rgb(148 165 173);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* rem vw/vh */
+  width: 100vw;
+  margin: 0;
+  font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial,
+    sans-serif;
+
+  /* 禁止用户鼠标在页面上选中文字/图片等 */
+
+  /* user-select: none; */
+  -webkit-tap-highlight-color: transparent; /* webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节 */
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea {
+  outline: none !important;
+  box-shadow: none;
+  appearance: none; /* 去除系统默认的样式 */
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%); /* 点击高亮的颜色 */
+}
+
+input:focus,
+input,
+textarea:focus {
+  outline: none !important;
+  box-shadow: none;
+  appearance: none; /* 去除系统默认的样式 */
+  -webkit-tap-highlight-color: rgb(0 0 0 / 0%); /* 点击高亮的颜色 */
+}
+
+button:focus {
+  outline: none;
+}

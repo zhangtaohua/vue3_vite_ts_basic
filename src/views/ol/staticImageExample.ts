@@ -158,7 +158,7 @@ export default class OlMapHelper extends OlBase {
     [bingMap]: {
       id: `${bingMap}_Aerial`,
       name: `${bingMap}_Aerial`,
-      imagerySet: bingmapImagerySet.Aerial,
+      imagerySet: bingmapImagerySet.AerialWithLabels,
       zIndex: 1,
       extent: [],
       wrapX: true,

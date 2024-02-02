@@ -1903,6 +1903,9 @@ export default class OlDrawBasic {
   }
 
   public clearAllDrawShape() {
+    if (this.dcPopupOptions && this.dcPopupOptions.id) {
+      this.vuePopupIns?.hiddenPopupByID(this.dcPopupOptions.id);
+    }
     this.interactionSource && this.interactionSource.clear();
   }
 
