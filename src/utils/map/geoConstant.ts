@@ -24,6 +24,7 @@ export const MAP_INTER_ZOOMOUT = "zoomout";
 export const isCustomizeFlag = "customize";
 export const customMeta = "customMeta";
 export const isCustomOldDrawData = "isCustomOldDrawData";
+export const isCustomImageMask = "isCustomImageMask";
 
 // 不要改下面的名字，不然可能导致画不成功图形
 export const MAP_DRAW_TEXT = "Text";
@@ -32,10 +33,12 @@ export const MAP_DRAW_SQUARE = "Square";
 export const MAP_DRAW_RECTANGLE = "Rectangle";
 export const MAP_DRAW_POLYGON = "Polygon";
 export const MAP_DRAW_LINE = "LineString";
+export const MAP_DRAW_CURVE = "CurveLineString";
 export const MAP_DRAW_CIRCLE = "Circle";
 export const MAP_DRAW_GEOMETRY_CIRCLE = MAP_DRAW_CIRCLE;
 export const MAP_DRAW_GEODESIC_CIRCLE = "GeodesicCircle";
 export const MAP_DRAW_GEOMETRYCOLLECTION = "GeometryCollection";
+export const MAP_DRAW_UPLOAD_IMAGE = "GeoUploadImage";
 
 export const MAP_DRAW_CLEAR = "Clear";
 

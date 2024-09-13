@@ -1,0 +1,26 @@
+.ol_popup_wrapper {
+  position: absolute;
+  width: auto;
+  min-width: 250px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.ol_popup_closer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  color: rgb(240 240 240 100%);
+  font-weight: bolder;
+  font-size: 24px;
+  font-family: "PingFang SC";
+  text-align: center;
+  cursor: pointer;
+}
+
+.ol_popup_content {
+  width: 100%;
+  height: 100%;
+}

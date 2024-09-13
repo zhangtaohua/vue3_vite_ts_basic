@@ -94,12 +94,14 @@ export function calibrateWrapLongitudeLatitude(lng: number, lat: number) {
   let longitude = lng;
   const latitude = lat;
   // 这里由于openlayer 会得到越过-180 到 180 的经度值
-  const posLng = Math.abs(longitude) + 180;
-  const divisor = Math.floor(posLng / 360);
-  if (longitude < 0) {
-    longitude = longitude + divisor * 360;
-  } else if (longitude > 0) {
-    longitude = longitude - divisor * 360;
+  if (longitude < -180 || longitude > 180) {
+    const posLng = Math.abs(longitude) + 180;
+    const divisor = Math.floor(posLng / 360);
+    if (longitude < 0) {
+      longitude = longitude + divisor * 360;
+    } else if (longitude > 0) {
+      longitude = longitude - divisor * 360;
+    }
   }
   return {
     longitude,
@@ -374,6 +376,14 @@ export function getGeoPointFromCoords(coords: any, props: any = {}) {
   return Geojson.parse(point, { Point: ["latitude", "longitude"] });
 }
 
+export function getGeoPointFromCoordsArray(coords: any, props: any = {}) {
+  const points = {
+    multiPoint: coords,
+    ...props,
+  };
+  return Geojson.parse(points, { MultiPoint: "multiPoint" });
+}
+
 export function getGeoPointFromLongitudeLatitude(longitude: number, latitude: number, props: any = {}) {
   const point = {
     longitude,
@@ -422,12 +432,57 @@ export function getGeoPolygonFromPolygonArray(polygonArray: any, props: any = {}
   return Geojson.parse(polygon, { Polygon: "polygon" });
 }
 
+export function getGeoPointPolygonFromCoords(ldCoordsLnglag: any, ruCoordsLnglag: any) {
+  const data = [
+    {
+      x: ruCoordsLnglag[1],
+      y: ldCoordsLnglag[0],
+    },
+    {
+      polygon: [
+        [
+          [ldCoordsLnglag[0], ldCoordsLnglag[1]],
+          [ruCoordsLnglag[0], ldCoordsLnglag[1]],
+          [ruCoordsLnglag[0], ruCoordsLnglag[1]],
+          [ldCoordsLnglag[0], ruCoordsLnglag[1]],
+          [ldCoordsLnglag[0], ldCoordsLnglag[1]],
+        ],
+      ],
+    },
+  ];
+  return Geojson.parse(data, { Point: ["x", "y"], Polygon: "polygon" });
+}
+
+export function getGeoMultiPolygonFromPolygonArray(polygonArray: any, props: any = {}) {
+  const polygon = {
+    multiPolygon: polygonArray,
+    ...props,
+  };
+  return Geojson.parse(polygon, { MultiPolygon: "multiPolygon" });
+}
+
+export function getGeoPolygonFromCoords(coords: any, props: any = {}) {
+  const polygon = {
+    polygon: coords[0],
+    ...props,
+  };
+  return Geojson.parse(polygon, { Polygon: "polygon" });
+}
+
 export function getGeoLineFromArray(twoDimArray: any, props: any = {}) {
   const lindObj = {
     line: twoDimArray,
     ...props,
   };
   return Geojson.parse(lindObj, { LineString: "line" });
+}
+
+export function getGeoMultiLineFromCoordsArray(coordsArray: any, props: any = {}) {
+  const lindObj = {
+    multiLineString: coordsArray,
+    ...props,
+  };
+  return Geojson.parse(lindObj, { MultiLineString: "multiLineString" });
 }
 
 export function getGeoMultiLineFromArray(twoDimArray: any, props: any = {}) {
@@ -572,4 +627,42 @@ export function getMultiDimArrayFromLngLatObj(positions: any) {
     }
   }
   return multiDimArray;
+}
+
+export function makeGeometryCollectionFromGeojson(geojson: any) {
+  // const geojsonTemp = {
+  //   type: "FeatureCollection",
+  //   features: [
+  //     {
+  //       type: "Feature",
+  //       properties: {},
+  //       geometry: {
+  //         type: "GeometryCollection",
+  //         geometries: [],
+  //       },
+  //     },
+  //   ],
+  // };
+
+  const geojsonTemp = {
+    type: "GeometryCollection",
+    geometries: [],
+  };
+
+  if (geojson && geojson.features && geojson.features.length) {
+    if (geojson.features.length == 1) {
+      return geojson.features[0].geometry;
+    } else {
+      for (let i = 0; i < geojson.features.length; i++) {
+        const feature = geojson.features[i];
+        const geometry = feature.geometry;
+        if (geometry) {
+          geojsonTemp.geometries.push(geometry);
+        }
+      }
+      return geojsonTemp;
+    }
+  } else {
+    return null;
+  }
 }

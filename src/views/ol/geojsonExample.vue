@@ -31,21 +31,22 @@ import geojson23 from "@/assets/json/geometryProvince/23.json";
 import geojson31 from "@/assets/json/geometryProvince/31.json";
 import geojson41 from "@/assets/json/geometryProvince/41.json";
 import maptest from "@/assets/json/map.json";
+import ChinaTest from "@/assets/json/China.json";
 import geojsonDraw from "@/assets/json/geojsonDraw.json";
 
 onMounted(() => {
   initMap();
-  addGeojson(geojsonsSource.geojson1);
+  // addGeojson(geojsonsSource.geojson1);
   addGeojson(geojsonsSource.geojson2);
-  addGeojson(geojsonsSource.geojson3);
-  addGeojson(geojsonsSource.geojson4);
-  addGeojson(geojsonsSource.geojson5);
-  addGeojson(geojsonsSource.geojson6);
-  addGeojson(geojsonsSource.geojson7);
-  addGeojson(geojsonsSource.geojson8);
-  addGeojson(geojsonsSource.geojson9);
-  addGeojson(geojsonsSource.geojson10);
-  addGeojson(geojsonsSource.geojson11);
+  // addGeojson(geojsonsSource.geojson3);
+  // addGeojson(geojsonsSource.geojson4);
+  // addGeojson(geojsonsSource.geojson5);
+  // addGeojson(geojsonsSource.geojson6);
+  // addGeojson(geojsonsSource.geojson7);
+  // addGeojson(geojsonsSource.geojson8);
+  // addGeojson(geojsonsSource.geojson9);
+  // addGeojson(geojsonsSource.geojson10);
+  // addGeojson(geojsonsSource.geojson11);
   initGUI();
 });
 
@@ -252,7 +253,7 @@ const geojsonsSource = {
   },
   geojson2: {
     id: "geojson_test_2",
-    data: geojson11,
+    data: ChinaTest,
   },
   geojson3: {
     id: "geojson_test_3",

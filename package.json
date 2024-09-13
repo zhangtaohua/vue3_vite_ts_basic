@@ -51,6 +51,7 @@
     "pinia": "^2.1.6",
     "satellite.js": "^5.0.0",
     "snabbdom": "^3.5.1",
+    "three": "^0.168.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.4",
     "vue3-colorpicker": "^2.2.2"
@@ -61,6 +62,7 @@
     "@types/cesium": "^1.70.0",
     "@types/ol": "^7.0.0",
     "@types/ol-ext": "npm:@siedlerchr/types-ol-ext",
+    "@types/three": "^0.168.0",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "@vitejs/plugin-vue": "^4.1.0",

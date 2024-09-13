@@ -503,7 +503,7 @@ export default class CesiumBase {
     return this.heightToZoom(height);
   }
 
-  public zoomInOut(isZoomin = true, duration = 1000) {
+  public zoomInOut(isZoomin = true, duration = 2) {
     if (!this.camera) {
       return null;
     }
@@ -585,7 +585,7 @@ export default class CesiumBase {
     }
   }
 
-  public flyToLngLat(longitude = 0, latitude = 0, duration = 1000) {
+  public flyToLngLat(longitude = 0, latitude = 0, duration = 2) {
     if (!this.camera) {
       return null;
     }
@@ -598,7 +598,7 @@ export default class CesiumBase {
     });
   }
 
-  public flyToLngLatHeight(longitude = 0, latitude = 0, height = 0, duration = 1000) {
+  public flyToLngLatHeight(longitude = 0, latitude = 0, height = 0, duration = 2) {
     if (!this.camera) {
       return null;
     }
@@ -609,7 +609,7 @@ export default class CesiumBase {
     });
   }
 
-  public flyToPosition(position: any, duration = 1000) {
+  public flyToPosition(position: any, duration = 2) {
     if (!this.camera) {
       return null;
     }
@@ -630,7 +630,7 @@ export default class CesiumBase {
     // });
   }
 
-  public flyToHeight(height: number, duration = 1000) {
+  public flyToHeight(height: number, duration = 2) {
     if (!this.camera) {
       return null;
     }
@@ -644,12 +644,12 @@ export default class CesiumBase {
     });
   }
 
-  public flyToZoom(zoom = 3, duration = 1000) {
+  public flyToZoom(zoom = 3, duration = 2) {
     const height = this.zoomToHeight(zoom);
     this.flyToHeight(height, duration);
   }
 
-  public flyToLngLatZoom(longitude = 0, latitude = 0, zoom = 3, duration = 1000) {
+  public flyToLngLatZoom(longitude = 0, latitude = 0, zoom = 3, duration = 2) {
     const height = this.zoomToHeight(zoom);
     this.flyToLngLatHeight(longitude, latitude, height, duration);
   }
@@ -708,7 +708,7 @@ export default class CesiumBase {
     return getCenterFromExtent(extent);
   }
 
-  public fitToExtent(extent: any, duration = 1000) {
+  public fitToExtent(extent: any, duration = 2) {
     const center = getCenterFromExtent(extent);
     if (center?.length) {
       this.flyToLngLat(center[0], center[1], duration);
@@ -716,13 +716,7 @@ export default class CesiumBase {
   }
 
   // left down -> right up
-  public fitToLDRU(
-    ld_longitude: number,
-    ld_latitude: number,
-    ru_longitude: number,
-    ru_latitude: number,
-    duration = 1000,
-  ) {
+  public fitToLDRU(ld_longitude: number, ld_latitude: number, ru_longitude: number, ru_latitude: number, duration = 2) {
     if (ld_longitude > ru_longitude || ld_latitude > ru_latitude) {
       return;
     }

@@ -10,7 +10,7 @@
         "geoType": "Point",
         "coordinates": [32.749546331516605, -20.036625912504803],
         "center": [32.749546331516605, -20.036625912504803],
-        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "area": { "area": 0, "areaString": "0 m²" },
         "length": { "length": 0, "lengthString": "0 m" },
         "editProps": {
           "name": "",
@@ -62,7 +62,7 @@
               "geoType": "Point",
               "coordinates": [32.749546331516605, -20.036625912504803],
               "center": [32.749546331516605, -20.036625912504803],
-              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "area": { "area": 0, "areaString": "0 m²" },
               "length": { "length": 0, "lengthString": "0 m" },
               "editProps": {
                 "name": "",
@@ -101,7 +101,7 @@
               }
             }
           },
-          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "area": { "area": 0, "areaString": "0 m²" },
           "length": { "length": 0, "lengthString": "0 m" },
           "oldDrawOptions": {
             "shape": "Point",
@@ -126,7 +126,7 @@
         "geoType": "Point",
         "coordinates": [39.64246928901102, -25.311708733856946],
         "center": [39.64246928901102, -25.311708733856946],
-        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "area": { "area": 0, "areaString": "0 m²" },
         "length": { "length": 0, "lengthString": "0 m" },
         "__drawData": {
           "id": "draw_laP_pTSM2J",
@@ -143,11 +143,11 @@
               "geoType": "Point",
               "coordinates": [39.64246928901102, -25.311708733856946],
               "center": [39.64246928901102, -25.311708733856946],
-              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "area": { "area": 0, "areaString": "0 m²" },
               "length": { "length": 0, "lengthString": "0 m" }
             }
           },
-          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "area": { "area": 0, "areaString": "0 m²" },
           "length": { "length": 0, "lengthString": "0 m" },
           "oldDrawOptions": {
             "shape": "Text",
@@ -172,7 +172,7 @@
         "geoType": "Point",
         "coordinates": [42.18287878620701, -17.793421273808065],
         "center": [42.18287878620701, -17.793421273808065],
-        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "area": { "area": 0, "areaString": "0 m²" },
         "length": { "length": 0, "lengthString": "0 m" },
         "editProps": { "name": "测试文本", "attributes": { "properties": [], "keyValues": [], "json": {} } },
         "style": {
@@ -221,7 +221,7 @@
               "geoType": "Point",
               "coordinates": [42.18287878620701, -17.793421273808065],
               "center": [42.18287878620701, -17.793421273808065],
-              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "area": { "area": 0, "areaString": "0 m²" },
               "length": { "length": 0, "lengthString": "0 m" },
               "editProps": { "name": "测试文本", "attributes": { "properties": [], "keyValues": [], "json": {} } },
               "style": {
@@ -257,7 +257,7 @@
               }
             }
           },
-          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "area": { "area": 0, "areaString": "0 m²" },
           "length": { "length": 0, "lengthString": "0 m" },
           "oldDrawOptions": {
             "shape": "Text",
@@ -284,7 +284,7 @@
         "geoType": "Point",
         "coordinates": [40.75636344645894, -21.75971016518001],
         "center": [40.75636344645894, -21.75971016518001],
-        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "area": { "area": 0, "areaString": "0 m²" },
         "length": { "length": 0, "lengthString": "0 m" },
         "editProps": {
           "name": "",
@@ -333,7 +333,7 @@
               "geoType": "Point",
               "coordinates": [40.75636344645894, -21.75971016518001],
               "center": [40.75636344645894, -21.75971016518001],
-              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "area": { "area": 0, "areaString": "0 m²" },
               "length": { "length": 0, "lengthString": "0 m" },
               "editProps": {
                 "name": "",
@@ -369,7 +369,7 @@
               }
             }
           },
-          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "area": { "area": 0, "areaString": "0 m²" },
           "length": { "length": 0, "lengthString": "0 m" },
           "oldDrawOptions": {
             "shape": "Point",
@@ -414,7 +414,7 @@
           [27.25487478897485, -24.486030932577435]
         ],
         "center": [48.10007856083374, -17.333694509259928],
-        "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+        "area": { "area": 0, "areaString": "0 m²" },
         "length": { "length": 5441236.63, "lengthString": "5441.24 km" },
         "__drawData": {
           "id": "draw_1olJAuS0rr",
@@ -458,11 +458,11 @@
                 [27.25487478897485, -24.486030932577435]
               ],
               "center": [48.10007856083374, -17.333694509259928],
-              "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+              "area": { "area": 0, "areaString": "0 m²" },
               "length": { "length": 5441236.63, "lengthString": "5441.24 km" }
             }
           },
-          "area": { "area": 0, "areaString": "0 m<sup>2</sup>" },
+          "area": { "area": 0, "areaString": "0 m²" },
           "length": { "length": 5441236.63, "lengthString": "5441.24 km" },
           "oldDrawOptions": {
             "shape": "Distance",

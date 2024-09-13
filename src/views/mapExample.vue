@@ -41,6 +41,11 @@
         <router-link to="/report/wang" class="ol_example_title">wangeditor ol插件 实例</router-link>
         <router-link to="/report/onlyoffice" class="ol_example_title">office ol插件 实例</router-link>
       </div>
+
+      <div class="row_nw_center_center ol_title">Three 实例</div>
+      <div class="row_nw_fs_center ol_example_box">
+        <router-link to="/maplibregl/base" class="ol_example_title">基本 实例</router-link>
+      </div>
     </div>
   </div>
 </template>

@@ -5,30 +5,34 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 export {}
 
-declare module "vue" {
+declare module 'vue' {
   export interface GlobalComponents {
-    AButton: typeof import("ant-design-vue/es")["Button"];
-    AInput: typeof import("ant-design-vue/es")["Input"];
-    AModal: typeof import("ant-design-vue/es")["Modal"];
-    APopconfirm: typeof import("ant-design-vue/es")["Popconfirm"];
-    ARadioGroup: typeof import("ant-design-vue/es")["RadioGroup"];
-    ARangePicker: typeof import("ant-design-vue/es")["RangePicker"];
-    AUpload: typeof import("ant-design-vue/es")["Upload"];
-    CircleRangeSlider: typeof import("./src/components/slider/canvasSlider/CircleRangeSlider.vue")["default"];
-    CircleSlider: typeof import("./src/components/slider/canvasSlider/CircleSlider.vue")["default"];
-    copy: typeof import("./src/components/echarts/EchartsOptionBasePlus copy.vue")["default"];
-    DateCircle: typeof import("./src/components/date/DateCircle.vue")["default"];
-    DateSlider: typeof import("./src/components/date/DateSlider.vue")["default"];
-    EchartsErrorNoData: typeof import("./src/components/echarts/EchartsErrorNoData.vue")["default"];
-    EchartsOptionBase: typeof import("./src/components/echarts/EchartsOptionBase.vue")["default"];
-    EchartsOptionBasePlus: typeof import("./src/components/echarts/EchartsOptionBasePlus.vue")["default"];
-    EchartsOptionBasePlusOld: typeof import("./src/components/echarts/EchartsOptionBasePlusOld.vue")["default"];
-    EchartsOptionScatter: typeof import("./src/components/echarts/EchartsOptionScatter.vue")["default"];
-    LatitudeBaseInput: typeof import("./src/components/geo/LatitudeBaseInput.vue")["default"];
-    LongitudeBaseInput: typeof import("./src/components/geo/LongitudeBaseInput.vue")["default"];
-    OnlyOfficeExample: typeof import("./src/components/echarts/onlyOfficeExample.vue")["default"];
-    RoundSlider: typeof import("./src/components/slider/roundSlider/RoundSlider.vue")["default"];
-    RouterLink: typeof import("vue-router")["RouterLink"];
-    RouterView: typeof import("vue-router")["RouterView"];
+    AButton: typeof import("ant-design-vue/es")["Button"]
+    AInput: typeof import("ant-design-vue/es")["Input"]
+    AModal: typeof import("ant-design-vue/es")["Modal"]
+    APopconfirm: typeof import("ant-design-vue/es")["Popconfirm"]
+    ARadioGroup: typeof import("ant-design-vue/es")["RadioGroup"]
+    ARangePicker: typeof import("ant-design-vue/es")["RangePicker"]
+    AUpload: typeof import("ant-design-vue/es")["Upload"]
+    CircleRangeSlider: typeof import('./src/components/slider/canvasSlider/CircleRangeSlider.vue')['default']
+    CircleSlider: typeof import('./src/components/slider/canvasSlider/CircleSlider.vue')['default']
+    copy: typeof import("./src/components/echarts/EchartsOptionBasePlus copy.vue")["default"]
+    DateCircle: typeof import('./src/components/date/DateCircle.vue')['default']
+    DateSlider: typeof import('./src/components/date/DateSlider.vue')['default']
+    EchartsErrorNoData: typeof import('./src/components/echarts/EchartsErrorNoData.vue')['default']
+    EchartsOptionBase: typeof import('./src/components/echarts/EchartsOptionBase.vue')['default']
+    EchartsOptionBasePlus: typeof import('./src/components/echarts/EchartsOptionBasePlus.vue')['default']
+    EchartsOptionBasePlusOld: typeof import('./src/components/echarts/EchartsOptionBasePlusOld.vue')['default']
+    EchartsOptionScatter: typeof import('./src/components/echarts/EchartsOptionScatter.vue')['default']
+    EllipsisTextOver: typeof import('./src/components/text/EllipsisTextOver.vue')['default']
+    EllipsisTextPopup: typeof import('./src/components/text/EllipsisTextPopup.vue')['default']
+    EllipsisTextScroll: typeof import('./src/components/text/EllipsisTextScroll.vue')['default']
+    EllipsisTextScrollCut: typeof import('./src/components/text/EllipsisTextScrollCut.vue')['default']
+    LatitudeBaseInput: typeof import('./src/components/geo/LatitudeBaseInput.vue')['default']
+    LongitudeBaseInput: typeof import('./src/components/geo/LongitudeBaseInput.vue')['default']
+    OnlyOfficeExample: typeof import("./src/components/echarts/onlyOfficeExample.vue")["default"]
+    RoundSlider: typeof import('./src/components/slider/roundSlider/RoundSlider.vue')['default']
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
   }
 }

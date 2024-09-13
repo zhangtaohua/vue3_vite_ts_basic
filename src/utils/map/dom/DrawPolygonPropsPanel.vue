@@ -659,8 +659,7 @@ const confirmHandle = () => {
 .name_box_input::placeholder {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-items: flex-start;
+  place-items: center flex-start;
   padding: 0;
   color: #94a7c0;
   font-size: 1rem;
@@ -683,8 +682,7 @@ const confirmHandle = () => {
 .dash_input::placeholder {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-items: flex-start;
+  place-items: center flex-start;
   padding: 0;
   color: #94a7c0;
   font-size: 1rem;
@@ -707,8 +705,7 @@ const confirmHandle = () => {
 .fs_input::placeholder {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-items: flex-start;
+  place-items: center flex-start;
   padding: 0;
   color: #94a7c0;
   font-size: 1rem;
@@ -858,8 +855,7 @@ const confirmHandle = () => {
 .prop_text_cls::placeholder {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-items: flex-start;
+  place-items: center flex-start;
   padding: 0;
   color: #94a7c0;
   font-size: 1rem;
