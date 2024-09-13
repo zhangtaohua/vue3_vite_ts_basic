@@ -58,6 +58,52 @@ const cameraPosZ = 4;
 const cameraLookatX = 0;
 const cameraLookatY = 0;
 const cameraLookatZ = 0;
+const language = "en";
+
+const cubeModelLabels = {
+  TOP: {
+    text: language.toLowerCase().includes("en") ? "TOP" : "顶",
+    fontSize: 32,
+    color: "#FFFFFF",
+    fillColor: "#00FF00",
+    mirror: [1, -1],
+  },
+  BOTTOM: {
+    text: language.toLowerCase().includes("en") ? "BOTTOM" : "底",
+    fontSize: 32,
+    color: "#FFFFFF",
+    fillColor: "#00A100",
+    mirror: [1, -1],
+  },
+  RIGHT: {
+    text: language.toLowerCase().includes("en") ? "RIGHT" : "右",
+    fontSize: 32,
+    color: "#FFFFFF",
+    fillColor: "#FF0000",
+    mirror: [1, -1],
+  },
+  LEFT: {
+    text: language.toLowerCase().includes("en") ? "LEFT" : "左",
+    fontSize: 32,
+    color: "#FFFFFF",
+    fillColor: "#A10000",
+    mirror: [1, -1],
+  },
+  FRONT: {
+    text: language.toLowerCase().includes("en") ? "FRONT" : "前",
+    fontSize: 32,
+    color: "#FFFFFF",
+    fillColor: "#0000FF",
+    mirror: [1, -1],
+  },
+  BACK: {
+    text: language.toLowerCase().includes("en") ? "BACK" : "后",
+    fontSize: 32,
+    color: "#FFFFFF",
+    fillColor: "#0000A1",
+    mirror: [0, 0],
+  },
+};
 
 const cameraSpecialPos = {
   DEFAULT: [cameraPosX, cameraPosY, cameraPosZ],
@@ -258,6 +304,51 @@ function initControls() {
   }
 }
 
+function createTextMaterial(
+  textOptioons = {
+    text: "",
+    fontSize: "",
+    color: "",
+    fillColor: "",
+    mirror: [],
+  },
+) {
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  const fontCtx = canvas.getContext("2d");
+  const textLenth = textOptioons.text.length + 0.5;
+  const size = textLenth * textOptioons.fontSize; // 设置 canvas 尺寸
+  canvas.width = size;
+  canvas.height = size;
+
+  // 设置背景色
+  context.fillStyle = textOptioons.fillColor;
+  context.fillRect(0, 0, size, size);
+
+  // 设置文本样式
+  fontCtx.fillStyle = textOptioons.color; // 文字颜色
+  // 位移来做镜像翻转
+  const mirror = textOptioons.mirror;
+  context.scale(mirror[0], mirror[1]); //左右镜像翻转
+  const transX = mirror[0] === 1 ? 0 : mirror[0] * size;
+  const transY = mirror[1] === 1 ? 0 : mirror[1] * size;
+  context.translate(transX, transY);
+
+  // fontCtx.translate(size / 2, size / 2);
+  // fontCtx.rotate((180 * Math.PI) / 180);
+  // fontCtx.translate(-size, -size);
+  fontCtx.font = `bold ${textOptioons.fontSize}px Arial`; // 字体样式
+  fontCtx.textAlign = "center";
+  fontCtx.textBaseline = "middle";
+
+  // 绘制文字
+  fontCtx.fillText(textOptioons.text, size / 2, size / 2);
+
+  // 使用 canvas 创建纹理
+  const texture = new THREE.CanvasTexture(canvas);
+  return new THREE.MeshBasicMaterial({ map: texture });
+}
+
 function initGltfLoader() {
   gltfLoader = new GLTFLoader();
 
@@ -268,6 +359,15 @@ function initGltfLoader() {
     cubeModel = gltf.scene;
     scene.add(gltf.scene);
     Tracker.track(cubeModel);
+    console.log("cubeModel", cubeModel);
+    for (let i = 0; i < cubeModel.children.length; i++) {
+      const mesh = cubeModel.children[i];
+      const name = mesh.name;
+      const textOpts = cubeModelLabels[name];
+      if (textOpts) {
+        mesh.material = createTextMaterial(textOpts);
+      }
+    }
   });
 
   gltfLoader.loadAsync("/static/snwe.glb").then((gltf) => {
